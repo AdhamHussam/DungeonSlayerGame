@@ -42,6 +42,7 @@ int main()
     }
 }
 
+//functions 
 
 void update()
 {

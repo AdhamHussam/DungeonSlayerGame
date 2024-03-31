@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <SFML/Graphics.hpp>
 
 using namespace std;
@@ -17,6 +17,13 @@ Sprite player;
 void update();
 void playerMovement();
 void Draw();
+
+
+
+
+
+
+
 int main()
 {
     back.setFillColor(Color::Black);
@@ -42,7 +49,13 @@ int main()
     }
 }
 
-//functions 
+
+
+
+
+
+
+//ؤلاقثرلاثعرلاقثرلاثقرلاعلارهعلا
 
 void update()
 {

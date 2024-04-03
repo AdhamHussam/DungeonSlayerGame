@@ -12,6 +12,8 @@ RenderWindow window(VideoMode(1920, 1080), "Game");
 RectangleShape back;
 Texture Player;
 Sprite player;
+Texture room;
+Sprite Room;
 
 
 void update();
@@ -26,8 +28,13 @@ void Draw();
 
 int main()
 {
-    back.setFillColor(Color::Black);
-    back.setSize(Vector2f(2000, 2000));
+    
+    room.loadFromFile("Room0.png");
+    Room.setTexture(room);
+    Room.setScale(3.5, 3.5);
+    Room.setOrigin(room.getSize().x/2, room.getSize().y/2);
+    Room.setPosition(1920 / 2, 1080 / 2);
+   
     player.setPosition(200, 200);
     Player.loadFromFile("Idle.png");
     player.setTexture(Player);
@@ -52,11 +59,6 @@ int main()
 
 
 
-
-
-
-//ؤلاقثرلاثعرلاقثرلاثقرلاعلارهعلا
-
 void update()
 {
     playerMovement();
@@ -67,6 +69,7 @@ void update()
 void Draw()
 {
     window.clear();
+    window.draw(Room);
     window.draw(player);
     window.display();
 

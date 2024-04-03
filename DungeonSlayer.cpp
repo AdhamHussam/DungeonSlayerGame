@@ -33,7 +33,7 @@ int main()
     Room.setTexture(room);
     Room.setScale(3.5, 3.5);
     Room.setOrigin(room.getSize().x/2, room.getSize().y/2);
-    Room.setPosition(1920 / 2, 1080 / 2);
+    Room.setPosition(1920 / 2 + 50, 1080 / 2 - 100);
    
     player.setPosition(200, 200);
     Player.loadFromFile("Idle.png");

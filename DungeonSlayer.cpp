@@ -31,14 +31,14 @@ int main()
     
     room.loadFromFile("Room0.png");
     Room.setTexture(room);
-    Room.setScale(3.5, 3.5);
+    Room.setScale(3.45, 3.45);
     Room.setOrigin(room.getSize().x/2, room.getSize().y/2);
     Room.setPosition(1920 / 2 + 50, 1080 / 2 - 100);
    
     player.setPosition(200, 200);
     Player.loadFromFile("Idle.png");
     player.setTexture(Player);
-    player.setScale(0.15, 0.15);
+    player.setScale(0.125, 0.125);
     player.setOrigin(Player.getSize().x / 2, Player.getSize().y / 2);
     while (window.isOpen()) {
         // restart the clock at the start of the game loop
@@ -90,12 +90,12 @@ void playerMovement()
     }
     if (Keyboard::isKeyPressed(Keyboard::A))
     {
-        player.setScale(-0.15, 0.15);
+        player.setScale(-0.125, 0.125);
         velocity.x = -1;
     }
     else if (Keyboard::isKeyPressed(Keyboard::D))
     {
-        player.setScale(0.15, 0.15);
+        player.setScale(0.125, 0.125);
         velocity.x = 1;
     }
     else {

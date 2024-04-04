@@ -5,11 +5,13 @@
 using namespace std;
 using namespace sf;
 
+// Game properties
+
 Clock gameClock;
 float deltaTime = 0;
-
 Vector2f velocity = { 0, 0 };
-RenderWindow window(VideoMode(1920, 1080), "Game");
+RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer");
+View view(Vector2f(0, 0), Vector2f(1920, 1080));
 
 // Game textures
 
@@ -23,12 +25,10 @@ RectangleShape border3(Vector2f({ 2000,100 }));
 RectangleShape border4(Vector2f({ 1000,100 }));
 RectangleShape border5(Vector2f({ 1000,100 }));
 
-
-
-
-
 // Game functions
+
 void update();
+void updateView();
 void playerMovement();
 void setTextures();
 void checkCollisions();
@@ -39,11 +39,11 @@ int main()
 {   
     setTextures();
     window.setMouseCursorVisible(false);
-    while (window.isOpen()) {
+    while (window.isOpen()) 
+    {
         // restart the clock at the start of the game loop
         gameClock.restart();
         Event close;
-
         while (window.pollEvent(close)) {
             if (close.type == Event::Closed) {
                 window.close();
@@ -60,6 +60,7 @@ int main()
 
 void update()
 {
+    updateView();
     playerMovement();
     checkCollisions();
     player.move(velocity);
@@ -119,7 +120,7 @@ void setTextures()
     player.setOrigin(Player.getSize().x / 2, Player.getSize().y / 2);
 
     // walls
-    border2.setPosition(1550, 0);
+    border2.setPosition(1500, 0);
     border3.setPosition(0, 1035);
     border4.setPosition(-150, 150);
     border5.setPosition(1050, 150);
@@ -131,23 +132,31 @@ void checkCollisions()
 {
     if (Keyboard::isKeyPressed(Keyboard::A) && player.getGlobalBounds().intersects(border1.getGlobalBounds()))
     {
-        velocity.x=0;
+        velocity.x = 0;
     } 
     if (Keyboard::isKeyPressed(Keyboard::D) && player.getGlobalBounds().intersects(border2.getGlobalBounds()))
     {
-        velocity.x=0;
+        velocity.x = 0;
     }
     if (Keyboard::isKeyPressed(Keyboard::S) && player.getGlobalBounds().intersects(border3.getGlobalBounds()))
     {
-        velocity.y=0;
+        velocity.y = 0;
     }
     if (Keyboard::isKeyPressed(Keyboard::W) && (player.getGlobalBounds().intersects(border4.getGlobalBounds())))
     {
-        velocity.y=0;
+        velocity.y = 0;
     }
     if (Keyboard::isKeyPressed(Keyboard::W) && player.getGlobalBounds().intersects(border5.getGlobalBounds()))
     {
         velocity.y = 0;
     }
+
+}
+
+void updateView()
+{
+    
+    view.setCenter(player.getPosition()); //update
+    window.setView(view);
 
 }

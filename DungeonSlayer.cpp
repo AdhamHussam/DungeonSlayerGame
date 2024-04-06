@@ -1,16 +1,18 @@
 ﻿#include <iostream>
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include "Menu.h"
 
 using namespace std;
 using namespace sf;
 
 // Game properties
-
+int pagenum = 69;
 Clock gameClock;
-float deltaTime = 0;
+float deltaTime = 0;    
 Vector2f velocity = { 0, 0 };
 RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer");
+Menu menu(1920, 1080);
 View view(Vector2f(0, 0), Vector2f(1920, 1080));
 
 // Game textures
@@ -18,6 +20,8 @@ View view(Vector2f(0, 0), Vector2f(1920, 1080));
 Texture Player;
 Sprite player;
 Texture room;
+Texture mainmenubg;
+Sprite bg;
 Sprite Room;
 RectangleShape border1(Vector2f({ 150,1080 }));
 RectangleShape border2(Vector2f({ 150,1080 }));
@@ -26,7 +30,8 @@ RectangleShape border4(Vector2f({ 1000,100 }));
 RectangleShape border5(Vector2f({ 1000,100 }));
 
 // Game functions
-
+void menu_handler();
+void Game_play(RenderWindow& window);
 void update();
 void updateView();
 void playerMovement();
@@ -34,28 +39,14 @@ void setTextures();
 void checkCollisions();
 void Draw();
 
+// Main 
 
 int main()
-{   
+{
     setTextures();
     window.setMouseCursorVisible(false);
-    while (window.isOpen()) 
-    {
-        // restart the clock at the start of the game loop
-        gameClock.restart();
-        Event close;
-        while (window.pollEvent(close)) {
-            if (close.type == Event::Closed) {
-                window.close();
-            }
-        }
-        update();
-        Draw();
-
-    }
+    menu_handler();
 }
-
-
 
 
 void update()
@@ -106,6 +97,12 @@ void playerMovement()
 
 void setTextures() 
 {
+    // Menu   
+    mainmenubg.loadFromFile("Main Menu.jpg");
+    bg.setTexture(mainmenubg);
+    bg.setScale(0.5, 0.5);
+    
+
     // Room
     room.loadFromFile("Room0.png");
     Room.setTexture(room);
@@ -154,9 +151,76 @@ void checkCollisions()
 }
 
 void updateView()
-{
-    
+{  
     view.setCenter(player.getPosition()); //update
     window.setView(view);
+}
 
+
+void Game_play(RenderWindow& window) 
+{
+    
+    while (window.isOpen()) {
+        Event event1;
+        while (window.pollEvent(event1)) {
+            if (event1.type == Event::Closed) {
+                window.close();
+            }
+        }
+        update();
+        Draw();
+    }
+   
+
+}
+
+
+void menu_handler()
+{
+    while (true) {
+        if (pagenum == 69)
+        {
+            while (window.isOpen())
+            {
+                Event event;
+                while (window.pollEvent(event)) {
+                    if (event.type == Event::Closed) {
+                        window.close();
+                        break;
+                    }
+                    if (event.type == Event::KeyPressed) {
+                        if (event.key.code == Keyboard::Up)
+                            menu.MoveUp();
+                        if (event.key.code == Keyboard::Down)
+                            menu.MoveDown();
+                        if (event.key.code == Keyboard::Return) {
+                            if (menu.pressed() == 0) {
+                                pagenum = 0;
+                            }
+                            if (menu.pressed() == 1) {
+                                pagenum = 1;
+                            }
+                            if (menu.pressed() == 2) {
+                                pagenum = -1;
+                            }
+                        }
+                    }
+                }
+                window.clear();
+                if (pagenum != 69) {
+                    break;
+                }
+                window.draw(bg);
+                menu.drawMenu(window);
+                window.display();
+            }
+            if (pagenum == -1) {
+                window.close();
+                break;
+            }
+            if (pagenum == 0) {
+                Game_play(window);
+            }
+        }
+    }
 }

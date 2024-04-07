@@ -7,40 +7,52 @@ using namespace std;
 using namespace sf;
 
 // Game properties
+enum state
+{
+    idle, walk, hit, ablaze, dead
+};
+state current_state = state::idle;
+
 int pagenum = 69;
-Clock gameClock;
 float deltaTime = 0;    
+Clock gameClock;
 Vector2f velocity = { 0, 0 };
+bool isAttack = false;
 RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer");
 Menu menu(1920, 1080);
 View view(Vector2f(0, 0), Vector2f(1920, 1080));
 
-// Game textures
+// Game items
+Texture Idle;
+Texture Walk[8];
+Texture BaseAttack[5];
+Texture Stomp[2];
+Texture AblazeCombo[17];
+Sprite Player;
 
-Texture Player;
-Sprite player;
 Texture room;
 Texture mainmenubg;
 Sprite bg;
 Sprite Room;
-RectangleShape border1(Vector2f({ 150,1080 }));
-RectangleShape border2(Vector2f({ 150,1080 }));
-RectangleShape border3(Vector2f({ 2000,100 }));
-RectangleShape border4(Vector2f({ 1000,100 }));
-RectangleShape border5(Vector2f({ 1000,100 }));
+
+
+
+
+// Room 0 Borders
+RectangleShape border1(Vector2f({ 150,1080 }));RectangleShape border2(Vector2f({ 150,1080 }));RectangleShape border3(Vector2f({ 2000,100 }));RectangleShape border4(Vector2f({ 1000,100 }));RectangleShape border5(Vector2f({ 1000,100 }));
 
 // Game functions
 void menu_handler();
+void HandleAnimations();
 void Game_play(RenderWindow& window);
 void update();
-void updateView();
+void trackView();
 void playerMovement();
 void setTextures();
 void checkCollisions();
 void Draw();
 
 // Main 
-
 int main()
 {
     setTextures();
@@ -48,23 +60,21 @@ int main()
     menu_handler();
 }
 
-
+// Definitions
 void update()
 {
-    updateView();
+    trackView();
     playerMovement();
     checkCollisions();
-    player.move(velocity);
-
+    Player.move(velocity);
 }
 
 void Draw()
 {
     window.clear();
     window.draw(Room);
-    window.draw(player);
+    window.draw(Player);
     window.display();
-
 }
 
 void playerMovement()
@@ -82,12 +92,12 @@ void playerMovement()
     }
     if (Keyboard::isKeyPressed(Keyboard::A))
     {
-        player.setScale(-0.125, 0.125);
+        Player.setScale(-0.125, 0.125);
         velocity.x = -1;
     }
     else if (Keyboard::isKeyPressed(Keyboard::D))
     {
-        player.setScale(0.125, 0.125);
+        Player.setScale(0.125, 0.125);
         velocity.x = 1;
     }
     else {
@@ -102,78 +112,61 @@ void setTextures()
     bg.setTexture(mainmenubg);
     bg.setScale(0.5, 0.5);
     
-
     // Room
     room.loadFromFile("Room0.png");
     Room.setTexture(room);
     Room.setScale(3.8, 3.333);
     Room.setOrigin(room.getSize().x / 2, room.getSize().y / 2);
     Room.setPosition(1920 / 2 + 50, 1080 / 2 - 100);
+    
     // Player
-    player.setPosition(500, 500);
-    Player.loadFromFile("Idle.png");
-    player.setTexture(Player);
-    player.setScale(0.125, 0.125);
-    player.setOrigin(Player.getSize().x / 2, Player.getSize().y / 2);
+    Player.setPosition(500, 500);
+    Idle.loadFromFile("Idle.png");
+    Player.setTexture(Idle);
+    Player.setScale(0.125, 0.125);
+    Player.setOrigin(Idle.getSize().x / 2, Idle.getSize().y / 2);
 
     // walls
     border2.setPosition(1500, 0);
     border3.setPosition(0, 1035);
     border4.setPosition(-150, 150);
     border5.setPosition(1050, 150);
-
 }
-
 
 void checkCollisions()
 {
-    if (Keyboard::isKeyPressed(Keyboard::A) && player.getGlobalBounds().intersects(border1.getGlobalBounds()))
+    if (Keyboard::isKeyPressed(Keyboard::A) && Player.getGlobalBounds().intersects(border1.getGlobalBounds()))
     {
         velocity.x = 0;
     } 
-    if (Keyboard::isKeyPressed(Keyboard::D) && player.getGlobalBounds().intersects(border2.getGlobalBounds()))
+    if (Keyboard::isKeyPressed(Keyboard::D) && Player.getGlobalBounds().intersects(border2.getGlobalBounds()))
     {
         velocity.x = 0;
     }
-    if (Keyboard::isKeyPressed(Keyboard::S) && player.getGlobalBounds().intersects(border3.getGlobalBounds()))
+    if (Keyboard::isKeyPressed(Keyboard::S) && Player.getGlobalBounds().intersects(border3.getGlobalBounds()))
     {
         velocity.y = 0;
     }
-    if (Keyboard::isKeyPressed(Keyboard::W) && (player.getGlobalBounds().intersects(border4.getGlobalBounds())))
+    if (Keyboard::isKeyPressed(Keyboard::W) && (Player.getGlobalBounds().intersects(border4.getGlobalBounds())))
     {
         velocity.y = 0;
     }
-    if (Keyboard::isKeyPressed(Keyboard::W) && player.getGlobalBounds().intersects(border5.getGlobalBounds()))
+    if (Keyboard::isKeyPressed(Keyboard::W) && Player.getGlobalBounds().intersects(border5.getGlobalBounds()))
     {
         velocity.y = 0;
     }
-
 }
 
-void updateView()
+void trackView()
 {  
-    view.setCenter(player.getPosition()); //update
+    view.setCenter(Player.getPosition()); //update
     window.setView(view);
 }
 
-
-void Game_play(RenderWindow& window) 
+void HandleAnimations() 
 {
     
-    while (window.isOpen()) {
-        Event event1;
-        while (window.pollEvent(event1)) {
-            if (event1.type == Event::Closed) {
-                window.close();
-            }
-        }
-        update();
-        Draw();
-    }
-   
-
 }
-
 
 void menu_handler()
 {
@@ -222,5 +215,19 @@ void menu_handler()
                 Game_play(window);
             }
         }
+    }
+}
+
+void Game_play(RenderWindow& window) 
+{
+    while (window.isOpen()) {
+        Event Play;
+        while (window.pollEvent(Play)) {
+            if (Play.type == Event::Closed) {
+                window.close();
+            }
+        }
+        update();
+        Draw();
     }
 }

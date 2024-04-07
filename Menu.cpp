@@ -8,7 +8,7 @@ Menu::Menu(float width, float height) {
 	font.loadFromFile("Ungai.ttf");
 
 	mainmenu[0].setFont(font);
-	mainmenu[0].setFillColor(Color::Yellow);
+	mainmenu[0].setFillColor(Color { 255,165,0 }); // coral : 255,127,80 ; gold : 255,215,0 ; orange : 255,165,0
 	mainmenu[0].setString("Play");
 	mainmenu[0].setCharacterSize(90);
 	mainmenu[0].setPosition(Vector2f(100,400));
@@ -51,7 +51,9 @@ void Menu::MoveDown() {
 		{
 			selected = 0;
 		}
-		mainmenu[selected].setFillColor(Color::Yellow);
+		{
+			mainmenu[selected].setFillColor(Color{ 255,165,0 });
+		}
 	}
 
 }
@@ -65,6 +67,6 @@ void Menu::MoveUp() {
 		{
 			selected = 2;
 		}
-		mainmenu[selected].setFillColor(Color::Yellow);
+		mainmenu[selected].setFillColor(Color{ 255,165,0 });
 	}
 }

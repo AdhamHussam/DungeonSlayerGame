@@ -65,7 +65,7 @@ void update()
 {
     trackView();
     playerMovement();
-    checkCollisions();
+    //checkCollisions();
     Player.move(velocity);
 }
 
@@ -113,11 +113,11 @@ void setTextures()
     bg.setScale(0.5, 0.5);
     
     // Room
-    room.loadFromFile("Room0.png");
+    room.loadFromFile("mapV2.png");
     Room.setTexture(room);
     Room.setScale(3.8, 3.333);
-    Room.setOrigin(room.getSize().x / 2, room.getSize().y / 2);
-    Room.setPosition(1920 / 2 + 50, 1080 / 2 - 100);
+    Room.setOrigin(room.getSize().x/2,room.getSize().y/2 );
+    Room.setPosition(0,178*16);
     
     // Player
     Player.setPosition(500, 500);
@@ -125,6 +125,7 @@ void setTextures()
     Player.setTexture(Idle);
     Player.setScale(0.125, 0.125);
     Player.setOrigin(Idle.getSize().x / 2, Idle.getSize().y / 2);
+    Player.setPosition(-500, 7000);
 
     // walls
     border2.setPosition(1500, 0);
@@ -229,5 +230,6 @@ void Game_play(RenderWindow& window)
         }
         update();
         Draw();
+        cout << Player.getPosition().x << " " << Player.getPosition().y << endl;
     }
 }

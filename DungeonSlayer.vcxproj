@@ -139,9 +139,12 @@
   <ItemGroup>
     <ClCompile Include="DungeonSlayer.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Monsters.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="includes.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Monsters.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

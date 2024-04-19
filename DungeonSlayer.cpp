@@ -29,17 +29,14 @@ Texture BaseAttack[5];
 Texture Stomp[2];
 Texture AblazeCombo[17];
 Sprite Player;
-
 Texture room;
 Texture mainmenubg;
 Sprite bg;
 Sprite Room;
 
 
-
-
 // Room 0 Borders
-RectangleShape border1(Vector2f({ 150,1080 }));RectangleShape border2(Vector2f({ 150,1080 }));RectangleShape border3(Vector2f({ 2000,100 }));RectangleShape border4(Vector2f({ 1000,100 }));RectangleShape border5(Vector2f({ 1000,100 }));
+
 
 // Game functions
 void menu_handler();
@@ -66,7 +63,6 @@ void update()
     trackView();
     playerMovement();
     //checkCollisions();
-    Player.move(velocity);
 }
 
 void Draw()
@@ -103,6 +99,8 @@ void playerMovement()
     else {
         velocity.x = 0;
     }
+
+    Player.move(velocity);
 }
 
 void setTextures() 
@@ -128,15 +126,12 @@ void setTextures()
     Player.setPosition(-500, 7000);
 
     // walls
-    border2.setPosition(1500, 0);
-    border3.setPosition(0, 1035);
-    border4.setPosition(-150, 150);
-    border5.setPosition(1050, 150);
+  
 }
 
 void checkCollisions()
 {
-    if (Keyboard::isKeyPressed(Keyboard::A) && Player.getGlobalBounds().intersects(border1.getGlobalBounds()))
+  /*  if (Keyboard::isKeyPressed(Keyboard::A) && Player.getGlobalBounds().intersects(border1.getGlobalBounds()))
     {
         velocity.x = 0;
     } 
@@ -155,7 +150,7 @@ void checkCollisions()
     if (Keyboard::isKeyPressed(Keyboard::W) && Player.getGlobalBounds().intersects(border5.getGlobalBounds()))
     {
         velocity.y = 0;
-    }
+    }*/
 }
 
 void trackView()
@@ -187,7 +182,7 @@ void menu_handler()
                             menu.MoveUp();
                         if (event.key.code == Keyboard::Down)
                             menu.MoveDown();
-                        if (event.key.code == Keyboard::Return) {
+                        if (event.key.code == Keyboard::Enter) {
                             if (menu.pressed() == 0) {
                                 pagenum = 0;
                             }

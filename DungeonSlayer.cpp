@@ -1,10 +1,5 @@
-﻿#include <iostream>
-#include <vector>
-#include <SFML/Graphics.hpp>
+﻿#include "includes.h"
 #include "Menu.h"
-
-using namespace std;
-using namespace sf;
 
 // Game properties
 enum state

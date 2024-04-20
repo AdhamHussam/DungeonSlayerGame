@@ -57,7 +57,7 @@ void setTextures();
 void checkCollisions();
 void Draw();
 void MonstersMovment(Zombie zombies[], Sprite& Player);
-
+void SetMonsters(Zombie zombies[]);
 // Main 
 int main()
 {
@@ -141,10 +141,8 @@ void setTextures()
     border4.setPosition(-150, 150);
     border5.setPosition(1050, 150);
 
-    // Monsters
-    zombies[0].zombie.setPosition(-500, 7000);
-    zombies[0].zombie.setFillColor(Color::Magenta);
-    zombies[0].zombie.setSize(Vector2f(100, 200));
+    // monsters
+    SetMonsters(zombies);
 
 }
 

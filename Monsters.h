@@ -3,8 +3,8 @@
 
 struct Zombie
 {
-	RectangleShape zombie;
-	
+	Sprite zombie;
+	Texture photo[8];
 	int level;
 	double factor_level = level / 10 + 1;
 	int health = 100*factor_level;

@@ -1,29 +1,11 @@
 #include "includes.h"
 #include "Monsters.h"
-const int monster_types = 1,boss_types = 1;
-Enemy monsters[monster_types],bosses[boss_types];
 
-// Comparision for sorting arrays monsters and bosses decsending based on xp
-bool compare_xp(Enemy &a, Enemy &b) {
-	return a.xp > b.xp;
+int counter;
+
+void MonstersMovment(Zombie zombies[], Sprite &Player) {
+    double x = Player.getPosition().x - zombies[0].zombie.getPosition().x, y = zombies[0].zombie.getPosition().y - Player.getPosition().y;
+    zombies[0].zombie.move(((x > 0) ? zombies[0].speed : -zombies[0].speed) * (!counter), ((y < 0) ? zombies[0].speed : -zombies[0].speed) * counter);
+    counter++, counter %= 2;
 }
 
-// Called at the begin of the game only once
-// making monster types and adding them to array monsters
-void classifying_monsters() {
-	// making first monster (zombie for example)
-	Enemy current_monster;
-	current_monster.health = 1000;
-	current_monster.strenth = 10;
-	current_monster.base_atack();
-	monsters[0] = current_monster;
-
-	// sorting monsters decsending based on xp
-	sort(monsters, monsters + monster_types, compare_xp);
-}
-
-// Called at the begin of the game only once
-// making boss types and adding them to array bosses
-void classifying_bosses() {
-
-}

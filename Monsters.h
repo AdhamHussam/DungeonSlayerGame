@@ -1,22 +1,22 @@
 #pragma once
 #include "includes.h"
 
-struct Enemy
+struct Zombie
 {
-	string name;
-	int health;
-	int strenth;
-	int xp = health/10 + strenth;
+	RectangleShape zombie;
+	
+	int level;
+	double factor_level = level / 10 + 1;
+	int health = 100*factor_level;
+	int strenth = 10;
+	double speed = 0.1;
 	void base_atack() {
-		int relative_power = 0;
-		xp += relative_power;
+
 	}
 	void skill() {
-		int relative_power = 0;
-		xp += relative_power;
+
 	}
 	void ultimate() {
-		int relative_power = 0;
-		xp += relative_power;
+
 	}
 };

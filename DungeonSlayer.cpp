@@ -1,5 +1,15 @@
 ﻿#include "includes.h"
 #include "Menu.h"
+#include "Monsters.h"
+
+
+////////// temp
+
+const int number_of_zombies = 1;
+Zombie zombies[number_of_zombies];
+
+/////////
+
 
 // Game properties
 enum state
@@ -46,6 +56,7 @@ void playerMovement();
 void setTextures();
 void checkCollisions();
 void Draw();
+void MonstersMovment(Zombie zombies[], Sprite& Player);
 
 // Main 
 int main()
@@ -60,6 +71,7 @@ void update()
 {
     trackView();
     playerMovement();
+    MonstersMovment(zombies,Player);
     //checkCollisions();
     Player.move(velocity);
 }
@@ -69,6 +81,7 @@ void Draw()
     window.clear();
     window.draw(Room);
     window.draw(Player);
+    window.draw(zombies[0].zombie);
     window.display();
 }
 
@@ -120,13 +133,19 @@ void setTextures()
     Player.setTexture(Idle);
     Player.setScale(0.125, 0.125);
     Player.setOrigin(Idle.getSize().x / 2, Idle.getSize().y / 2);
-    Player.setPosition(-500, 7000);
+   Player.setPosition(-500, 7000);
 
     // walls
     border2.setPosition(1500, 0);
     border3.setPosition(0, 1035);
     border4.setPosition(-150, 150);
     border5.setPosition(1050, 150);
+
+    // Monsters
+    zombies[0].zombie.setPosition(-500, 7000);
+    zombies[0].zombie.setFillColor(Color::Magenta);
+    zombies[0].zombie.setSize(Vector2f(100, 200));
+
 }
 
 void checkCollisions()
@@ -225,6 +244,5 @@ void Game_play(RenderWindow& window)
         }
         update();
         Draw();
-        cout << Player.getPosition().x << " " << Player.getPosition().y << endl;
     }
 }

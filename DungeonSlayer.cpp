@@ -1,28 +1,47 @@
 ﻿#include "includes.h"
 #include "Menu.h"
+#include <iostream>
+
 
 // Game properties
 enum state
 {
-    idle, walk, hit, ablaze, dead
+    idle, run, hit, base, zmove, xmove, cmove, vmove, dead
 };
-state current_state = state::idle;
+state curr_state = state::idle;
 
 int pagenum = 69;
-float deltaTime = 0;    
-Clock gameClock;
+
+int Player_Health = 100;
 Vector2f velocity = { 0, 0 };
+
+float slow_multi = 1;
+float AnimationCounter = 0;
+float AnimationSwitchTime = 0.1f;
+int ImageCounter = 0;
+
+float playerdeltatime = 0;    
+Clock GameClock;
 bool isAttack = false;
+bool ishit = false;
+bool finishedanimationonce = false;
+
 RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer");
 Menu menu(1920, 1080);
 View view(Vector2f(0, 0), Vector2f(1920, 1080));
 
-// Game items
+// Textures
 Texture Idle;
-Texture Walk[8];
+Texture RunAnimation[8];
+Texture DeathAnimation[3];
+Texture HitAnimation[3];
 Texture BaseAttack[5];
-Texture Stomp[2];
-Texture AblazeCombo[17];
+Texture Zmove[5];
+Texture Xmove[6];
+Texture Cmove[6];
+Texture Vmove[2];
+
+
 Sprite Player;
 Texture room;
 Texture mainmenubg;
@@ -35,7 +54,8 @@ Sprite Room;
 
 // Game functions
 void menu_handler();
-void HandleAnimations();
+void UpdateAnimationCounter(int maximagecounter);
+void Switch_States();
 void Game_play(RenderWindow& window);
 void update();
 void trackView();
@@ -55,6 +75,7 @@ int main()
 // Definitions
 void update()
 {
+    Switch_States();
     trackView();
     playerMovement();
     //checkCollisions();
@@ -94,6 +115,30 @@ void playerMovement()
     else {
         velocity.x = 0;
     }
+   /*  if (Keyboard::isKeyPressed(Keyboard::Up))
+    {
+        velocity.y = -0.5;
+    }
+    else if (Keyboard::isKeyPressed(Keyboard::Down))
+    {
+        velocity.y = 0.5;
+    }
+    else {
+        velocity.y = 0;
+    }
+    if (Keyboard::isKeyPressed(Keyboard::Left))
+    {
+        Player.setScale(-0.125, 0.125);
+        velocity.x = -0.5;
+    }
+    else if (Keyboard::isKeyPressed(Keyboard::Right))
+    {
+        Player.setScale(0.125, 0.125);
+        velocity.x = 0.5;
+    }
+    else {
+        velocity.x = 0;
+    }*/
 
     Player.move(velocity);
 }
@@ -113,15 +158,19 @@ void setTextures()
     Room.setPosition(0,178*16);
     
     // Player
-    Player.setPosition(500, 500);
     Idle.loadFromFile("Idle.png");
     Player.setTexture(Idle);
     Player.setScale(0.125, 0.125);
     Player.setOrigin(Idle.getSize().x / 2, Idle.getSize().y / 2);
     Player.setPosition(-500, 7000);
-
-    // walls
+    for (int i = 0; i < 8; i++) {
+        RunAnimation[i].loadFromFile("Run/run" + to_string(i) + ".png");
+    } 
+    for (int i = 0; i < 5; i++) {
+        Zmove[i].loadFromFile("Z move/Zmove" + to_string(i) + ".png");
+    }
   
+
 }
 
 void checkCollisions()
@@ -154,9 +203,58 @@ void trackView()
     window.setView(view);
 }
 
-void HandleAnimations() 
+void Switch_States()
 {
-    
+    if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W))
+    {
+        curr_state = state::run;
+    }
+    else
+    {
+        curr_state = state::idle;
+    }
+    if (Keyboard::isKeyPressed(Keyboard::Z))
+    {
+        curr_state = state::zmove;
+    } 
+    if (Keyboard::isKeyPressed(Keyboard::X))
+    {
+        curr_state = state::xmove;
+    }
+    if (Keyboard::isKeyPressed(Keyboard::C))
+    {
+        curr_state = state::cmove;
+    }
+    if (Keyboard::isKeyPressed(Keyboard::V))
+    {
+        curr_state = state::vmove;
+    }
+    if (Player_Health <= 0)
+    {
+        curr_state = state::dead;
+    }
+ 
+    switch (curr_state)
+    {
+        case state::run: UpdateAnimationCounter(8); Player.setTexture(RunAnimation[ImageCounter]); break;
+        case state::idle:; Player.setTexture(Idle); break;
+        case state::zmove: UpdateAnimationCounter(5); Player.setTexture(Zmove[ImageCounter]); break;
+    }
+}
+
+void UpdateAnimationCounter(int maximagecounter)
+{
+    AnimationCounter += playerdeltatime;
+    if (AnimationCounter >= AnimationSwitchTime)
+    {
+        AnimationCounter = 0;
+        ImageCounter++;
+        if (ImageCounter >= maximagecounter)
+        {
+            finishedanimationonce = true;
+            ImageCounter = 0;
+        }
+    }
 }
 
 void menu_handler()
@@ -212,6 +310,9 @@ void menu_handler()
 void Game_play(RenderWindow& window) 
 {
     while (window.isOpen()) {
+
+        float elapsed = GameClock.restart().asSeconds();
+        playerdeltatime = elapsed;
         Event Play;
         while (window.pollEvent(Play)) {
             if (Play.type == Event::Closed) {

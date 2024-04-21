@@ -91,13 +91,15 @@ void Draw()
 
 void playerMovement()
 {
-    if (Keyboard::isKeyPressed(Keyboard::W)&& Keyboard::isKeyPressed(Keyboard::LShift))
+
+    if (Keyboard::isKeyPressed(Keyboard::W) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
-        velocity.y = -0.1;
+        velocity.y = -200 * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::S) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
-        velocity.y = 0.1;
+        //velocity.y = 0.2;
+        velocity.y = 200 * playerdeltatime;
     }
     else {
         velocity.y = 0;
@@ -105,24 +107,24 @@ void playerMovement()
     if (Keyboard::isKeyPressed(Keyboard::A) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
         Player.setScale(-0.125, 0.125);
-        velocity.x = -0.1;
+        velocity.x = -200 * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::D) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
         Player.setScale(0.125, 0.125);
-        velocity.x = 0.1;
+        velocity.x = 200 * playerdeltatime;
     }
     else {
         velocity.x = 0;
     }
     Player.move(velocity);
-     if (Keyboard::isKeyPressed(Keyboard::W))
+    if (Keyboard::isKeyPressed(Keyboard::W))
     {
-        velocity.y = -0.05;
+        velocity.y = -170 * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::S))
     {
-        velocity.y = 0.05;
+        velocity.y = 170 * playerdeltatime;
     }
     else {
         velocity.y = 0;
@@ -130,18 +132,24 @@ void playerMovement()
     if (Keyboard::isKeyPressed(Keyboard::A))
     {
         Player.setScale(-0.125, 0.125);
-        velocity.x = -0.05;
+        velocity.x = -170 * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::D))
     {
         Player.setScale(0.125, 0.125);
-        velocity.x = 0.05;
+        velocity.x = 170 * playerdeltatime;
     }
     else {
         velocity.x = 0;
     }
 
     Player.move(velocity);
+
+
+
+
+
+   
 }
 
 void setTextures() 

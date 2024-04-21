@@ -94,12 +94,12 @@ void playerMovement()
 
     if (Keyboard::isKeyPressed(Keyboard::W) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
-        velocity.y = -200 * playerdeltatime;
+        velocity.y = -300 * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::S) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
         
-        velocity.y = 200 * playerdeltatime;
+        velocity.y = 300 * playerdeltatime;
     }
     else {
         velocity.y = 0;
@@ -107,12 +107,12 @@ void playerMovement()
     if (Keyboard::isKeyPressed(Keyboard::A) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
         Player.setScale(-0.125, 0.125);
-        velocity.x = -200 * playerdeltatime;
+        velocity.x = -300 * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::D) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
         Player.setScale(0.125, 0.125);
-        velocity.x = 200 * playerdeltatime;
+        velocity.x = 300* playerdeltatime;
     }
     else {
         velocity.x = 0;
@@ -120,11 +120,11 @@ void playerMovement()
     Player.move(velocity);
     if (Keyboard::isKeyPressed(Keyboard::W))
     {
-        velocity.y = -170 * playerdeltatime;
+        velocity.y = -200 * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::S))
     {
-        velocity.y = 170 * playerdeltatime;
+        velocity.y = 200 * playerdeltatime;
     }
     else {
         velocity.y = 0;
@@ -132,12 +132,12 @@ void playerMovement()
     if (Keyboard::isKeyPressed(Keyboard::A))
     {
         Player.setScale(-0.125, 0.125);
-        velocity.x = -170 * playerdeltatime;
+        velocity.x = -200 * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::D))
     {
         Player.setScale(0.125, 0.125);
-        velocity.x = 170 * playerdeltatime;
+        velocity.x = 200 * playerdeltatime;
     }
     else {
         velocity.x = 0;

@@ -98,7 +98,7 @@ void playerMovement()
     }
     else if (Keyboard::isKeyPressed(Keyboard::S) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
-        //velocity.y = 0.2;
+        
         velocity.y = 200 * playerdeltatime;
     }
     else {

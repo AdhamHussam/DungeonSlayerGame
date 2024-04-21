@@ -310,7 +310,6 @@ void menu_handler()
 void Game_play(RenderWindow& window) 
 {
     while (window.isOpen()) {
-
         float elapsed = GameClock.restart().asSeconds();
         playerdeltatime = elapsed;
         Event Play;

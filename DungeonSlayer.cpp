@@ -5,7 +5,7 @@
 // Game properties
 enum state
 {
-    idle, run, hit, base, zmove, xmove, cmove, vmove, dead
+    idle, run, hit, base, zmove, xmove, cmove, vmove, dead, walk
 };
 state curr_state = state::idle;
 
@@ -39,6 +39,7 @@ Texture Zmove[5];
 Texture Xmove[6];
 Texture Cmove[6];
 Texture Vmove[2];
+Texture walkAnimation[6];
 
 
 Sprite Player;
@@ -90,13 +91,38 @@ void Draw()
 
 void playerMovement()
 {
-    if (Keyboard::isKeyPressed(Keyboard::W))
+    if (Keyboard::isKeyPressed(Keyboard::W)&& Keyboard::isKeyPressed(Keyboard::LShift))
     {
-        velocity.y = -1;
+        velocity.y = -0.2;
+    }
+    else if (Keyboard::isKeyPressed(Keyboard::S) && Keyboard::isKeyPressed(Keyboard::LShift))
+    {
+        velocity.y = 0.2;
+    }
+    else {
+        velocity.y = 0;
+    }
+    if (Keyboard::isKeyPressed(Keyboard::A) && Keyboard::isKeyPressed(Keyboard::LShift))
+    {
+        Player.setScale(-0.125, 0.125);
+        velocity.x = -0.2;
+    }
+    else if (Keyboard::isKeyPressed(Keyboard::D) && Keyboard::isKeyPressed(Keyboard::LShift))
+    {
+        Player.setScale(0.125, 0.125);
+        velocity.x = 0.2;
+    }
+    else {
+        velocity.x = 0;
+    }
+    Player.move(velocity);
+     if (Keyboard::isKeyPressed(Keyboard::W))
+    {
+        velocity.y = -0.1;
     }
     else if (Keyboard::isKeyPressed(Keyboard::S))
     {
-        velocity.y = 1;
+        velocity.y = 0.1;
     }
     else {
         velocity.y = 0;
@@ -104,40 +130,16 @@ void playerMovement()
     if (Keyboard::isKeyPressed(Keyboard::A))
     {
         Player.setScale(-0.125, 0.125);
-        velocity.x = -1;
+        velocity.x = -0.1;
     }
     else if (Keyboard::isKeyPressed(Keyboard::D))
     {
         Player.setScale(0.125, 0.125);
-        velocity.x = 1;
+        velocity.x = 0.1;
     }
     else {
         velocity.x = 0;
     }
-   /*  if (Keyboard::isKeyPressed(Keyboard::Up))
-    {
-        velocity.y = -0.5;
-    }
-    else if (Keyboard::isKeyPressed(Keyboard::Down))
-    {
-        velocity.y = 0.5;
-    }
-    else {
-        velocity.y = 0;
-    }
-    if (Keyboard::isKeyPressed(Keyboard::Left))
-    {
-        Player.setScale(-0.125, 0.125);
-        velocity.x = -0.5;
-    }
-    else if (Keyboard::isKeyPressed(Keyboard::Right))
-    {
-        Player.setScale(0.125, 0.125);
-        velocity.x = 0.5;
-    }
-    else {
-        velocity.x = 0;
-    }*/
 
     Player.move(velocity);
 }
@@ -168,7 +170,9 @@ void setTextures()
     for (int i = 0; i < 5; i++) {
         Zmove[i].loadFromFile("Z move/Zmove" + to_string(i) + ".png");
     }
-  
+    for (int i = 0; i < 6; i++) {
+       walkAnimation[i].loadFromFile("walk/Walk" + to_string(i) + ".png");
+    }
 
 }
 
@@ -204,10 +208,15 @@ void trackView()
 
 void Switch_States()
 {
-    if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W))
+
+    if ((Keyboard::isKeyPressed(Keyboard::A)  || Keyboard::isKeyPressed(Keyboard::D)  || Keyboard::isKeyPressed(Keyboard::S)  || Keyboard::isKeyPressed(Keyboard::W)) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
-        curr_state = state::run;
+         curr_state = state::run;
     }
+     else if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W))
+     {
+        curr_state = state::walk;
+     }
     else
     {
         curr_state = state::idle;
@@ -236,6 +245,7 @@ void Switch_States()
     switch (curr_state)
     {
         case state::run: UpdateAnimationCounter(8); Player.setTexture(RunAnimation[ImageCounter]); break;
+        case state::walk: UpdateAnimationCounter(6); Player.setTexture(walkAnimation[ImageCounter]); break;
         case state::idle:; Player.setTexture(Idle); break;
         case state::zmove: UpdateAnimationCounter(5); Player.setTexture(Zmove[ImageCounter]); break;
     }
@@ -319,6 +329,6 @@ void Game_play(RenderWindow& window)
         }
         update();
         Draw();
-        cout << Player.getPosition().x << " " << Player.getPosition().y << endl;
+       // cout << Player.getPosition().x << " " << Player.getPosition().y << endl;
     }
 }

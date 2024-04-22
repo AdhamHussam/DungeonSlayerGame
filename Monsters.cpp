@@ -1,6 +1,7 @@
 #include "includes.h"
 #include "Monsters.h"
 
+// testing
 int counter = 0;
 string path = "enemies/Bringer-Of-Death/Individual Sprite/Walk/Bringer-of-Death_Walk_0.png";
 void MonstersMovment(Zombie zombies[], Sprite &Player) {

@@ -1,5 +1,15 @@
 ﻿#include "includes.h"
 #include "Menu.h"
+#include "Monsters.h"
+
+
+////////// temp
+
+const int number_of_zombies = 1;
+Zombie zombies[number_of_zombies];
+
+/////////
+
 #include <iostream>
 
 // Game properties
@@ -43,14 +53,17 @@ Texture walkAnimation[6];
 
 
 Sprite Player;
+
 Texture room;
 Texture mainmenubg;
 Sprite bg;
 Sprite Room;
 
 
-// Room 0 Borders
 
+
+// Room 0 Borders
+RectangleShape border1(Vector2f({ 150,1080 }));RectangleShape border2(Vector2f({ 150,1080 }));RectangleShape border3(Vector2f({ 2000,100 }));RectangleShape border4(Vector2f({ 1000,100 }));RectangleShape border5(Vector2f({ 1000,100 }));
 
 // Game functions
 void menu_handler();
@@ -63,7 +76,8 @@ void playerMovement();
 void setTextures();
 void checkCollisions();
 void Draw();
-
+void MonstersMovment(Zombie zombies[], Sprite& Player);
+void SetMonsters(Zombie zombies[]);
 // Main 
 int main()
 {
@@ -78,7 +92,9 @@ void update()
     Switch_States();
     trackView();
     playerMovement();
+    MonstersMovment(zombies,Player);
     //checkCollisions();
+    Player.move(velocity);
 }
 
 void Draw()
@@ -86,6 +102,7 @@ void Draw()
     window.clear();
     window.draw(Room);
     window.draw(Player);
+    window.draw(zombies[0].zombie);
     window.display();
 }
 
@@ -94,12 +111,12 @@ void playerMovement()
 
     if (Keyboard::isKeyPressed(Keyboard::W) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
-        velocity.y = -200 * playerdeltatime;
+        velocity.y = -300 * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::S) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
         
-        velocity.y = 200 * playerdeltatime;
+        velocity.y = 300 * playerdeltatime;
     }
     else {
         velocity.y = 0;
@@ -107,12 +124,12 @@ void playerMovement()
     if (Keyboard::isKeyPressed(Keyboard::A) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
         Player.setScale(-0.125, 0.125);
-        velocity.x = -200 * playerdeltatime;
+        velocity.x = -300 * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::D) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
         Player.setScale(0.125, 0.125);
-        velocity.x = 200 * playerdeltatime;
+        velocity.x = 300* playerdeltatime;
     }
     else {
         velocity.x = 0;
@@ -120,11 +137,11 @@ void playerMovement()
     Player.move(velocity);
     if (Keyboard::isKeyPressed(Keyboard::W))
     {
-        velocity.y = -170 * playerdeltatime;
+        velocity.y = -200 * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::S))
     {
-        velocity.y = 170 * playerdeltatime;
+        velocity.y = 200 * playerdeltatime;
     }
     else {
         velocity.y = 0;
@@ -132,12 +149,12 @@ void playerMovement()
     if (Keyboard::isKeyPressed(Keyboard::A))
     {
         Player.setScale(-0.125, 0.125);
-        velocity.x = -170 * playerdeltatime;
+        velocity.x = -200 * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::D))
     {
         Player.setScale(0.125, 0.125);
-        velocity.x = 170 * playerdeltatime;
+        velocity.x = 200 * playerdeltatime;
     }
     else {
         velocity.x = 0;
@@ -145,11 +162,6 @@ void playerMovement()
 
     Player.move(velocity);
 
-
-
-
-
-   
 }
 
 void setTextures() 
@@ -171,6 +183,17 @@ void setTextures()
     Player.setTexture(Idle);
     Player.setScale(0.125, 0.125);
     Player.setOrigin(Idle.getSize().x / 2, Idle.getSize().y / 2);
+   Player.setPosition(-500, 7000);
+
+    // walls
+    border2.setPosition(1500, 0);
+    border3.setPosition(0, 1035);
+    border4.setPosition(-150, 150);
+    border5.setPosition(1050, 150);
+
+    // monsters
+    SetMonsters(zombies);
+
     Player.setPosition(-500, 7000);
     for (int i = 0; i < 8; i++) {
         RunAnimation[i].loadFromFile("Run/run" + to_string(i) + ".png");
@@ -186,7 +209,7 @@ void setTextures()
 
 void checkCollisions()
 {
-  /*  if (Keyboard::isKeyPressed(Keyboard::A) && Player.getGlobalBounds().intersects(border1.getGlobalBounds()))
+    if (Keyboard::isKeyPressed(Keyboard::A) && Player.getGlobalBounds().intersects(border1.getGlobalBounds()))
     {
         velocity.x = 0;
     } 
@@ -205,7 +228,7 @@ void checkCollisions()
     if (Keyboard::isKeyPressed(Keyboard::W) && Player.getGlobalBounds().intersects(border5.getGlobalBounds()))
     {
         velocity.y = 0;
-    }*/
+    }
 }
 
 void trackView()
@@ -292,7 +315,7 @@ void menu_handler()
                             menu.MoveUp();
                         if (event.key.code == Keyboard::Down)
                             menu.MoveDown();
-                        if (event.key.code == Keyboard::Enter) {
+                        if (event.key.code == Keyboard::Return) {
                             if (menu.pressed() == 0) {
                                 pagenum = 0;
                             }

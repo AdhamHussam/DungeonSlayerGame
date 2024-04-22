@@ -1,6 +1,5 @@
 ﻿#include "includes.h"
 #include "Menu.h"
-<<<<<<< HEAD
 #include "Monsters.h"
 
 
@@ -11,9 +10,7 @@ Zombie zombies[number_of_zombies];
 
 /////////
 
-=======
 #include <iostream>
->>>>>>> master
 
 // Game properties
 enum state
@@ -162,17 +159,9 @@ void playerMovement()
     else {
         velocity.x = 0;
     }
-<<<<<<< HEAD
-=======
 
     Player.move(velocity);
 
-
-
-
-
-   
->>>>>>> master
 }
 
 void setTextures() 
@@ -194,7 +183,6 @@ void setTextures()
     Player.setTexture(Idle);
     Player.setScale(0.125, 0.125);
     Player.setOrigin(Idle.getSize().x / 2, Idle.getSize().y / 2);
-<<<<<<< HEAD
    Player.setPosition(-500, 7000);
 
     // walls
@@ -206,7 +194,6 @@ void setTextures()
     // monsters
     SetMonsters(zombies);
 
-=======
     Player.setPosition(-500, 7000);
     for (int i = 0; i < 8; i++) {
         RunAnimation[i].loadFromFile("Run/run" + to_string(i) + ".png");
@@ -218,7 +205,6 @@ void setTextures()
        walkAnimation[i].loadFromFile("walk/Walk" + to_string(i) + ".png");
     }
 
->>>>>>> master
 }
 
 void checkCollisions()
@@ -374,9 +360,6 @@ void Game_play(RenderWindow& window)
         }
         update();
         Draw();
-<<<<<<< HEAD
-=======
        // cout << Player.getPosition().x << " " << Player.getPosition().y << endl;
->>>>>>> master
     }
 }

@@ -4,7 +4,8 @@
 struct Zombie
 {
 	Sprite zombie;
-	Texture photo[8];
+	Texture walk[8];
+	Texture attack[10];
 	int level;
 	double factor_level = level / 10 + 1;
 	int health = 100*factor_level;

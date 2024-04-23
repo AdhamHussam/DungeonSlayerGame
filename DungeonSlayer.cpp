@@ -94,7 +94,7 @@ void update()
     Switch_States();
     trackView();
     playerMovement();
-    MonstersMovment(zombies,Player);
+   MonstersMovment(zombies,Player);
     //checkCollisions();
 
 }
@@ -289,6 +289,7 @@ void Switch_States()
          {
              curr_state = state::dead;
          }
+
           switch (curr_state)
           {    
                case state::run:  maximagecounter = 8;Player.setTexture(RunAnimation[ImageCounter]); break;
@@ -302,6 +303,7 @@ void Switch_States()
      
           
      }
+
      switch (curr_state) {
         case state::run: Player.setTexture(RunAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
         case state::walk:  Player.setTexture(walkAnimation[ImageCounter]); UpdateAnimationCounter(0.2); break;

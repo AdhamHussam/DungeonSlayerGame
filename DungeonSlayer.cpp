@@ -95,7 +95,7 @@ void update()
     Switch_States();
     trackView();
     playerMovement();
-  //  MonstersMovment(zombies,Player);
+   MonstersMovment(zombies,Player);
     //checkCollisions();
 
 }

@@ -40,11 +40,13 @@ Vector2f velocity = { 0, 0 };
 
 float slow_multi = 1;
 float AnimationCounter = 0;
-float AnimationSwitchTime = 0.1f;
+int maximagecounter = 0;
+//float AnimationSwitchTime = 0.1f;
 int ImageCounter = 0;
 
 float playerdeltatime = 0;    
 Clock GameClock;
+bool sha8al = false;
 bool isAttack = false;
 bool ishit = false;
 bool finishedanimationonce = false;
@@ -58,8 +60,8 @@ Texture Idle;
 Texture RunAnimation[8];
 Texture DeathAnimation[3];
 Texture HitAnimation[3];
-Texture BaseAttack[5];
-Texture Zmove[5];
+Texture BaseAttack[8];
+Texture Zmove[7];
 Texture Xmove[6];
 Texture Cmove[6];
 Texture Vmove[2];
@@ -81,7 +83,7 @@ RectangleShape border1(Vector2f({ 150,1080 }));RectangleShape border2(Vector2f({
 
 // Game functions
 void menu_handler();
-void UpdateAnimationCounter(int maximagecounterc);
+void UpdateAnimationCounter(float st = 0.1 );
 void Switch_States();
 void Game_play(RenderWindow& window);
 void update();
@@ -92,6 +94,8 @@ void checkCollisions();
 void Draw();
 void MonstersMovment(Zombie zombies[], Sprite& Player);
 void SetMonsters(Zombie zombies[]);
+
+
 // Main 
 int main()
 {
@@ -108,7 +112,7 @@ void update()
     playerMovement();
     MonstersMovment(zombies,Player);
     //checkCollisions();
-    Player.move(velocity);
+
 }
 
 void Draw()
@@ -212,14 +216,14 @@ void setTextures()
     for (int i = 0; i < 8; i++) {
         RunAnimation[i].loadFromFile("Run/run" + to_string(i) + ".png");
     }
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 8; i++) {
         Zmove[i].loadFromFile("Z move/Zmove" + to_string(i) + ".png");
     }
     for (int i = 0; i < 6; i++) {
         walkAnimation[i].loadFromFile("walk/Walk" + to_string(i) + ".png");
     }
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 9; i++) {
         BaseAttack[i].loadFromFile("base/Base" + to_string(i) + ".png");
     }
 }
@@ -255,101 +259,87 @@ void trackView()
 }
 
 void Switch_States()
-{
+{  
+     if (!sha8al) {
+         if ((Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W)) && Keyboard::isKeyPressed(Keyboard::LShift))
+         {
+             playerstate = 'r';
+             curr_state = state::run;
+         }
+         else if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W))
+         {
+             playerstate = 'w';
+             curr_state = state::walk;
+         }
+         else
+         {
+             playerstate = 'i';
+             curr_state = state::idle;
+         }
 
-    if ((Keyboard::isKeyPressed(Keyboard::A)  || Keyboard::isKeyPressed(Keyboard::D)  || Keyboard::isKeyPressed(Keyboard::S)  || Keyboard::isKeyPressed(Keyboard::W)) && Keyboard::isKeyPressed(Keyboard::LShift))
-    {
-        playerstate = 'r';
-        curr_state = state::run;
-    }
-     else if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W))
-     {
-        playerstate = 'w';
-        curr_state = state::walk;
+         if (Keyboard::isKeyPressed(Keyboard::Space) || Mouse::isButtonPressed(Mouse::Left))
+         {
+             playerstate = 'b';
+             curr_state = state::base;
+         }
+         if (Keyboard::isKeyPressed(Keyboard::Z))
+         {
+             playerstate = 'z';
+             curr_state = state::zmove;
+         }
+         if (Keyboard::isKeyPressed(Keyboard::X))
+         {
+             curr_state = state::xmove;
+         }
+         if (Keyboard::isKeyPressed(Keyboard::C))
+         {
+             curr_state = state::cmove;
+         }
+         if (Keyboard::isKeyPressed(Keyboard::V))
+         {
+             curr_state = state::vmove;
+         }
+         if (Player_Health <= 0)
+         {
+             curr_state = state::dead;
+         }
+          switch (curr_state)
+            {    
+           case state::run:  maximagecounter = 8;Player.setTexture(RunAnimation[ImageCounter]); break;
+           case state::walk:  maximagecounter = 6;Player.setTexture(walkAnimation[ImageCounter]); break;
+           case state::idle:; Player.setTexture(Idle); break;
+           case state::base: maximagecounter = 8;Player.setTexture(BaseAttack[ImageCounter]); ImageCounter = 0; sha8al = true ; break;
+           case state::zmove: maximagecounter = 5;Player.setTexture(Zmove[ImageCounter]); ImageCounter = 0; sha8al = true; break;
+         }
+     
+          
      }
-     else
-     {
-        playerstate = 'i';
-          curr_state = state::idle;
-     }
-    
-      if (Keyboard::isKeyPressed(Keyboard::Space) || Mouse::isButtonPressed(Mouse::Left))
-      {
-        playerstate = 'b';
-         curr_state = state::base;
-      }
-     if (Keyboard::isKeyPressed(Keyboard::Z))
-     {
-        playerstate = 'z';
-        curr_state = state::zmove;
-     } 
-     if (Keyboard::isKeyPressed(Keyboard::X))
-     {
-        curr_state = state::xmove;
-     }
-     if (Keyboard::isKeyPressed(Keyboard::C))
-     {
-        curr_state = state::cmove;
-     }
-     if (Keyboard::isKeyPressed(Keyboard::V))
-     {
-        curr_state = state::vmove;
-     }
-     if (Player_Health <= 0)
-     {
-        curr_state = state::dead;
-     }
-    
- 
-   /* switch (curr_state)
-    {
-        case state::run: UpdateAnimationCounter(8); Player.setTexture(RunAnimation[ImageCounter]); break;
-        case state::walk: UpdateAnimationCounter(6); Player.setTexture(walkAnimation[ImageCounter]); break;
-        case state::idle:; Player.setTexture(Idle); break;
-        case state::zmove: UpdateAnimationCounter(5); Player.setTexture(Zmove[ImageCounter]); break;
-        case state::base:  UpdateAnimationCounter(5); Player.setTexture(BaseAttack[ImageCounter]); break;
-    }*/
-    
-    if (playerstate == 'r') {
-        UpdateAnimationCounter(8);
-        Player.setTexture(RunAnimation[ImageCounter]);
-    }
-    else if (playerstate == 'w') {
-        UpdateAnimationCounter(6);
-        Player.setTexture(walkAnimation[ImageCounter]);
-    }
-    else if (playerstate == 'i') {
-        Player.setTexture(Idle);
-    }
-    else if (playerstate == 'z') {
+     switch (curr_state) {
+        case state::run: Player.setTexture(RunAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
+        case state::walk:  Player.setTexture(walkAnimation[ImageCounter]); UpdateAnimationCounter(0.2); break;
+        case state::idle: Player.setTexture(Idle); UpdateAnimationCounter(0.1); break;
+        case state::base:  Player.setTexture(BaseAttack[ImageCounter]); UpdateAnimationCounter(0.125); break;
+        case state::zmove: Player.setTexture(Zmove[ImageCounter]); UpdateAnimationCounter(0.125); break;
 
-            UpdateAnimationCounter(5);
-            Player.setTexture(Zmove[ImageCounter]);    
-
-    }
-    else if (playerstate == 'b') {
-
-        UpdateAnimationCounter(5);
-        Player.setTexture(BaseAttack[ImageCounter]);
-
-
-    }
+     }
+     //UpdateAnimationCounter();
+  
    
 }
 
-void UpdateAnimationCounter(int maximagecounter)
+void UpdateAnimationCounter(float st )
 {
-   
-        AnimationCounter += playerdeltatime;
-        if (AnimationCounter >= AnimationSwitchTime)
-        {
+     AnimationCounter += playerdeltatime;
+     if (AnimationCounter >= st)
+     {
             AnimationCounter = 0;
             ImageCounter++;
             if (ImageCounter >= maximagecounter)
             {            
+                if (sha8al) sha8al = false;
                 ImageCounter = 0;
-            }
-        }
+         }
+     }
     
 }
 

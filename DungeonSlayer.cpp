@@ -62,10 +62,10 @@ Texture DeathAnimation[3];
 Texture HitAnimation[3];
 Texture BaseAttack[8];
 Texture Zmove[7];
-Texture Xmove[6];
-Texture Cmove[6];
+Texture Xmove[8];
+Texture Cmove[8];
 Texture Vmove[2];
-Texture walkAnimation[6];
+Texture walkAnimation[8];
 
 
 Sprite Player;
@@ -216,14 +216,20 @@ void setTextures()
     for (int i = 0; i < 8; i++) {
         RunAnimation[i].loadFromFile("Run/run" + to_string(i) + ".png");
     }
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 7; i++) {
         Zmove[i].loadFromFile("Z move/Zmove" + to_string(i) + ".png");
+    } 
+    for (int i = 0; i < 8; i++) {
+        Xmove[i].loadFromFile("X move/Xmove" + to_string(i) + ".png");
+    } 
+    for (int i = 0; i < 8; i++) {
+        Cmove[i].loadFromFile("C move/Cmove" + to_string(i) + ".png");
     }
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 8; i++) {
         walkAnimation[i].loadFromFile("walk/Walk" + to_string(i) + ".png");
     }
 
-    for (int i = 0; i < 9; i++) {
+    for (int i = 0; i < 8; i++) {
         BaseAttack[i].loadFromFile("base/Base" + to_string(i) + ".png");
     }
 }
@@ -306,10 +312,12 @@ void Switch_States()
           switch (curr_state)
             {    
            case state::run:  maximagecounter = 8;Player.setTexture(RunAnimation[ImageCounter]); break;
-           case state::walk:  maximagecounter = 6;Player.setTexture(walkAnimation[ImageCounter]); break;
+           case state::walk:  maximagecounter = 8;Player.setTexture(walkAnimation[ImageCounter]); break;
            case state::idle:; Player.setTexture(Idle); break;
            case state::base: maximagecounter = 8;Player.setTexture(BaseAttack[ImageCounter]); ImageCounter = 0; sha8al = true ; break;
-           case state::zmove: maximagecounter = 5;Player.setTexture(Zmove[ImageCounter]); ImageCounter = 0; sha8al = true; break;
+           case state::zmove: maximagecounter = 7;Player.setTexture(Zmove[ImageCounter]); ImageCounter = 0; sha8al = true; break;
+           case state::xmove: maximagecounter = 8;Player.setTexture(Xmove[ImageCounter]); ImageCounter = 0; sha8al = true; break;
+           case state::cmove: maximagecounter = 8;Player.setTexture(Cmove[ImageCounter]); ImageCounter = 0; sha8al = true; break;
          }
      
           
@@ -320,6 +328,8 @@ void Switch_States()
         case state::idle: Player.setTexture(Idle); UpdateAnimationCounter(0.1); break;
         case state::base:  Player.setTexture(BaseAttack[ImageCounter]); UpdateAnimationCounter(0.125); break;
         case state::zmove: Player.setTexture(Zmove[ImageCounter]); UpdateAnimationCounter(0.125); break;
+        case state::xmove: Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.125); break;
+        case state::cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.125); break;
 
      }
      //UpdateAnimationCounter();

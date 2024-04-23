@@ -332,7 +332,9 @@ void Switch_States()
         case state::cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.125); break;
 
      }
-     //UpdateAnimationCounter();
+  
+
+//ahmad
   
    
 }

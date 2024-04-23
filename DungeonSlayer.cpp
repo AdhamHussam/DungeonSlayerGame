@@ -125,12 +125,12 @@ void playerMovement()
 
     if (Keyboard::isKeyPressed(Keyboard::W) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
-        velocity.y = -300 * playerdeltatime;
+        velocity.y = -200 * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::S) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
         
-        velocity.y = 300 * playerdeltatime;
+        velocity.y = 200 * playerdeltatime;
     }
     else {
         velocity.y = 0;
@@ -138,12 +138,12 @@ void playerMovement()
     if (Keyboard::isKeyPressed(Keyboard::A) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
         Player.setScale(-0.125, 0.125);
-        velocity.x = -300 * playerdeltatime;
+        velocity.x = -200 * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::D) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
         Player.setScale(0.125, 0.125);
-        velocity.x = 300* playerdeltatime;
+        velocity.x = 200* playerdeltatime;
     }
     else {
         velocity.x = 0;
@@ -151,11 +151,11 @@ void playerMovement()
     Player.move(velocity);
     if (Keyboard::isKeyPressed(Keyboard::W))
     {
-        velocity.y = -200 * playerdeltatime;
+        velocity.y = -100 * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::S))
     {
-        velocity.y = 200 * playerdeltatime;
+        velocity.y = 100 * playerdeltatime;
     }
     else {
         velocity.y = 0;
@@ -163,12 +163,12 @@ void playerMovement()
     if (Keyboard::isKeyPressed(Keyboard::A))
     {
         Player.setScale(-0.125, 0.125);
-        velocity.x = -200 * playerdeltatime;
+        velocity.x = -100 * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::D))
     {
         Player.setScale(0.125, 0.125);
-        velocity.x = 200 * playerdeltatime;
+        velocity.x = 100 * playerdeltatime;
     }
     else {
         velocity.x = 0;
@@ -273,11 +273,11 @@ void Switch_States()
           curr_state = state::idle;
      }
     
-      if (Keyboard::isKeyPressed(Keyboard::Space))
-     {
+      if (Keyboard::isKeyPressed(Keyboard::Space) || Mouse::isButtonPressed(Mouse::Left))
+      {
         playerstate = 'b';
          curr_state = state::base;
-     }
+      }
      if (Keyboard::isKeyPressed(Keyboard::Z))
      {
         playerstate = 'z';
@@ -324,9 +324,7 @@ void Switch_States()
     else if (playerstate == 'z') {
 
             UpdateAnimationCounter(5);
-            Player.setTexture(Zmove[ImageCounter]);
-            Player.setScale(0.15, 0.15);
-        
+            Player.setTexture(Zmove[ImageCounter]);    
 
     }
     else if (playerstate == 'b') {
@@ -348,15 +346,11 @@ void UpdateAnimationCounter(int maximagecounter)
             AnimationCounter = 0;
             ImageCounter++;
             if (ImageCounter >= maximagecounter)
-            {
-                
+            {            
                 ImageCounter = 0;
             }
         }
     
-   
-  
-      
 }
 
 void menu_handler()

@@ -3,8 +3,8 @@
 
 struct Zombie
 {
-	Sprite zombie;
-	Texture walk[8],attack[10],Cast[9];
+	Sprite zombie,spell;
+	Texture texture;
 
 	int level;
 	double factor_level = level / 10 + 1;

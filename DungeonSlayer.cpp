@@ -3,11 +3,12 @@
 #include "Monsters.h"
 
 
+
 ////////// temp
 
 const int number_of_zombies = 1;
 Zombie zombies[number_of_zombies];
-
+bool showBODSpell;
 /////////
 
 #include <iostream>
@@ -76,7 +77,7 @@ void playerMovement();
 void setTextures();
 void checkCollisions();
 void Draw();
-void MonstersMovment(Zombie zombies[], Sprite& Player);
+int MonstersMovment(Zombie zombies[], Sprite& Player);
 void SetMonsters(Zombie zombies[]);
 // Main 
 int main()
@@ -92,7 +93,8 @@ void update()
     Switch_States();
     trackView();
     playerMovement();
-    MonstersMovment(zombies,Player);
+    if (MonstersMovment(zombies, Player) != 0)
+        showBODSpell = true;
     //checkCollisions();
     Player.move(velocity);
 }
@@ -103,6 +105,8 @@ void Draw()
     window.draw(Room);
     window.draw(Player);
     window.draw(zombies[0].zombie);
+    if (showBODSpell)
+        window.draw(zombies[0].spell);
     window.display();
 }
 

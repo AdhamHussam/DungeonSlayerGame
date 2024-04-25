@@ -98,6 +98,8 @@ void update()
     playerMovement();
     if (MonstersMovment(zombies, Player) != 0)
         showBODSpell = true;
+    else
+        showBODSpell = false;
     //checkCollisions();
 
 }

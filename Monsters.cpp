@@ -1,5 +1,11 @@
 #include "includes.h"
 #include "Monsters.h"
+#include "globals.h"
+
+void someFunction() {
+    // Access and modify globalInt here
+    globalInt++;
+}
 
 int WalkCounter = 0, AttackCounter = 0, CastCounter = 0, TimeCounter = 0, SpellCounter = 0;
 IntRect getRect(int pos) {
@@ -18,9 +24,9 @@ void reset_exept(int& place, int mod) {
 int MonstersMovment(Zombie zombies[], Sprite &Player) {
     double x = Player.getPosition().x - zombies[0].zombie.getPosition().x, y = zombies[0].zombie.getPosition().y - Player.getPosition().y;
     if (x > 0)
-        zombies[0].zombie.setScale(Vector2f(-1, 1));
+        zombies[0].zombie.setScale(Vector2f(-2, 2));
     else
-        zombies[0].zombie.setScale(Vector2f(1, 1));
+        zombies[0].zombie.setScale(Vector2f(2, 2));
     if (SpellCounter != 0) {
         SpellCounter++;
         SpellCounter %= 1600;
@@ -34,7 +40,7 @@ int MonstersMovment(Zombie zombies[], Sprite &Player) {
     else if ((long long)abs(x)*abs(x) + abs(y)*abs(y) < 100000 || CastCounter/100) {
         // Cast
         if (CastCounter == 0) {
-            zombies[0].spell.setPosition(Player.getPosition().x - 50, Player.getPosition().y-70);
+            zombies[0].spell.setPosition(Player.getPosition().x - 100, Player.getPosition().y-200);
             SpellCounter = 1;
         }
         zombies[0].zombie.setTextureRect(getRect(39 + CastCounter / 100));
@@ -55,6 +61,7 @@ void SetMonsters(Zombie zombies[]) {
     zombies[0].texture.loadFromFile("enemies/Bringer-Of-Death/SpriteSheet/Bringer-of-Death-SpritSheet.png");
     zombies[0].spell.setTexture(zombies[0].texture);
     zombies[0].spell.setTextureRect(getRect(48));
+    zombies[0].spell.setScale(2, 2);
     zombies[0]. zombie.setTexture(zombies[0].texture);
     zombies[0].zombie.setTextureRect(getRect(0));
     zombies[0].zombie.setOrigin(105, 62);

@@ -142,6 +142,7 @@
     <ClCompile Include="Monsters.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="globals.h" />
     <ClInclude Include="includes.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Monsters.h" />

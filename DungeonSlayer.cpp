@@ -1,6 +1,7 @@
 ﻿#include "includes.h"
 #include "Menu.h"
 #include "Monsters.h"
+#include "globals.h"
 
 
 
@@ -30,8 +31,7 @@ float AnimationCounter = 0;
 int maximagecounter = 0;
 int ImageCounter = 0;
 
-float playerdeltatime = 0;    
-Clock GameClock;
+float playerdeltatime = 0;
 bool sha8al = false;
 bool isAttack = false;
 bool ishit = false;

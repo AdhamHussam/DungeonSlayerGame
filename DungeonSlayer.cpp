@@ -1,12 +1,15 @@
 ﻿#include "includes.h"
 #include "Menu.h"
 #include "Monsters.h"
+#include "globals.h"
+
+
 
 ////////// temp
 
 const int number_of_zombies = 1;
 Zombie zombies[number_of_zombies];
-
+bool showBODSpell;
 /////////
 
 #include <iostream>
@@ -16,10 +19,10 @@ enum state
 {
     idle, run, hit, base, zmove, xmove, cmove, vmove, dead, walk
 };
-
 state curr_state = state::idle;
 
 int pagenum = 69;
+
 int Player_Health = 100;
 Vector2f velocity = { 0, 0 };
 
@@ -28,8 +31,7 @@ float AnimationCounter = 0;
 int maximagecounter = 0;
 int ImageCounter = 0;
 
-float playerdeltatime = 0;    
-Clock GameClock;
+float playerdeltatime = 0;
 bool sha8al = false;
 bool isAttack = false;
 bool ishit = false;
@@ -76,7 +78,7 @@ void playerMovement();
 void setTextures();
 void checkCollisions();
 void Draw();
-void MonstersMovment(Zombie zombies[], Sprite& Player);
+int MonstersMovment(Zombie zombies[], Sprite& Player);
 void SetMonsters(Zombie zombies[]);
 
 
@@ -94,7 +96,10 @@ void update()
     Switch_States();
     trackView();
     playerMovement();
-   MonstersMovment(zombies,Player);
+    if (MonstersMovment(zombies, Player) != 0)
+        showBODSpell = true;
+    else
+        showBODSpell = false;
     //checkCollisions();
 
 }
@@ -105,6 +110,8 @@ void Draw()
     window.draw(Room);
     window.draw(Player);
     window.draw(zombies[0].zombie);
+    if (showBODSpell)
+        window.draw(zombies[0].spell);
     window.display();
 }
 

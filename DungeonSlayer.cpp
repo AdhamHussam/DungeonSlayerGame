@@ -304,7 +304,7 @@ void Switch_States()
           
      }
 
-     switch (curr_state) {
+   switch (curr_state) {
         case state::run: Player.setTexture(RunAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
         case state::walk:  Player.setTexture(walkAnimation[ImageCounter]); UpdateAnimationCounter(0.2); break;
         case state::idle: Player.setTexture(Idle); UpdateAnimationCounter(0.1); break;
@@ -313,7 +313,7 @@ void Switch_States()
         case state::xmove: Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.125); break;
         case state::cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.125); break;
 
-     }
+    }
      
 }
 

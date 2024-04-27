@@ -48,9 +48,8 @@ Texture DeathAnimation[3];
 Texture HitAnimation[3];
 Texture BaseAttack[8];
 Texture Zmove[7];
-Texture Xmove[8];
+Texture Xmove[7];
 Texture Cmove[8];
-Texture Vmove[2];
 Texture walkAnimation[8];
 
 
@@ -108,10 +107,10 @@ void Draw()
 {
     window.clear();
     window.draw(Room);
-    window.draw(Player);
     window.draw(zombies[0].zombie);
     if (showBODSpell)
         window.draw(zombies[0].spell);
+    window.draw(Player);
     window.display();
 }
 
@@ -132,12 +131,12 @@ void playerMovement()
     }
     if (Keyboard::isKeyPressed(Keyboard::A) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
-        Player.setScale(-0.125, 0.125);
+        Player.setScale(-0.2, 0.2);
         velocity.x = -200 * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::D) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
-        Player.setScale(0.125, 0.125);
+        Player.setScale(0.2, 0.2);
         velocity.x = 200* playerdeltatime;
     }
     else {
@@ -157,12 +156,12 @@ void playerMovement()
     }
     if (Keyboard::isKeyPressed(Keyboard::A))
     {
-        Player.setScale(-0.125, 0.125);
+        Player.setScale(-0.2, 0.2);
         velocity.x = -100 * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::D))
     {
-        Player.setScale(0.125, 0.125);
+        Player.setScale(0.2, 0.2);
         velocity.x = 100 * playerdeltatime;
     }
     else {
@@ -188,9 +187,9 @@ void setTextures()
     Room.setPosition(0, 178 * 16);
 
     //Player
-    Idle.loadFromFile("Idle.png");
+    Idle.loadFromFile("idle.png");
     Player.setTexture(Idle);
-    Player.setScale(0.125, 0.125);
+    Player.setScale(0.2, 0.2);
     Player.setOrigin(Idle.getSize().x / 2, Idle.getSize().y / 2);
    Player.setPosition(-500, 7000);
 
@@ -210,7 +209,7 @@ void setTextures()
     for (int i = 0; i < 7; i++) {
         Zmove[i].loadFromFile("Z move/Zmove" + to_string(i) + ".png");
     } 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 7; i++) {
         Xmove[i].loadFromFile("X move/Xmove" + to_string(i) + ".png");
     } 
     for (int i = 0; i < 8; i++) {
@@ -303,7 +302,7 @@ void Switch_States()
                    ImageCounter = 0; sha8al = true ; break;
                case state::zmove: maximagecounter = 7;
                    ImageCounter = 0; sha8al = true; break;
-               case state::xmove: maximagecounter = 8;
+               case state::xmove: maximagecounter = 7;
                    ImageCounter = 0; sha8al = true; break;
                case state::cmove: maximagecounter = 8;
                    ImageCounter = 0; sha8al = true; break;
@@ -315,10 +314,10 @@ void Switch_States()
         case state::run:maximagecounter = 8; Player.setTexture(RunAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
         case state::walk: maximagecounter = 8; Player.setTexture(walkAnimation[ImageCounter]); UpdateAnimationCounter(0.2); break;
         case state::idle: Player.setTexture(Idle); UpdateAnimationCounter(0.1); break;
-        case state::base:  Player.setTexture(BaseAttack[ImageCounter]); UpdateAnimationCounter(0.125); break;
-        case state::zmove: Player.setTexture(Zmove[ImageCounter]); UpdateAnimationCounter(0.125); break;
-        case state::xmove: Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.125); break;
-        case state::cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.125); break;
+        case state::base:  Player.setTexture(BaseAttack[ImageCounter]); UpdateAnimationCounter(0.12); break;
+        case state::zmove: Player.setTexture(Zmove[ImageCounter]); UpdateAnimationCounter(0.11); break;
+        case state::xmove: Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
+        case state::cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
 
     }
      

@@ -174,7 +174,7 @@ void setTextures()
     bg.setScale(0.5, 0.5);
 
     // Room
-    room.loadFromFile("mapV4.png");
+    room.loadFromFile("mapV5.png");
     Room.setTexture(room);
     Room.setScale(3.8, 3.333);
     Room.setOrigin(room.getSize().x / 2, room.getSize().y / 2);

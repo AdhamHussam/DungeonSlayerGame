@@ -65,5 +65,5 @@ void SetMonsters(Zombie zombies[]) {
     zombies[0]. zombie.setTexture(zombies[0].texture);
     zombies[0].zombie.setTextureRect(getRect(0));
     zombies[0].zombie.setOrigin(105, 62);
-    zombies[0].zombie.setPosition(-500, 7000);
+    zombies[0].zombie.setPosition(500, 7000);
 }

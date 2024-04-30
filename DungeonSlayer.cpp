@@ -12,25 +12,26 @@ Zombie zombies[number_of_zombies];
 bool showBODSpell;
 /////////
 
-#include <iostream>
-
 // Game properties
 enum state
 {
-    idle, run, hit, base, zmove, xmove, cmove, vmove, dead, walk
+    idle, run, hit, base, zmove, xmove, cmove, dead, walk
 };
 state curr_state = state::idle;
 
+// menu number
 int pagenum = 69;
 
+
+// player attributes
+Sprite Player;
+int walk_speed = 100;
+int run_speed = 200;
 int Player_Health = 100;
 Vector2f velocity = { 0, 0 };
-
-float slow_multi = 1;
 float AnimationCounter = 0;
 int maximagecounter = 0;
 int ImageCounter = 0;
-
 float playerdeltatime = 0;
 bool sha8al = false;
 bool isAttack = false;
@@ -52,16 +53,10 @@ Texture Xmove[7];
 Texture Cmove[8];
 Texture walkAnimation[8];
 
-
-Sprite Player;
-
 Texture room;
 Texture mainmenubg;
 Sprite bg;
 Sprite Room;
-
-
-
 
 // Room 0 Borders
 RectangleShape border1(Vector2f({ 150,1080 }));RectangleShape border2(Vector2f({ 150,1080 }));RectangleShape border3(Vector2f({ 2000,100 }));RectangleShape border4(Vector2f({ 1000,100 }));RectangleShape border5(Vector2f({ 1000,100 }));
@@ -79,7 +74,6 @@ void checkCollisions();
 void Draw();
 int MonstersMovment(Zombie zombies[], Sprite& Player);
 void SetMonsters(Zombie zombies[]);
-
 
 // Main 
 int main()
@@ -108,9 +102,9 @@ void Draw()
     window.clear();
     window.draw(Room);
     window.draw(zombies[0].zombie);
+    window.draw(Player);
     if (showBODSpell)
         window.draw(zombies[0].spell);
-    window.draw(Player);
     window.display();
 }
 
@@ -119,12 +113,12 @@ void playerMovement()
 
     if (Keyboard::isKeyPressed(Keyboard::W) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
-        velocity.y = -200 * playerdeltatime;
+        velocity.y = - run_speed * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::S) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
         
-        velocity.y = 200 * playerdeltatime;
+        velocity.y = run_speed * playerdeltatime;
     }
     else {
         velocity.y = 0;
@@ -132,12 +126,12 @@ void playerMovement()
     if (Keyboard::isKeyPressed(Keyboard::A) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
         Player.setScale(-0.2, 0.2);
-        velocity.x = -200 * playerdeltatime;
+        velocity.x = - run_speed * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::D) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
         Player.setScale(0.2, 0.2);
-        velocity.x = 200* playerdeltatime;
+        velocity.x = run_speed * playerdeltatime;
     }
     else {
         velocity.x = 0;
@@ -145,11 +139,11 @@ void playerMovement()
     Player.move(velocity);
     if (Keyboard::isKeyPressed(Keyboard::W))
     {
-        velocity.y = -100 * playerdeltatime;
+        velocity.y = - walk_speed * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::S))
     {
-        velocity.y = 100 * playerdeltatime;
+        velocity.y = walk_speed * playerdeltatime;
     }
     else {
         velocity.y = 0;
@@ -157,12 +151,12 @@ void playerMovement()
     if (Keyboard::isKeyPressed(Keyboard::A))
     {
         Player.setScale(-0.2, 0.2);
-        velocity.x = -100 * playerdeltatime;
+        velocity.x = - walk_speed * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::D))
     {
         Player.setScale(0.2, 0.2);
-        velocity.x = 100 * playerdeltatime;
+        velocity.x = walk_speed * playerdeltatime;
     }
     else {
         velocity.x = 0;
@@ -180,7 +174,7 @@ void setTextures()
     bg.setScale(0.5, 0.5);
 
     // Room
-    room.loadFromFile("mapV4.png");
+    room.loadFromFile("mapV5.png");
     Room.setTexture(room);
     Room.setScale(3.8, 3.333);
     Room.setOrigin(room.getSize().x / 2, room.getSize().y / 2);
@@ -287,10 +281,7 @@ void Switch_States()
          {
              curr_state = state::cmove;
          }
-         if (Keyboard::isKeyPressed(Keyboard::V))
-         {
-             curr_state = state::vmove;
-         }
+      
          if (Player_Health <= 0)
          {
              curr_state = state::dead;
@@ -298,16 +289,23 @@ void Switch_States()
 
           switch (curr_state)
           {    
-               case state::base: maximagecounter = 8;
-                   ImageCounter = 0; sha8al = true ; break; 
-               case state::zmove: maximagecounter = 7;
-                   ImageCounter = 0; sha8al = true; break;
-               case state::xmove: maximagecounter = 7;
-                   ImageCounter = 0; sha8al = true; break;
-               case state::cmove: maximagecounter = 8;
-                   ImageCounter = 0; sha8al = true; break;
+               case state::base: 
+                   maximagecounter = 8;
+                   ImageCounter = 0; sha8al = true ; 
+                   break;
+               case state::zmove:
+                   maximagecounter = 7;
+                   ImageCounter = 0; sha8al = true;
+                   break;
+               case state::xmove: 
+                   maximagecounter = 7;
+                   ImageCounter = 0; sha8al = true; 
+                   break;
+               case state::cmove:
+                   maximagecounter = 8;
+                   ImageCounter = 0; sha8al = true; 
+                   break;
           }
-   
      }
 
    switch (curr_state) {
@@ -328,13 +326,14 @@ void UpdateAnimationCounter(float st )
      AnimationCounter += playerdeltatime;
      if (AnimationCounter >= st)
      {
-            AnimationCounter = 0;
-            ImageCounter++;
-            if (ImageCounter >= maximagecounter)
-            {            
-                if (sha8al) sha8al = false;
-                ImageCounter = 0;
-         }
+        AnimationCounter = 0;
+        ImageCounter++;
+        if (ImageCounter >= maximagecounter)
+        {        
+            if (sha8al) 
+            sha8al = false;
+            ImageCounter = 0;
+        }
      }
     
 }
@@ -381,6 +380,9 @@ void menu_handler()
             if (pagenum == -1) {
                 window.close();
                 break;
+            }
+            if (pagenum == 1) {
+                // call instructions function
             }
             if (pagenum == 0) {
                 Game_play(window);

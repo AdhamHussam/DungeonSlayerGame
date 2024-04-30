@@ -299,7 +299,7 @@ void Switch_States()
           switch (curr_state)
           {    
                case state::base: maximagecounter = 8;
-                   ImageCounter = 0; sha8al = true ; break;
+                   ImageCounter = 0; sha8al = true ; break; 
                case state::zmove: maximagecounter = 7;
                    ImageCounter = 0; sha8al = true; break;
                case state::xmove: maximagecounter = 7;
@@ -314,7 +314,7 @@ void Switch_States()
         case state::run:maximagecounter = 8; Player.setTexture(RunAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
         case state::walk: maximagecounter = 8; Player.setTexture(walkAnimation[ImageCounter]); UpdateAnimationCounter(0.2); break;
         case state::idle: Player.setTexture(Idle); UpdateAnimationCounter(0.1); break;
-        case state::base:  Player.setTexture(BaseAttack[ImageCounter]); UpdateAnimationCounter(0.12); break;
+        case state::base: Player.setTexture(BaseAttack[ImageCounter]); UpdateAnimationCounter(0.08); break;//0.12
         case state::zmove: Player.setTexture(Zmove[ImageCounter]); UpdateAnimationCounter(0.11); break;
         case state::xmove: Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
         case state::cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.1); break;

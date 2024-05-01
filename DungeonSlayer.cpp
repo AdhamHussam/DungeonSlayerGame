@@ -440,7 +440,7 @@ void Instructions_Menu(RenderWindow& window) {
     }
 
 }
-
+// kareem 
 void PauseMenuHandler(RenderWindow& window)
 {   
     while (window.isOpen()) {

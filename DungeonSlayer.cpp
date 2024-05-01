@@ -2,6 +2,7 @@
 #include "Menu.h"
 #include "Monsters.h"
 #include "globals.h"
+#include "PauseMenu.h"
 
 
 
@@ -37,9 +38,12 @@ bool sha8al = false;
 bool isAttack = false;
 bool ishit = false;
 bool finishedanimationonce = false;
+bool ispaused = false;
 
 RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer");
 Menu menu(1920, 1080);
+PauseMenu pause(1920, 1080);
+Clock pausetimer;
 View view(Vector2f(0, 0), Vector2f(1920, 1080));
 
 // Textures
@@ -55,6 +59,8 @@ Texture walkAnimation[8];
 
 Texture room;
 Texture mainmenubg;
+Texture instructs;
+Sprite Instructions;
 Sprite bg;
 Sprite Room;
 
@@ -66,6 +72,9 @@ void menu_handler();
 void UpdateAnimationCounter(float st = 0.1 );
 void Switch_States();
 void Game_play(RenderWindow& window);
+void PauseMenuHandler(RenderWindow& window);
+void Instructions_Menu(RenderWindow& window);
+void Instructions_Draw();
 void update();
 void trackView();
 void playerMovement();
@@ -89,6 +98,12 @@ void update()
     Switch_States();
     trackView();
     playerMovement();
+    if (Keyboard::isKeyPressed(Keyboard::Escape)) {
+        if (pausetimer.getElapsedTime().asSeconds() > 0.2) {
+            PauseMenuHandler(window);
+            pausetimer.restart();
+        }
+    }
     if (MonstersMovment(zombies, Player) != 0)
         showBODSpell = true;
     else
@@ -170,11 +185,14 @@ void setTextures()
 {
     // Menu   
     mainmenubg.loadFromFile("Main Menu.jpg");
+    instructs.loadFromFile("instructions.png");
     bg.setTexture(mainmenubg);
+    Instructions.setTexture(instructs);
     bg.setScale(0.5, 0.5);
+    Instructions.setScale(0.5, 0.5);
 
     // Room
-    room.loadFromFile("mapV5.png");
+    room.loadFromFile("mapV6.png");
     Room.setTexture(room);
     Room.setScale(3.8, 3.333);
     Room.setOrigin(room.getSize().x / 2, room.getSize().y / 2);
@@ -185,7 +203,7 @@ void setTextures()
     Player.setTexture(Idle);
     Player.setScale(0.2, 0.2);
     Player.setOrigin(Idle.getSize().x / 2, Idle.getSize().y / 2);
-   Player.setPosition(-500, 7000);
+    Player.setPosition(-500, 7000);
 
     // walls
     border2.setPosition(1500, 0);
@@ -382,7 +400,7 @@ void menu_handler()
                 break;
             }
             if (pagenum == 1) {
-                // call instructions function
+                Instructions_Menu(window);
             }
             if (pagenum == 0) {
                 Game_play(window);
@@ -406,4 +424,61 @@ void Game_play(RenderWindow& window)
         Draw();
        // cout << Player.getPosition().x << " " << Player.getPosition().y << endl;
     }
+}
+void Instructions_Draw() {
+    window.clear();
+    window.draw(Instructions);
+    window.display();
+}
+void Instructions_Menu(RenderWindow& window) {
+    while (window.isOpen()) {
+        Instructions_Draw();
+        if (Keyboard::isKeyPressed(Keyboard::Key::Escape)) {
+            pagenum = 69;
+            menu_handler();
+        }
+    }
+
+}
+
+void PauseMenuHandler(RenderWindow& window)
+{   
+    while (window.isOpen()) {
+        Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == Event::Closed) {
+                window.close();
+            }
+        }
+         view.setCenter(960,540); //update
+         window.setView(view);
+        
+        if (Keyboard::isKeyPressed(Keyboard::Up)) {
+            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                pause.moveup();
+                GameClock.restart();
+            }
+        }
+
+        if (Keyboard::isKeyPressed(Keyboard::Down)) {
+            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                pause.movedown();
+                GameClock.restart();
+            }
+        }
+        window.clear();
+        if (Keyboard::isKeyPressed(Keyboard::Escape)) {
+            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                GameClock.restart();
+                ispaused = false;
+                break;
+
+            }
+        }
+        window.draw(bg);
+        pause.draw(window);
+        window.display();
+    }
+
+
 }

@@ -27,7 +27,6 @@ bool sha8al = false;
 bool isAttack = false;
 bool ishit = false;
 bool finishedanimationonce = false;
-bool ispaused = false;
 
 RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer");
 Menu menu(1920, 1080);
@@ -52,7 +51,8 @@ Texture instructs;
 Sprite Instructions;
 Sprite bg;
 Sprite Room;
-
+Texture pausebg;
+Sprite pausemenu;
 // Room 0 Borders
 RectangleShape border1(Vector2f({ 150,1080 }));RectangleShape border2(Vector2f({ 150,1080 }));RectangleShape border3(Vector2f({ 2000,100 }));RectangleShape border4(Vector2f({ 1000,100 }));RectangleShape border5(Vector2f({ 1000,100 }));
 
@@ -173,11 +173,13 @@ void setTextures()
     // Menu   
     mainmenubg.loadFromFile("Main Menu.jpg");
     instructs.loadFromFile("instructions.png");
+    pausebg.loadFromFile("pausebg.png");
     bg.setTexture(mainmenubg);
     Instructions.setTexture(instructs);
     bg.setScale(0.5, 0.5);
     Instructions.setScale(0.5, 0.5);
-
+    pausemenu.setTexture(pausebg);
+    pausemenu.setScale(0.5, 0.5);
     // Room
     room.loadFromFile("mapV6.png");
     Room.setTexture(room);
@@ -427,7 +429,7 @@ void Instructions_Menu(RenderWindow& window) {
     }
 
 }
-// kareem 
+
 void PauseMenuHandler(RenderWindow& window)
 {   
     while (window.isOpen()) {
@@ -453,19 +455,39 @@ void PauseMenuHandler(RenderWindow& window)
                 GameClock.restart();
             }
         }
-        window.clear();
-        if (Keyboard::isKeyPressed(Keyboard::Escape)) {
+        
+        
+        if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 0) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 GameClock.restart();
-                ispaused = false;
                 break;
-
             }
         }
-        window.draw(bg);
+        if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 1) {
+            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                GameClock.restart();
+                // options menu
+            }
+        }
+        if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 2) { 
+            if (GameClock.getElapsedTime().asSeconds() > 0.2) { 
+                GameClock.restart();  
+                // restart game
+            }
+        }
+        if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 3) {
+            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                GameClock.restart();
+                pagenum = 69;
+                // restart game
+                menu_handler();
+            }
+        }
+        window.clear(); 
+        window.draw(pausemenu);
         pause.draw(window);
         window.display();
     }
-
+    //
 
 }

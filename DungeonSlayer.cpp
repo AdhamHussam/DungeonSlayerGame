@@ -88,17 +88,13 @@ void update()
     Switch_States();
     trackView();
     playerMovement();
-<<<<<<< HEAD
-    if (MonstersMovment() != 0)
-=======
     if (Keyboard::isKeyPressed(Keyboard::Escape)) {
         if (pausetimer.getElapsedTime().asSeconds() > 0.2) {
             PauseMenuHandler(window);
             pausetimer.restart();
         }
     }
-    if (MonstersMovment(zombies, Player) != 0)
->>>>>>> master
+    if (MonstersMovment() != 0)
         showBODSpell = true;
     else
         showBODSpell = false;

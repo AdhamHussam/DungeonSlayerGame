@@ -101,10 +101,27 @@ void MonstersMovment() {
     zombies[0].cooldown -= playerdeltatime;
 
     // check if BOD is being attacked
-    if (curr_state == player_base && abs(x) < 100 && abs(y) < 100 && BODstate != BOD::BODhurt) {
-        zombies[0].health--;
-        MovmentCounter = 0;
-        BODstate = BOD::BODhurt;
+    if(BODstate != BOD::BODhurt && abs(x) < 100 && abs(y) < 100){
+        if (curr_state == player_base) {
+            zombies[0].health--;
+            MovmentCounter = 0;
+            BODstate = BOD::BODhurt;
+        }
+        else if(curr_state == player_zmove) {
+            zombies[0].health-=2;
+            MovmentCounter = 0;
+            BODstate = BOD::BODhurt;
+        }
+        else if (curr_state == player_xmove) {
+            zombies[0].health -= 3;
+            MovmentCounter = 0;
+            BODstate = BOD::BODhurt;
+        }
+        else if (curr_state == player_cmove) {
+            zombies[0].health -= 10;
+            MovmentCounter = 0;
+            BODstate = BOD::BODhurt;
+        }
     }
 
     // check if BOD is doing somthing

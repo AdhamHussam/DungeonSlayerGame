@@ -50,7 +50,7 @@ void attack() {
 // make monster cast his spell
 void cast() {
     if (!CastCounter)
-        zombies[0].spell.setPosition(Player.getPosition().x - 100, Player.getPosition().y - 200);
+        zombies[0].spell.setPosition(Player.getPosition().x - 120, Player.getPosition().y - 150);
     zombies[0].zombie.setTextureRect(getRect(39 + CastCounter));
     zombies[0].spell.setTextureRect(getRect(52 + CastCounter));
     UpdateAnimationCounter(CastCounter, 9);

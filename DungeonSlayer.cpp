@@ -488,6 +488,6 @@ void PauseMenuHandler(RenderWindow& window)
         pause.draw(window);
         window.display();
     }
-    //
+    
 
 }

@@ -472,14 +472,14 @@ void PauseMenuHandler(RenderWindow& window)
         if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 2) { 
             if (GameClock.getElapsedTime().asSeconds() > 0.2) { 
                 GameClock.restart();  
-                // restart game
+                // restart game then go to Game_Play funcion
             }
         }
         if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 3) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 GameClock.restart();
                 pagenum = 69;
-                // restart game
+                // restart game then go to main menu
                 menu_handler();
             }
         }

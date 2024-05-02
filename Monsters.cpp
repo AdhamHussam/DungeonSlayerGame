@@ -33,10 +33,7 @@ void walk(int x, int y) {
     zombies[0].zombie.setTextureRect(getRect(8 + MovmentCounter));
     zombies[0].zombie.move(((abs(x) > 1) ? ((x > 0) ? zombies[0].speed : -zombies[0].speed) : 0), ((y < 0) ? zombies[0].speed : -zombies[0].speed));
     UpdateMonsterAnimationCounter();
-    if (MovmentCounter == 8) {
-        MovmentCounter = 0;
-        BODstate = BOD::BODwalk;
-    }
+    MovmentCounter %= 8;
 }
 
 // make monster attack
@@ -51,8 +48,6 @@ void attack() {
 
 // make monster cast his spell
 void cast() {
-    if (!MovmentCounter)
-        zombies[0].spell.setPosition(Player.getPosition().x - 100, Player.getPosition().y - 200);
     zombies[0].zombie.setTextureRect(getRect(39 + MovmentCounter));
     zombies[0].spell.setTextureRect(getRect(52 + MovmentCounter));
     UpdateMonsterAnimationCounter();
@@ -83,9 +78,16 @@ void die() {
 // update monster
 void MonstersMovment() {
 
+    // hide BOD spell
+    showBODSpell = false;
+
     // check that BOD is alive
     if(!BODalive)
         return;
+    if (BODstate == BOD::BODdie){
+        die();
+        return;
+    }
 
     // check distance between BOD and Player and make BOD look forward Player
     double x = Player.getPosition().x - zombies[0].zombie.getPosition().x, y = zombies[0].zombie.getPosition().y - Player.getPosition().y;
@@ -95,33 +97,54 @@ void MonstersMovment() {
         zombies[0].zombie.setScale(Vector2f(2, 2));
 
 
-    // making decision
-    if (BODstate == BOD::BODdie)
-        die();
-    else if ((curr_state == player_base && abs(x) < 100 && abs(y) < 100) || BODstate == BOD::BODhurt) {
-        if (MovmentCounter > 4 && zombies[0].health <= 0){
+    // passing time for cooldown
+    zombies[0].cooldown -= playerdeltatime;
+
+    // check if BOD is being attacked
+    if (curr_state == player_base && abs(x) < 100 && abs(y) < 100 && BODstate != BOD::BODhurt) {
+        zombies[0].health--;
+        MovmentCounter = 0;
+        BODstate = BOD::BODhurt;
+    }
+
+    // check if BOD is doing somthing
+    if (BODstate == BOD::BODhurt) {
+        if (MovmentCounter > 4 && zombies[0].health <= 0) {
             die();
             BODstate = BOD::BODdie;
         }
-        else{
-            BODstate = BOD::BODhurt;
+        else
             hurt();
-        }
+        return;
     }
-    else if (abs(x) < 100 && abs(y) < 10 && BODstate != BOD::BODcast){
+    else if (BODstate == BOD::BODcast) {
+        cast();
+        showBODSpell = true;
+        return;
+    }
+    else if (BODstate == BOD::BODattack){
+        attack();
+        return;
+    }
+
+
+
+    // making BOD decision
+    if ((long long)abs(x) * abs(x) + abs(y) * abs(y) < 100000 && zombies[0].cooldown <= 0) {
+        zombies[0].spell.setPosition(Player.getPosition().x - 100, Player.getPosition().y - 200);
+        MovmentCounter = 0;
+        BODstate = BOD::BODcast;
+        cast();
+        showBODSpell = true;
+        zombies[0].cooldown = 5;
+    }
+    else if (abs(x) < 300 && abs(y) < 30){
+        MovmentCounter = 0;
         BODstate = BOD::BODattack;
         attack();
     }
-    else if ((long long)abs(x)*abs(x) + abs(y)*abs(y) < 100000 || BODstate == BOD::BODcast){
-        BODstate = BOD::BODcast;
-        cast();
-    }
     else
         walk(x,y);
-    if (BODstate == BOD::BODcast)
-        showBODSpell = true;
-    else
-        showBODSpell = false;
 }
 
 // set monsters at the begining of the wave

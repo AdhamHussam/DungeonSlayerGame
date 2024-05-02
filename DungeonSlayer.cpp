@@ -45,12 +45,12 @@ Texture Xmove[7];
 Texture Cmove[8];
 Texture walkAnimation[8];
 
-Texture room;
+Texture map1;
 Texture mainmenubg;
 Texture instructs;
 Sprite Instructions;
 Sprite bg;
-Sprite Room;
+Sprite Map1;
 Texture pausebg;
 Sprite pausemenu;
 // Room 0 Borders
@@ -100,7 +100,7 @@ void update()
 void Draw()
 {
     window.clear();
-    window.draw(Room);
+    window.draw(Map1);
     window.draw(Player);
     if (BODalive){
         window.draw(zombies[0].zombie);
@@ -174,18 +174,20 @@ void setTextures()
     mainmenubg.loadFromFile("Main Menu.jpg");
     instructs.loadFromFile("instructions.png");
     pausebg.loadFromFile("pausebg.png");
+    
     bg.setTexture(mainmenubg);
     Instructions.setTexture(instructs);
+    pausemenu.setTexture(pausebg);
+
     bg.setScale(0.5, 0.5);
     Instructions.setScale(0.5, 0.5);
-    pausemenu.setTexture(pausebg);
     pausemenu.setScale(0.5, 0.5);
     // Room
-    room.loadFromFile("mapV6.png");
-    Room.setTexture(room);
-    Room.setScale(3.8, 3.333);
-    Room.setOrigin(room.getSize().x / 2, room.getSize().y / 2);
-    Room.setPosition(0, 178 * 16);
+    map1.loadFromFile("lvl1.png");
+    Map1.setTexture(map1);
+    Map1.setScale(3.8, 3.333);
+    Map1.setOrigin(map1.getSize().x / 2, map1.getSize().y / 2);
+    Map1.setPosition(0, 178 * 16);
 
     //Player
     Idle.loadFromFile("idle.png");

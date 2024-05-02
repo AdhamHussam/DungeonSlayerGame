@@ -388,11 +388,11 @@ void menu_handler()
                 window.close();
                 break;
             }
-            if (pagenum == 1) {
-                Instructions_Menu(window);
-            }
             if (pagenum == 0) {
                 Game_play(window);
+            }
+            if (pagenum == 1) {
+                Instructions_Menu(window);
             }
         }
     }

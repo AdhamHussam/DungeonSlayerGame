@@ -28,7 +28,7 @@ bool isAttack = false;
 bool ishit = false;
 bool finishedanimationonce = false;
 
-RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer");
+RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer" );
 Menu menu(1920, 1080);
 PauseMenu pause(1920, 1080);
 Clock pausetimer;
@@ -229,26 +229,7 @@ void setTextures()
 
 void checkCollisions()
 {
-    if (Keyboard::isKeyPressed(Keyboard::A) && Player.getGlobalBounds().intersects(border1.getGlobalBounds()))
-    {
-        velocity.x = 0;
-    } 
-    if (Keyboard::isKeyPressed(Keyboard::D) && Player.getGlobalBounds().intersects(border2.getGlobalBounds()))
-    {
-        velocity.x = 0;
-    }
-    if (Keyboard::isKeyPressed(Keyboard::S) && Player.getGlobalBounds().intersects(border3.getGlobalBounds()))
-    {
-        velocity.y = 0;
-    }
-    if (Keyboard::isKeyPressed(Keyboard::W) && (Player.getGlobalBounds().intersects(border4.getGlobalBounds())))
-    {
-        velocity.y = 0;
-    }
-    if (Keyboard::isKeyPressed(Keyboard::W) && Player.getGlobalBounds().intersects(border5.getGlobalBounds()))
-    {
-        velocity.y = 0;
-    }
+    
 }
 
 void trackView()

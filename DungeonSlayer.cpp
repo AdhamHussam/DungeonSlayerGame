@@ -10,7 +10,6 @@ enum state
 {
     idle, run, hit, base, zmove, xmove, cmove, dead, walk
 };
-state curr_state = state::idle;
 
 // menu number
 int pagenum = 69;
@@ -70,7 +69,7 @@ void playerMovement();
 void setTextures();
 void checkCollisions();
 void Draw();
-int MonstersMovment();
+void MonstersMovment();
 void SetMonsters();
 void UpdateAnimationCounter(float st = 0.1);
 
@@ -88,28 +87,26 @@ void update()
     Switch_States();
     trackView();
     playerMovement();
+    MonstersMovment();
     if (Keyboard::isKeyPressed(Keyboard::Escape)) {
         if (pausetimer.getElapsedTime().asSeconds() > 0.2) {
             PauseMenuHandler(window);
             pausetimer.restart();
         }
     }
-    if (MonstersMovment() != 0)
-        showBODSpell = true;
-    else
-        showBODSpell = false;
     //checkCollisions();
-
 }
 
 void Draw()
 {
     window.clear();
     window.draw(Room);
-    window.draw(zombies[0].zombie);
     window.draw(Player);
-    if (showBODSpell)
-        window.draw(zombies[0].spell);
+    if (BODalive){
+        window.draw(zombies[0].zombie);
+        if (showBODSpell)
+            window.draw(zombies[0].spell);
+    }
     window.display();
 }
 

@@ -4,14 +4,6 @@
 #include "globals.h"
 
 
-
-////////// temp
-
-const int number_of_zombies = 1;
-Zombie zombies[number_of_zombies];
-bool showBODSpell;
-/////////
-
 // Game properties
 enum state
 {
@@ -24,7 +16,6 @@ int pagenum = 69;
 
 
 // player attributes
-Sprite Player;
 int walk_speed = 100;
 int run_speed = 200;
 int Player_Health = 100;
@@ -32,7 +23,6 @@ Vector2f velocity = { 0, 0 };
 float AnimationCounter = 0;
 int maximagecounter = 0;
 int ImageCounter = 0;
-float playerdeltatime = 0;
 bool sha8al = false;
 bool isAttack = false;
 bool ishit = false;
@@ -63,7 +53,6 @@ RectangleShape border1(Vector2f({ 150,1080 }));RectangleShape border2(Vector2f({
 
 // Game functions
 void menu_handler();
-void UpdateAnimationCounter(float st = 0.1 );
 void Switch_States();
 void Game_play(RenderWindow& window);
 void update();
@@ -72,8 +61,9 @@ void playerMovement();
 void setTextures();
 void checkCollisions();
 void Draw();
-int MonstersMovment(Zombie zombies[], Sprite& Player);
-void SetMonsters(Zombie zombies[]);
+int MonstersMovment();
+void SetMonsters();
+void UpdateAnimationCounter(float st = 0.1);
 
 // Main 
 int main()
@@ -89,7 +79,7 @@ void update()
     Switch_States();
     trackView();
     playerMovement();
-    if (MonstersMovment(zombies, Player) != 0)
+    if (MonstersMovment() != 0)
         showBODSpell = true;
     else
         showBODSpell = false;
@@ -194,7 +184,7 @@ void setTextures()
     border5.setPosition(1050, 150);
 
     // monsters
-    SetMonsters(zombies);
+    SetMonsters();
 
     Player.setPosition(-500, 7000);
     for (int i = 0; i < 8; i++) {

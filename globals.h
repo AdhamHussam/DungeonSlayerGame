@@ -7,4 +7,9 @@
 extern int globalInt;  // Declaration
 extern Clock GameClock;
 
+extern const int number_of_zombies;
+extern Zombie zombies[];
+extern bool showBODSpell;
+extern Sprite Player;
+extern float playerdeltatime;
 #endif // GLOBALS_H

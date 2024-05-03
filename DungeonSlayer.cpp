@@ -491,7 +491,6 @@ void PauseMenuHandler(RenderWindow& window)
     
 }
 void game_reset() {
-    zombies[0].zombie.setPosition(500, 7000);
     int Player_Health = 100;
     float AnimationCounter = 0;
     int maximagecounter = 0;
@@ -499,7 +498,6 @@ void game_reset() {
     int globalInt = 0; 
     int number_of_zombies = 1; 
     float playerdeltatime = 0;
-    BODalive = true;
-    zombies[0].health = 10; 
+    SetMonsters();
 }
 

@@ -167,8 +167,9 @@ void MonstersMovment() {
 // set monsters at the begining of the wave
 void SetMonsters() {
     BODalive = true;
-    zombies[0].zombie.setPosition(500, 500);
     zombies[0].health = 10;
+    BODstate = BOD::BODwalk;
+    zombies[0].zombie.setPosition(500, 500);
     zombies[0].texture.loadFromFile("enemies/Bringer-Of-Death/SpriteSheet/Bringer-of-Death-SpritSheet.png");
     zombies[0].spell.setTexture(zombies[0].texture);
     zombies[0].spell.setTextureRect(getRect(48));

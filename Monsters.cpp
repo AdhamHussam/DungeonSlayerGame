@@ -103,7 +103,7 @@ void MonstersMovment() {
     // check if BOD is being attacked
     if(BODstate != BOD::BODhurt && abs(x) < 100 && abs(y) < 100){
         if (curr_state == player_base) {
-            zombies[0].health--;
+            zombies[0].health --;
             MovmentCounter = 0;
             BODstate = BOD::BODhurt;
         }
@@ -169,12 +169,11 @@ void SetMonsters() {
     BODalive = true;
     zombies[0].health = 10;
     BODstate = BOD::BODwalk;
-    zombies[0].zombie.setPosition(500, 500);
     zombies[0].texture.loadFromFile("enemies/Bringer-Of-Death/SpriteSheet/Bringer-of-Death-SpritSheet.png");
     zombies[0].spell.setTexture(zombies[0].texture);
     zombies[0].spell.setTextureRect(getRect(48));
     zombies[0].spell.setScale(2, 2);
-    zombies[0]. zombie.setTexture(zombies[0].texture);
+    zombies[0].zombie.setTexture(zombies[0].texture);
     zombies[0].zombie.setTextureRect(getRect(0));
     zombies[0].zombie.setOrigin(105, 62);
     zombies[0].zombie.setPosition(500, 7000);

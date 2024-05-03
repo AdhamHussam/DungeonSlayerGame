@@ -396,7 +396,7 @@ void Game_play(RenderWindow& window)
         float elapsed = GameClock.restart().asSeconds();
         playerdeltatime = elapsed;
         Event Play;
-        while (window.pollEvent(Play)) {zombies[0].health = 10;
+        while (window.pollEvent(Play)) {
             if (Play.type == Event::Closed) {
                 window.close();
             }

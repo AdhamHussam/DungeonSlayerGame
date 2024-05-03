@@ -246,12 +246,10 @@ void checkCollisions()
 
         ishit = true;
 
-
     }
 
-    if (ishit) {
 
-        Player_Health -= 1;
+   if (BODstate == BODattacks) {
 
     }
     /* if (BODstate == BODattacks) {
@@ -260,8 +258,8 @@ void checkCollisions()
         //  ishit= true;
 
 
-      }*/
-
+    }
+    
 }
 
 

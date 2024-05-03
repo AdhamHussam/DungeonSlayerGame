@@ -28,7 +28,7 @@ bool isAttack = false;
 bool ishit = false;
 bool finishedanimationonce = false;
 
-RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer");
+RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer" );
 Menu menu(1920, 1080);
 PauseMenu pause(1920, 1080);
 Clock pausetimer;
@@ -45,12 +45,15 @@ Texture Xmove[7];
 Texture Cmove[8];
 Texture walkAnimation[8];
 
-Texture room;
+Texture map1;
 Texture mainmenubg;
 Texture instructs;
 Sprite Instructions;
 Sprite bg;
 Sprite Room;
+Texture pausebg;
+Sprite pausemenu;
+Sprite Map1;
 Texture pausebg;
 Sprite pausemenu;
 // Room 0 Borders
@@ -97,10 +100,11 @@ void update()
     //checkCollisions();
 }
 
+
 void Draw()
 {
     window.clear();
-    window.draw(Room);
+    window.draw(Map1);
     window.draw(Player);
     if (BODalive){
         window.draw(zombies[0].zombie);
@@ -168,24 +172,30 @@ void playerMovement()
 
 }
 
+
 void setTextures()
 {
     // Menu   
     mainmenubg.loadFromFile("Main Menu.jpg");
     instructs.loadFromFile("instructions.png");
     pausebg.loadFromFile("pausebg.png");
+    pausebg.loadFromFile("pausebg.png");
+    
     bg.setTexture(mainmenubg);
     Instructions.setTexture(instructs);
+    pausemenu.setTexture(pausebg);
+
     bg.setScale(0.5, 0.5);
     Instructions.setScale(0.5, 0.5);
+    pausemenu.setScale(0.5, 0.5);
     pausemenu.setTexture(pausebg);
     pausemenu.setScale(0.5, 0.5);
     // Room
-    room.loadFromFile("mapV6.png");
-    Room.setTexture(room);
-    Room.setScale(3.8, 3.333);
-    Room.setOrigin(room.getSize().x / 2, room.getSize().y / 2);
-    Room.setPosition(0, 178 * 16);
+    map1.loadFromFile("lvl1.png");
+    Map1.setTexture(map1);
+    Map1.setScale(3.8, 3.333);
+    Map1.setOrigin(map1.getSize().x / 2, map1.getSize().y / 2);
+    Map1.setPosition(0, 178 * 16);
 
     //Player
     Idle.loadFromFile("idle.png");
@@ -225,35 +235,19 @@ void setTextures()
     }
 }
 
+
 void checkCollisions()
 {
-    if (Keyboard::isKeyPressed(Keyboard::A) && Player.getGlobalBounds().intersects(border1.getGlobalBounds()))
-    {
-        velocity.x = 0;
-    } 
-    if (Keyboard::isKeyPressed(Keyboard::D) && Player.getGlobalBounds().intersects(border2.getGlobalBounds()))
-    {
-        velocity.x = 0;
-    }
-    if (Keyboard::isKeyPressed(Keyboard::S) && Player.getGlobalBounds().intersects(border3.getGlobalBounds()))
-    {
-        velocity.y = 0;
-    }
-    if (Keyboard::isKeyPressed(Keyboard::W) && (Player.getGlobalBounds().intersects(border4.getGlobalBounds())))
-    {
-        velocity.y = 0;
-    }
-    if (Keyboard::isKeyPressed(Keyboard::W) && Player.getGlobalBounds().intersects(border5.getGlobalBounds()))
-    {
-        velocity.y = 0;
-    }
+    
 }
+
 
 void trackView()
 {  
     view.setCenter(Player.getPosition()); //update
     window.setView(view);
 }
+
 
 void Switch_States()
 {  
@@ -388,11 +382,11 @@ void menu_handler()
                 window.close();
                 break;
             }
-            if (pagenum == 1) {
-                Instructions_Menu(window);
-            }
             if (pagenum == 0) {
                 Game_play(window);
+            }
+            if (pagenum == 1) {
+                Instructions_Menu(window);
             }
         }
     }
@@ -414,11 +408,15 @@ void Game_play(RenderWindow& window)
        // cout << Player.getPosition().x << " " << Player.getPosition().y << endl;
     }
 }
+
+
 void Instructions_Draw() {
     window.clear();
     window.draw(Instructions);
     window.display();
 }
+
+
 void Instructions_Menu(RenderWindow& window) {
     while (window.isOpen()) {
         Instructions_Draw();
@@ -429,6 +427,8 @@ void Instructions_Menu(RenderWindow& window) {
     }
 
 }
+
+
 
 void PauseMenuHandler(RenderWindow& window)
 {   
@@ -483,6 +483,26 @@ void PauseMenuHandler(RenderWindow& window)
                 menu_handler();
             }
         }
+        if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 1) {
+            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                GameClock.restart();
+                // options menu
+            }
+        }
+        if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 2) { 
+            if (GameClock.getElapsedTime().asSeconds() > 0.2) { 
+                GameClock.restart();  
+                // restart game then go to Game_Play funcion
+            }
+        }
+        if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 3) {
+            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                GameClock.restart();
+                pagenum = 69;
+                // restart game then go to main menu
+                menu_handler();
+            }
+        }
         window.clear(); 
         window.draw(pausemenu);
         pause.draw(window);
@@ -501,4 +521,6 @@ void game_reset() {
     float playerdeltatime = 0;
     BODalive = true;
     zombies[0].health = 10; 
+}
+
 }

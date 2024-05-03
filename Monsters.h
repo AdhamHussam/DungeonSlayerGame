@@ -1,11 +1,11 @@
 #pragma once
 #include "includes.h"
 
-struct Zombie
+struct BringerOfDeath
 {
-	Sprite zombie,spell;
+	Sprite BOD,spell;
 	Texture texture;
 
-	int health;
+	int health = 10;
 	float speed = 0.1, cooldown = 5;
 };

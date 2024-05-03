@@ -84,7 +84,7 @@ void MonstersMovment() {
     // check that BOD is alive
     if(!BODalive)
         return;
-    if (BODstate == BOD::BODdie){
+    if (BODstate == BOD::BODdie) {
         die();
         return;
     }
@@ -108,7 +108,7 @@ void MonstersMovment() {
             BODstate = BOD::BODhurt;
         }
         else if(curr_state == player_zmove) {
-            zombies[0].health-=2;
+            zombies[0].health -= 2;
             MovmentCounter = 0;
             BODstate = BOD::BODhurt;
         }
@@ -126,7 +126,7 @@ void MonstersMovment() {
 
     // check if BOD is doing somthing
     if (BODstate == BOD::BODhurt) {
-        if (MovmentCounter > 4 && zombies[0].health <= 0) {
+        if (zombies[0].health <= 0) {
             die();
             BODstate = BOD::BODdie;
         }

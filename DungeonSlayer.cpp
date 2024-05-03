@@ -242,16 +242,25 @@ void setTextures()
 
 void checkCollisions()
 {
+    if (zombies[0].zombie.getGlobalBounds().intersects(Player.getGlobalBounds())) {
+
+        ishit = true;
 
 
+}
 
-   if (BODstate == BODattacks) {
+    if (ishit) {
+
+        Player_Health -= 1;
+
+    }
+  /* if (BODstate == BODattacks) {
 
         Player_Health -= playerdeltatime/150;
       //  ishit= true;
 
 
-    }
+    }*/
     
 }
 

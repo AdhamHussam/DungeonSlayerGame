@@ -107,9 +107,9 @@ void Draw()
     window.draw(Map1);
     window.draw(Player);
     if (BODalive){
-        window.draw(zombies[0].zombie);
+        window.draw(BODmonsters[0].BOD);
         if (showBODSpell)
-            window.draw(zombies[0].spell);
+            window.draw(BODmonsters[0].spell);
 
     }
    
@@ -533,7 +533,7 @@ void game_reset() {
     int maximagecounter = 0;
     int ImageCounter = 0;
     int globalInt = 0; 
-    int number_of_zombies = 1; 
+    int number_of_BODmonsters = 1; 
     float playerdeltatime = 0;
     SetMonsters();
 }

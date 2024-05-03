@@ -29,7 +29,7 @@ bool isAttack = false;
 bool ishit = false;
 bool finishedanimationonce = false;
 
-RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer" );
+RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer");
 Menu menu(1920, 1080);
 PauseMenu pause(1920, 1080);
 Clock pausetimer;
@@ -57,7 +57,7 @@ Sprite pausemenu;
 Sprite Map1;
 
 // Room 0 Borders
-RectangleShape border1(Vector2f({ 150,1080 }));RectangleShape border2(Vector2f({ 150,1080 }));RectangleShape border3(Vector2f({ 2000,100 }));RectangleShape border4(Vector2f({ 1000,100 }));RectangleShape border5(Vector2f({ 1000,100 }));
+RectangleShape border1(Vector2f({ 150,1080 })); RectangleShape border2(Vector2f({ 150,1080 })); RectangleShape border3(Vector2f({ 2000,100 })); RectangleShape border4(Vector2f({ 1000,100 })); RectangleShape border5(Vector2f({ 1000,100 }));
 
 // Game functions
 void menu_handler();
@@ -106,13 +106,13 @@ void Draw()
     window.clear();
     window.draw(Map1);
     window.draw(Player);
-    if (BODalive){
+    if (BODalive) {
         window.draw(BODmonsters[0].BOD);
         if (showBODSpell)
             window.draw(BODmonsters[0].spell);
 
     }
-   
+
     window.display();
 }
 
@@ -121,11 +121,11 @@ void playerMovement()
 
     if (Keyboard::isKeyPressed(Keyboard::W) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
-        velocity.y = - run_speed * playerdeltatime;
+        velocity.y = -run_speed * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::S) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
-        
+
         velocity.y = run_speed * playerdeltatime;
     }
     else {
@@ -134,7 +134,7 @@ void playerMovement()
     if (Keyboard::isKeyPressed(Keyboard::A) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
         Player.setScale(-0.2, 0.2);
-        velocity.x = - run_speed * playerdeltatime;
+        velocity.x = -run_speed * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::D) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
@@ -147,7 +147,7 @@ void playerMovement()
     Player.move(velocity);
     if (Keyboard::isKeyPressed(Keyboard::W))
     {
-        velocity.y = - walk_speed * playerdeltatime;
+        velocity.y = -walk_speed * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::S))
     {
@@ -159,7 +159,7 @@ void playerMovement()
     if (Keyboard::isKeyPressed(Keyboard::A))
     {
         Player.setScale(-0.2, 0.2);
-        velocity.x = - walk_speed * playerdeltatime;
+        velocity.x = -walk_speed * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::D))
     {
@@ -182,7 +182,7 @@ void setTextures()
     instructs.loadFromFile("instructions.png");
     pausebg.loadFromFile("pausebg.png");
     pausebg.loadFromFile("pausebg.png");
-    
+
     bg.setTexture(mainmenubg);
     Instructions.setTexture(instructs);
     pausemenu.setTexture(pausebg);
@@ -220,10 +220,10 @@ void setTextures()
     }
     for (int i = 0; i < 7; i++) {
         Zmove[i].loadFromFile("Z move/Zmove" + to_string(i) + ".png");
-    } 
+    }
     for (int i = 0; i < 7; i++) {
         Xmove[i].loadFromFile("X move/Xmove" + to_string(i) + ".png");
-    } 
+    }
     for (int i = 0; i < 8; i++) {
         Cmove[i].loadFromFile("C move/Cmove" + to_string(i) + ".png");
     }
@@ -242,136 +242,145 @@ void setTextures()
 
 void checkCollisions()
 {
+    if (zombies[0].zombie.getGlobalBounds().intersects(Player.getGlobalBounds())) {
 
-
-
-   if (BODstate == BODattacks) {
-
-        Player_Health -= playerdeltatime/150;
-      //  ishit= true;
+        ishit = true;
 
 
     }
-    
+
+    if (ishit) {
+
+        Player_Health -= 1;
+
+    }
+    /* if (BODstate == BODattacks) {
+
+          Player_Health -= playerdeltatime/150;
+        //  ishit= true;
+
+
+      }*/
+
 }
 
 
 void trackView()
-{  
+{
     view.setCenter(Player.getPosition()); //update
     window.setView(view);
 }
 
 
 void Switch_States()
-{  
-     if (!sha8al){
+{
+    if (!sha8al) {
 
-         if ((Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W)) && Keyboard::isKeyPressed(Keyboard::LShift))
-         {
-             curr_state = state::run;
-         }
-         else if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W))
-         {
-             curr_state = state::walk;
-         }
+        if ((Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W)) && Keyboard::isKeyPressed(Keyboard::LShift))
+        {
+            curr_state = state::run;
+        }
+        else if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W))
+        {
+            curr_state = state::walk;
+        }
 
-         else
-         {
-             curr_state = state::idle;
-         }
+        else
+        {
+            curr_state = state::idle;
+        }
 
-         if (Keyboard::isKeyPressed(Keyboard::Space) || Mouse::isButtonPressed(Mouse::Left))
-         {
-             curr_state = state::base;
-         }
-         if (Keyboard::isKeyPressed(Keyboard::Z))
-         {
-             curr_state = state::zmove;
-         }
-         if (Keyboard::isKeyPressed(Keyboard::X))
-         {
-             curr_state = state::xmove;
-         }
-         if (Keyboard::isKeyPressed(Keyboard::C))
-         {
-             curr_state = state::cmove;
-         }
-        
-      
-         if (Player_Health <= 0)
-         {
-             curr_state = state::dead;
+        if (Keyboard::isKeyPressed(Keyboard::Space) || Mouse::isButtonPressed(Mouse::Left))
+        {
+            curr_state = state::base;
+        }
+        if (Keyboard::isKeyPressed(Keyboard::Z))
+        {
+            curr_state = state::zmove;
+        }
+        if (Keyboard::isKeyPressed(Keyboard::X))
+        {
+            curr_state = state::xmove;
+        }
+        if (Keyboard::isKeyPressed(Keyboard::C))
+        {
+            curr_state = state::cmove;
+        }
 
 
-         }
-         if (ishit)
-         {
-             curr_state = state::hit;
+        if (Player_Health <= 0)
+        {
+            curr_state = state::dead;
 
 
-         }
-        
-    
+        }
+        if (ishit)
+        {
+            curr_state = state::hit;
 
-          switch (curr_state)
-          {    
-               case state::base: 
-                   maximagecounter = 8;
-                   ImageCounter = 0; sha8al = true ; 
-                   break;
-               case state::zmove:
-                   maximagecounter = 7;
-                   ImageCounter = 0; sha8al = true;
-                   break;
-               case state::xmove: 
-                   maximagecounter = 7;
-                   ImageCounter = 0; sha8al = true; 
-                   break;
-               case state::cmove:
-                   maximagecounter = 8;
-                   ImageCounter = 0; sha8al = true; 
-                   break;
-             case state::hit:
-                   maximagecounter = 3;
-                   ImageCounter = 0;
-                   
-                   ishit = false;
-                   break; 
-          }
-     }
 
-   switch (curr_state) {
-        case state::run:maximagecounter = 8; Player.setTexture(RunAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
-        case state::walk: maximagecounter = 8; Player.setTexture(walkAnimation[ImageCounter]); UpdateAnimationCounter(0.2); break;
-        case state::idle: Player.setTexture(Idle); UpdateAnimationCounter(0.1); break;
-        case state::base: Player.setTexture(BaseAttack[ImageCounter]); UpdateAnimationCounter(0.08); break;//0.12
-        case state::zmove: Player.setTexture(Zmove[ImageCounter]); UpdateAnimationCounter(0.11); break;
-        case state::xmove: Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
-        case state::cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
-        case state::hit: Player.setTexture(HitAnimation[ImageCounter]); UpdateAnimationCounter(0.05); break;
+        }
+
+
+
+        switch (curr_state)
+        {
+        case state::base:
+            maximagecounter = 8;
+            ImageCounter = 0; sha8al = true;
+            break;
+        case state::zmove:
+            maximagecounter = 7;
+            ImageCounter = 0; sha8al = true;
+            break;
+        case state::xmove:
+            maximagecounter = 7;
+            ImageCounter = 0; sha8al = true;
+            break;
+        case state::cmove:
+            maximagecounter = 8;
+            ImageCounter = 0; sha8al = true;
+            break;
+        case state::hit:
+            maximagecounter = 3;
+            ImageCounter = 0;
+
+            ishit = false;
+            break;
+        }
     }
-     
+
+    switch (curr_state) {
+    case state::run:maximagecounter = 8; Player.setTexture(RunAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
+    case state::walk: maximagecounter = 8; Player.setTexture(walkAnimation[ImageCounter]); UpdateAnimationCounter(0.2); break;
+    case state::idle: Player.setTexture(Idle); UpdateAnimationCounter(0.1); break;
+    case state::base: Player.setTexture(BaseAttack[ImageCounter]); UpdateAnimationCounter(0.08); break;//0.12
+    case state::zmove: Player.setTexture(Zmove[ImageCounter]); UpdateAnimationCounter(0.11); break;
+    case state::xmove: Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
+    case state::cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
+    case state::hit: Player.setTexture(HitAnimation[ImageCounter]); UpdateAnimationCounter(0.05); break;
+    }
+
 }
 
-void UpdateAnimationCounter(float st )
+void UpdateAnimationCounter(float st)
 {
-     AnimationCounter += playerdeltatime;
-     if (AnimationCounter >= st)
-     {
+    AnimationCounter += playerdeltatime;
+    if (AnimationCounter >= st)
+    {
         AnimationCounter = 0;
         ImageCounter++;
         if (ImageCounter >= maximagecounter)
-        {       
+        {
             if (ishit)
                 ishit = false;
-            if (sha8al) 
-            sha8al = false;
+            if (sha8al)
+                sha8al = false;
             ImageCounter = 0;
-          
+
         }
-     }
-    
+    }
+
 }
 
 void menu_handler()
@@ -381,7 +390,7 @@ void menu_handler()
         {
             while (window.isOpen())
             {
-                
+
                 Event event;
                 while (window.pollEvent(event)) {
                     if (event.type == Event::Closed) {
@@ -428,7 +437,7 @@ void menu_handler()
     }
 }
 
-void Game_play(RenderWindow& window) 
+void Game_play(RenderWindow& window)
 {
     while (window.isOpen()) {
         float elapsed = GameClock.restart().asSeconds();
@@ -441,7 +450,7 @@ void Game_play(RenderWindow& window)
         }
         update();
         Draw();
-       // cout << Player.getPosition().x << " " << Player.getPosition().y << endl;
+        // cout << Player.getPosition().x << " " << Player.getPosition().y << endl;
         cout << Player_Health << endl;
     }
 }
@@ -468,7 +477,7 @@ void Instructions_Menu(RenderWindow& window) {
 
 
 void PauseMenuHandler(RenderWindow& window)
-{   
+{
     while (window.isOpen()) {
         Event event;
         while (window.pollEvent(event)) {
@@ -476,9 +485,9 @@ void PauseMenuHandler(RenderWindow& window)
                 window.close();
             }
         }
-         view.setCenter(960,540); //update
-         window.setView(view);
-        
+        view.setCenter(960, 540); //update
+        window.setView(view);
+
         if (Keyboard::isKeyPressed(Keyboard::Up)) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 pause.moveup();
@@ -492,8 +501,8 @@ void PauseMenuHandler(RenderWindow& window)
                 GameClock.restart();
             }
         }
-        
-        
+
+
         if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 0) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 GameClock.restart();
@@ -506,9 +515,9 @@ void PauseMenuHandler(RenderWindow& window)
                 // options menu
             }
         }
-        if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 2) { 
-            if (GameClock.getElapsedTime().asSeconds() > 0.2) { 
-                GameClock.restart();  
+        if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 2) {
+            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                GameClock.restart();
                 game_reset();
                 break;
             }
@@ -521,13 +530,13 @@ void PauseMenuHandler(RenderWindow& window)
                 menu_handler();
             }
         }
- 
-        window.clear(); 
+
+        window.clear();
         window.draw(pausemenu);
         pause.draw(window);
         window.display();
     }
-    
+
 }
 void game_reset() {
     int Player_Health = 100;
@@ -535,9 +544,8 @@ void game_reset() {
     float AnimationCounter = 0;
     int maximagecounter = 0;
     int ImageCounter = 0;
-    int globalInt = 0; 
-    int number_of_BODmonsters = 1; 
+    int globalInt = 0;
+    int number_of_BODmonsters = 1;
     float playerdeltatime = 0;
     SetMonsters();
 }
-

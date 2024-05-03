@@ -5,8 +5,9 @@
 extern int globalInt;  // Declaration
 extern Clock GameClock;
 
-extern const int number_of_zombies;
-extern Zombie zombies[];
+extern const int number_of_BODmonsters;
+extern BringerOfDeath BODmonsters[];
+extern BringerOfDeath BODoriginal;
 extern bool showBODSpell,BODalive;
 extern Sprite Player;
 extern float playerdeltatime;

@@ -33,7 +33,7 @@ Menu menu(1920, 1080);
 PauseMenu pause(1920, 1080);
 Clock pausetimer;
 View view(Vector2f(0, 0), Vector2f(1920, 1080));
-
+Vector2f initial_position(-500, 7000);
 // Textures
 Texture Idle;
 Texture RunAnimation[8];
@@ -201,7 +201,7 @@ void setTextures()
     Player.setTexture(Idle);
     Player.setScale(0.2, 0.2);
     Player.setOrigin(Idle.getSize().x / 2, Idle.getSize().y / 2);
-    Player.setPosition(-500, 7000);
+    Player.setPosition(initial_position);
 
     // walls
     border2.setPosition(1500, 0);
@@ -472,6 +472,7 @@ void PauseMenuHandler(RenderWindow& window)
             if (GameClock.getElapsedTime().asSeconds() > 0.2) { 
                 GameClock.restart();  
                 game_reset();
+                break;
             }
         }
         if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 3) {
@@ -492,6 +493,7 @@ void PauseMenuHandler(RenderWindow& window)
 }
 void game_reset() {
     int Player_Health = 100;
+    Player.setPosition(initial_position);
     float AnimationCounter = 0;
     int maximagecounter = 0;
     int ImageCounter = 0;

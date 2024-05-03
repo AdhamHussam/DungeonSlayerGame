@@ -5,7 +5,7 @@
 enum BOD {
     BODwalk, BODattack, BODcast, BODhurt, BODdie
 };
-BOD BODstate = BOD::BODwalk;
+
 
 // animation counters
 int MovmentCounter;
@@ -166,18 +166,19 @@ void MonstersMovment() {
 
 // set monsters at the begining of the wave
 void SetMonsters() {
-    for(int i=0;i<3;i++){
+    
 
 
-    BODalive = true;
-    zombies[0].health = 10;
-    BODstate = BOD::BODwalk;
-    zombies[0].texture.loadFromFile("enemies/Bringer-Of-Death/SpriteSheet/Bringer-of-Death-SpritSheet.png");
-    zombies[0].spell.setTexture(zombies[0].texture);
-    zombies[0].spell.setTextureRect(getRect(48));
-    zombies[0].spell.setScale(2, 2);
-    zombies[0].zombie.setTexture(zombies[0].texture);
-    zombies[0].zombie.setTextureRect(getRect(0));
-    zombies[0].zombie.setOrigin(105, 62);
-    zombies[0].zombie.setPosition(500, 7000);
+        BODalive = true;
+        zombies[0].health = 10;
+        BODstate = BOD::BODwalk;
+        zombies[0].texture.loadFromFile("enemies/Bringer-Of-Death/SpriteSheet/Bringer-of-Death-SpritSheet.png");
+        zombies[0].spell.setTexture(zombies[0].texture);
+        zombies[0].spell.setTextureRect(getRect(48));
+        zombies[0].spell.setScale(2, 2);
+        zombies[0].zombie.setTexture(zombies[0].texture);
+        zombies[0].zombie.setTextureRect(getRect(0));
+        zombies[0].zombie.setOrigin(105, 62);
+        zombies[0].zombie.setPosition(500, 7000);
+    
 }

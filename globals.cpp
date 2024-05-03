@@ -17,3 +17,9 @@ enum state
 };
 state curr_state = state::idle, player_base = state::base, player_zmove = state::zmove, player_xmove = state::xmove, player_cmove = state::cmove;
 state player_idle = state::idle, player_run = state::run, player_hit = state::hit, player_dead = state::dead, player_walk = state::walk;
+
+
+enum BOD {
+    BODwalk, BODattack, BODcast, BODhurt, BODdie
+};
+BOD BODstate = BOD::BODwalk, BODattacks = BOD::BODattack;

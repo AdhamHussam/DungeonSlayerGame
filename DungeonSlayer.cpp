@@ -15,10 +15,11 @@ enum state
 int pagenum = 69;
 
 
+
 // player attributes
 int walk_speed = 100;
 int run_speed = 200;
-int Player_Health = 100;
+int Player_Health = 1000;
 Vector2f velocity = { 0, 0 };
 float AnimationCounter = 0;
 int maximagecounter = 0;
@@ -96,7 +97,7 @@ void update()
             pausetimer.restart();
         }
     }
-    //checkCollisions();
+    checkCollisions();
 }
 
 
@@ -233,11 +234,24 @@ void setTextures()
     for (int i = 0; i < 8; i++) {
         BaseAttack[i].loadFromFile("base/Base" + to_string(i) + ".png");
     }
+    for (int i = 0; i < 3; i++) {
+        HitAnimation[i].loadFromFile("hit/Hit" + to_string(i) + ".png");
+    }
 }
 
 
 void checkCollisions()
 {
+
+
+
+   if (BODstate == BODattacks) {
+
+        Player_Health -= playerdeltatime/150;
+      //  ishit= true;
+
+
+    }
     
 }
 
@@ -251,7 +265,7 @@ void trackView()
 
 void Switch_States()
 {  
-     if (!sha8al) {
+     if (!sha8al){
 
          if ((Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W)) && Keyboard::isKeyPressed(Keyboard::LShift))
          {
@@ -261,6 +275,7 @@ void Switch_States()
          {
              curr_state = state::walk;
          }
+
          else
          {
              curr_state = state::idle;
@@ -282,11 +297,22 @@ void Switch_States()
          {
              curr_state = state::cmove;
          }
+        
       
          if (Player_Health <= 0)
          {
              curr_state = state::dead;
+
+
          }
+         if (ishit)
+         {
+             curr_state = state::hit;
+
+
+         }
+        
+    
 
           switch (curr_state)
           {    
@@ -306,6 +332,12 @@ void Switch_States()
                    maximagecounter = 8;
                    ImageCounter = 0; sha8al = true; 
                    break;
+             case state::hit:
+                   maximagecounter = 3;
+                   ImageCounter = 0;
+                   
+                   ishit = false;
+                   break; 
           }
      }
 
@@ -317,7 +349,7 @@ void Switch_States()
         case state::zmove: Player.setTexture(Zmove[ImageCounter]); UpdateAnimationCounter(0.11); break;
         case state::xmove: Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
         case state::cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
-
+        case state::hit: Player.setTexture(HitAnimation[ImageCounter]); UpdateAnimationCounter(0.05); break;
     }
      
 }
@@ -330,10 +362,13 @@ void UpdateAnimationCounter(float st )
         AnimationCounter = 0;
         ImageCounter++;
         if (ImageCounter >= maximagecounter)
-        {        
+        {       
+            if (ishit)
+                ishit = false;
             if (sha8al) 
             sha8al = false;
             ImageCounter = 0;
+          
         }
      }
     
@@ -346,6 +381,7 @@ void menu_handler()
         {
             while (window.isOpen())
             {
+                
                 Event event;
                 while (window.pollEvent(event)) {
                     if (event.type == Event::Closed) {
@@ -406,6 +442,7 @@ void Game_play(RenderWindow& window)
         update();
         Draw();
        // cout << Player.getPosition().x << " " << Player.getPosition().y << endl;
+        cout << Player_Health << endl;
     }
 }
 

@@ -482,26 +482,7 @@ void PauseMenuHandler(RenderWindow& window)
                 menu_handler();
             }
         }
-        if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 1) {
-            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
-                GameClock.restart();
-                // options menu
-            }
-        }
-        if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 2) { 
-            if (GameClock.getElapsedTime().asSeconds() > 0.2) { 
-                GameClock.restart();  
-                // restart game then go to Game_Play funcion
-            }
-        }
-        if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 3) {
-            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
-                GameClock.restart();
-                pagenum = 69;
-                // restart game then go to main menu
-                menu_handler();
-            }
-        }
+ 
         window.clear(); 
         window.draw(pausemenu);
         pause.draw(window);

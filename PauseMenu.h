@@ -9,14 +9,11 @@ public:
     void draw(RenderWindow& window);
     void moveup();
     void movedown();
-
+    int selectedp; 
     void setSelected(int n);
-    int pressed() {
-        return selectedp;
-
-    }
+    
     ~PauseMenu();
-    int selectedp;
+    
 private:
     Font Pfont;
 };

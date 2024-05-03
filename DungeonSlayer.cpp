@@ -19,7 +19,7 @@ int pagenum = 69;
 // player attributes
 int walk_speed = 100;
 int run_speed = 200;
-int Player_Health = 1000;
+int Player_Health = 10000;
 Vector2f velocity = { 0, 0 };
 float AnimationCounter = 0;
 int maximagecounter = 0;
@@ -239,22 +239,19 @@ void setTextures()
     }
 }
 
-
+int i = 1;
 void checkCollisions()
 {
-    if (zombies[0].zombie.getGlobalBounds().intersects(Player.getGlobalBounds())) {
-
-        ishit = true;
-
-    }
+    
 
 
-   if (BODstate == BODattacks) {
+   if(BODmonsters[0].BOD.getGlobalBounds().intersects(Player.getGlobalBounds()))
+     if (BODstate == BODattacks) {
 
-    }
-    /* if (BODstate == BODattacks) {
-
-          Player_Health -= playerdeltatime/150;
+          Player_Health -= 2/i;
+          i++;
+          if (i >= 20)
+              i = i % 20 + 1;
         //  ishit= true;
 
 
@@ -312,12 +309,12 @@ void Switch_States()
 
 
         }
-        if (ishit)
+       /* if (ishit)
         {
             curr_state = state::hit;
 
 
-        }
+        }*/
 
 
 

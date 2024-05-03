@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DungeonSlayer.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Monsters.cpp" />
     <ClCompile Include="globals.cpp" />

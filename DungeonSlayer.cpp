@@ -72,7 +72,7 @@ void Draw();
 void MonstersMovment();
 void SetMonsters();
 void UpdateAnimationCounter(float st = 0.1);
-
+void game_reset();
 // Main 
 int main()
 {
@@ -472,14 +472,14 @@ void PauseMenuHandler(RenderWindow& window)
         if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 2) { 
             if (GameClock.getElapsedTime().asSeconds() > 0.2) { 
                 GameClock.restart();  
-                // restart game
+                game_reset();
             }
         }
         if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 3) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 GameClock.restart();
                 pagenum = 69;
-                // restart game
+                game_reset();
                 menu_handler();
             }
         }
@@ -489,5 +489,16 @@ void PauseMenuHandler(RenderWindow& window)
         window.display();
     }
     
-
+}
+void game_reset() {
+    zombies[0].zombie.setPosition(500, 7000);
+    int Player_Health = 100;
+    float AnimationCounter = 0;
+    int maximagecounter = 0;
+    int ImageCounter = 0;
+    int globalInt = 0; 
+    int number_of_zombies = 1; 
+    float playerdeltatime = 0;
+    BODalive = true;
+    zombies[0].health = 10; 
 }

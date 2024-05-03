@@ -151,6 +151,7 @@ void MonstersMovment() {
 void SetMonsters() {
     BODalive = true;
     zombies[0].zombie.setPosition(500, 500);
+    zombies[0].health = 10;
     zombies[0].texture.loadFromFile("enemies/Bringer-Of-Death/SpriteSheet/Bringer-of-Death-SpritSheet.png");
     zombies[0].spell.setTexture(zombies[0].texture);
     zombies[0].spell.setTextureRect(getRect(48));

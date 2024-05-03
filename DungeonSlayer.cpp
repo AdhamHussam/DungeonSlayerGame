@@ -97,6 +97,7 @@ void update()
     //checkCollisions();
 }
 
+
 void Draw()
 {
     window.clear();
@@ -168,6 +169,7 @@ void playerMovement()
 
 }
 
+
 void setTextures()
 {
     // Menu   
@@ -227,16 +229,19 @@ void setTextures()
     }
 }
 
+
 void checkCollisions()
 {
     
 }
+
 
 void trackView()
 {  
     view.setCenter(Player.getPosition()); //update
     window.setView(view);
 }
+
 
 void Switch_States()
 {  
@@ -397,11 +402,15 @@ void Game_play(RenderWindow& window)
        // cout << Player.getPosition().x << " " << Player.getPosition().y << endl;
     }
 }
+
+
 void Instructions_Draw() {
     window.clear();
     window.draw(Instructions);
     window.display();
 }
+
+
 void Instructions_Menu(RenderWindow& window) {
     while (window.isOpen()) {
         Instructions_Draw();
@@ -412,6 +421,7 @@ void Instructions_Menu(RenderWindow& window) {
     }
 
 }
+
 
 void PauseMenuHandler(RenderWindow& window)
 {   
@@ -471,6 +481,5 @@ void PauseMenuHandler(RenderWindow& window)
         pause.draw(window);
         window.display();
     }
-
 
 }

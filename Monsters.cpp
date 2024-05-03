@@ -104,14 +104,18 @@ void MonstersMovment() {
 
 // set monsters at the begining of the wave
 void SetMonsters() {
+    for(int i=0;i<3;i++){
+
+
     BODalive = true;
-    zombies[0].zombie.setPosition(500, 500);
-    zombies[0].texture.loadFromFile("enemies/Bringer-Of-Death/SpriteSheet/Bringer-of-Death-SpritSheet.png");
-    zombies[0].spell.setTexture(zombies[0].texture);
-    zombies[0].spell.setTextureRect(getRect(48));
-    zombies[0].spell.setScale(2, 2);
-    zombies[0]. zombie.setTexture(zombies[0].texture);
-    zombies[0].zombie.setTextureRect(getRect(0));
-    zombies[0].zombie.setOrigin(105, 62);
-    zombies[0].zombie.setPosition(500, 7000);
+    zombies[i].zombie.setPosition(500, 500);
+    zombies[i].texture.loadFromFile("enemies/Bringer-Of-Death/SpriteSheet/Bringer-of-Death-SpritSheet.png");
+    zombies[i].spell.setTexture(zombies[0].texture);
+    zombies[i].spell.setTextureRect(getRect(48));
+    zombies[i].spell.setScale(2, 2);
+    zombies[i]. zombie.setTexture(zombies[0].texture);
+    zombies[i].zombie.setTextureRect(getRect(0));
+    zombies[i].zombie.setOrigin(105, 62);
+    zombies[i].zombie.setPosition(500, 7000);
+}
 }

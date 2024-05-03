@@ -6,7 +6,7 @@
 int globalInt = 0;  // Definition
 Clock GameClock;
 
-const int number_of_zombies = 1;
+const int number_of_zombies = 3;
 Zombie zombies[number_of_zombies];
 bool showBODSpell, BODalive;
 Sprite Player;

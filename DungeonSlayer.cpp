@@ -106,7 +106,9 @@ void Draw()
         window.draw(zombies[0].zombie);
         if (showBODSpell)
             window.draw(zombies[0].spell);
+
     }
+   
     window.display();
 }
 

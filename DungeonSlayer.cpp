@@ -54,8 +54,7 @@ Sprite Room;
 Texture pausebg;
 Sprite pausemenu;
 Sprite Map1;
-Texture pausebg;
-Sprite pausemenu;
+
 // Room 0 Borders
 RectangleShape border1(Vector2f({ 150,1080 }));RectangleShape border2(Vector2f({ 150,1080 }));RectangleShape border3(Vector2f({ 2000,100 }));RectangleShape border4(Vector2f({ 1000,100 }));RectangleShape border5(Vector2f({ 1000,100 }));
 
@@ -398,7 +397,7 @@ void Game_play(RenderWindow& window)
         float elapsed = GameClock.restart().asSeconds();
         playerdeltatime = elapsed;
         Event Play;
-        while (window.pollEvent(Play)) {
+        while (window.pollEvent(Play)) {zombies[0].health = 10;
             if (Play.type == Event::Closed) {
                 window.close();
             }
@@ -523,4 +522,3 @@ void game_reset() {
     zombies[0].health = 10; 
 }
 
-}

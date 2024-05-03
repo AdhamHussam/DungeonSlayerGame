@@ -190,7 +190,7 @@ void setTextures()
     pausemenu.setTexture(pausebg);
     pausemenu.setScale(0.5, 0.5);
     // Room
-    map1.loadFromFile("lvl1.png");
+    map1.loadFromFile("lvl2.png");
     Map1.setTexture(map1);
     Map1.setScale(3.8, 3.333);
     Map1.setOrigin(map1.getSize().x / 2, map1.getSize().y / 2);
@@ -212,7 +212,6 @@ void setTextures()
     // monsters
     SetMonsters();
 
-    Player.setPosition(-500, 7000);
     for (int i = 0; i < 8; i++) {
         RunAnimation[i].loadFromFile("Run/run" + to_string(i) + ".png");
     }

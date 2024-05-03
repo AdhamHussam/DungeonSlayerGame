@@ -242,10 +242,7 @@ void setTextures()
 
 void checkCollisions()
 {
-
-
-
-   if (BODstate == BODattacks) {
+   if (BODstate == BODattacks ) {
 
         Player_Health -= playerdeltatime/150;
       //  ishit= true;

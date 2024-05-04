@@ -31,7 +31,7 @@ void UpdateMonsterAnimationCounter(float st = 0.15){
 // make monster walk
 void walk(int x, int y) {
     BODmonsters[0].BOD.setTextureRect(getRect(8 + MovmentCounter));
-    BODmonsters[0].BOD.move(((abs(x) > 1) ? ((x > 0) ? BODmonsters[0].speed : -BODmonsters[0].speed) : 0), ((y < 0) ? BODmonsters[0].speed : -BODmonsters[0].speed));
+    BODmonsters[0].BOD.move(((abs(x) > 1) ? ((x > 0) ? BODmonsters[0].speed*playerdeltatime : -BODmonsters[0].speed* playerdeltatime) : 0), ((y < 0) ? BODmonsters[0].speed* playerdeltatime : -BODmonsters[0].speed* playerdeltatime));
     UpdateMonsterAnimationCounter();
     MovmentCounter %= 8;
 }

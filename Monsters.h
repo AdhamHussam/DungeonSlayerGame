@@ -7,5 +7,5 @@ struct BringerOfDeath
 	Texture texture;
 
 	int health = 10;
-	float speed = 0.1, cooldown = 5;
+	int speed = 100, cooldown = 5;
 };

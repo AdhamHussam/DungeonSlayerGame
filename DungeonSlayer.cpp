@@ -238,20 +238,22 @@ void setTextures()
     for (int i = 0; i < 3; i++) {
         HitAnimation[i].loadFromFile("hit/Hit" + to_string(i) + ".png");
     }
+    for (int i = 0; i < 3; i++) {
+        DeathAnimation[i].loadFromFile("Dead/Dead" + to_string(i) + ".png");
+    }
 }
 
 
 void checkHit()
 {
-   if(BODmonsters[0].BOD.getGlobalBounds().intersects(Player.getGlobalBounds()) && BODstate == BODattacks && !ishit)
+    if (BODmonsters[0].BOD.getGlobalBounds().intersects(Player.getGlobalBounds()) && BODstate == BODattacks && !ishit && (curr_state == state::idle || curr_state == state::run || curr_state == state::walk ))
    {
        if  (attacktimer.getElapsedTime().asSeconds() > 0.5) {
             ishit = true;
             if (attacktimer.getElapsedTime().asSeconds() > 2) {
                 Player_Health -= 5;
                 attacktimer.restart();
-            }
-           
+            }       
        }
    }
 
@@ -330,6 +332,10 @@ void Switch_States()
             maximagecounter = 3;
             ImageCounter = 0; sha8al = true;
             break;
+        case state::dead:
+            maximagecounter = 3;
+            ImageCounter = 0; sha8al = true;
+            break;
         }
     }
 
@@ -341,6 +347,7 @@ void Switch_States()
     case state::zmove: Player.setTexture(Zmove[ImageCounter]); UpdateAnimationCounter(0.11); break;
     case state::xmove: Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
     case state::cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
+    case state::dead: Player.setTexture(DeathAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
     //case state::hit:Player.setTexture(HitAnimation[ImageCounter]); UpdateAnimationCounter(0.05); break;    
     }
     if (curr_state == state::hit) {

@@ -40,13 +40,16 @@ void walk(int x, int y) {
 void attack(int x,int y) {
     BODmonsters[0].BOD.setTextureRect(getRect(16 + MovmentCounter));
     UpdateMonsterAnimationCounter();
+    if (MovmentCounter == 5 ) {
+        if (abs(x) < 200 && abs(y) < 30) {
+            Player_Health -= 5;
+            ishit = true;
+        }
+    }
     if (MovmentCounter == 10) {
         MovmentCounter = 0;
         BODstate = BOD::BODwalk;
-        if (abs(x) < 200 && abs(y) < 30) {
-            ishit = true;
-            Player_Health -= 5;
-        }
+  
     }
 }
 

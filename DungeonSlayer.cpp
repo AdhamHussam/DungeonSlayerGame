@@ -19,7 +19,7 @@ int pagenum = 69;
 // player attributes
 int walk_speed = 100;
 int run_speed = 200;
-int Player_Health = 10000;
+int Player_Health = 100;
 Vector2f velocity = { 0, 0 };
 float AnimationCounter = 0;
 int maximagecounter = 0;
@@ -33,6 +33,7 @@ RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer");
 Menu menu(1920, 1080);
 PauseMenu pause(1920, 1080);
 Clock pausetimer;
+Clock attacktimer;
 View view(Vector2f(0, 0), Vector2f(1920, 1080));
 Vector2f initial_position(-500, 7000);
 // Textures
@@ -70,12 +71,13 @@ void update();
 void trackView();
 void playerMovement();
 void setTextures();
-void checkCollisions();
+void checkHit();
 void Draw();
 void MonstersMovment();
 void SetMonsters();
 void UpdateAnimationCounter(float st = 0.1);
 void game_reset();
+
 // Main 
 int main()
 {
@@ -90,6 +92,7 @@ void update()
     Switch_States();
     trackView();
     playerMovement();
+    checkHit();
     MonstersMovment();
     if (Keyboard::isKeyPressed(Keyboard::Escape)) {
         if (pausetimer.getElapsedTime().asSeconds() > 0.2) {
@@ -97,7 +100,6 @@ void update()
             pausetimer.restart();
         }
     }
-    checkCollisions();
 }
 
 
@@ -110,7 +112,6 @@ void Draw()
         window.draw(BODmonsters[0].BOD);
         if (showBODSpell)
             window.draw(BODmonsters[0].spell);
-
     }
 
     window.display();
@@ -193,7 +194,7 @@ void setTextures()
     pausemenu.setTexture(pausebg);
     pausemenu.setScale(0.5, 0.5);
     // Room
-    map1.loadFromFile("lvl2.png");
+    map1.loadFromFile("lvl1.png");
     Map1.setTexture(map1);
     Map1.setScale(3.8, 3.333);
     Map1.setOrigin(map1.getSize().x / 2, map1.getSize().y / 2);
@@ -239,24 +240,21 @@ void setTextures()
     }
 }
 
-int i = 1;
-void checkCollisions()
+
+void checkHit()
 {
-    
+   if(BODmonsters[0].BOD.getGlobalBounds().intersects(Player.getGlobalBounds()) && BODstate == BODattacks && !ishit)
+   {
+       if  (attacktimer.getElapsedTime().asSeconds() > 0.5) {
+            ishit = true;
+            if (attacktimer.getElapsedTime().asSeconds() > 2) {
+                Player_Health -= 5;
+                attacktimer.restart();
+            }
+           
+       }
+   }
 
-
-   if(BODmonsters[0].BOD.getGlobalBounds().intersects(Player.getGlobalBounds()))
-     if (BODstate == BODattacks) {
-
-          Player_Health -= 2/i;
-          i++;
-          if (i >= 20)
-              i = i % 20 + 1;
-        //  ishit= true;
-
-
-    }
-    
 }
 
 
@@ -270,7 +268,6 @@ void trackView()
 void Switch_States()
 {
     if (!sha8al) {
-
         if ((Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W)) && Keyboard::isKeyPressed(Keyboard::LShift))
         {
             curr_state = state::run;
@@ -279,7 +276,6 @@ void Switch_States()
         {
             curr_state = state::walk;
         }
-
         else
         {
             curr_state = state::idle;
@@ -301,21 +297,15 @@ void Switch_States()
         {
             curr_state = state::cmove;
         }
-
-
+        if (ishit)
+        {
+            curr_state = state::hit;
+        }
         if (Player_Health <= 0)
         {
             curr_state = state::dead;
-
-
         }
-       /* if (ishit)
-        {
-            curr_state = state::hit;
-
-
-        }*/
-
+      
 
 
         switch (curr_state)
@@ -338,9 +328,7 @@ void Switch_States()
             break;
         case state::hit:
             maximagecounter = 3;
-            ImageCounter = 0;
-
-            ishit = false;
+            ImageCounter = 0; sha8al = true;
             break;
         }
     }
@@ -353,9 +341,14 @@ void Switch_States()
     case state::zmove: Player.setTexture(Zmove[ImageCounter]); UpdateAnimationCounter(0.11); break;
     case state::xmove: Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
     case state::cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
-    case state::hit: Player.setTexture(HitAnimation[ImageCounter]); UpdateAnimationCounter(0.05); break;
+    //case state::hit:Player.setTexture(HitAnimation[ImageCounter]); UpdateAnimationCounter(0.05); break;    
     }
-
+    if (curr_state == state::hit) {
+        if (attacktimer.getElapsedTime().asSeconds() > 0.5) {
+            Player.setTexture(HitAnimation[ImageCounter]);
+            UpdateAnimationCounter(0.025);
+        }
+    }
 }
 
 void UpdateAnimationCounter(float st)
@@ -367,10 +360,8 @@ void UpdateAnimationCounter(float st)
         ImageCounter++;
         if (ImageCounter >= maximagecounter)
         {
-            if (ishit)
-                ishit = false;
-            if (sha8al)
-                sha8al = false;
+            ishit = false;
+            if (sha8al) sha8al = false;
             ImageCounter = 0;
 
         }
@@ -385,7 +376,6 @@ void menu_handler()
         {
             while (window.isOpen())
             {
-
                 Event event;
                 while (window.pollEvent(event)) {
                     if (event.type == Event::Closed) {
@@ -468,7 +458,6 @@ void Instructions_Menu(RenderWindow& window) {
     }
 
 }
-
 
 
 void PauseMenuHandler(RenderWindow& window)

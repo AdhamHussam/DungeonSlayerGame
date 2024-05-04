@@ -13,6 +13,11 @@ enum state
 
 // menu number
 int pagenum = 69;
+int doors = 2;
+int right_walls = 6;
+int left_walls = 6;
+int up_walls = 6;
+int down_walls = 5;
 
 
 
@@ -25,6 +30,7 @@ int maximagecounter = 0;
 int ImageCounter = 0;
 bool sha8al = false;
 bool isAttack = false;
+bool ispassing = false;
 bool finishedanimationonce = false;
 
 RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer");
@@ -56,7 +62,43 @@ Sprite pausemenu;
 Sprite Map1;
 
 // Room 0 Borders
-RectangleShape border1(Vector2f({ 150,1080 })); RectangleShape border2(Vector2f({ 150,1080 })); RectangleShape border3(Vector2f({ 2000,100 })); RectangleShape border4(Vector2f({ 1000,100 })); RectangleShape border5(Vector2f({ 1000,100 }));
+RectangleShape gate1(Vector2f({ 1,1 }));
+RectangleShape gate2(Vector2f({ 1,1 }));
+
+RectangleShape borderR1(Vector2f({ 100,1000 }));
+RectangleShape borderR2(Vector2f({ 50,200 }));
+RectangleShape borderR3(Vector2f({ 50,800 }));
+RectangleShape borderR4(Vector2f({ 50,100 }));
+RectangleShape borderR5(Vector2f({ 50,1000 }));
+RectangleShape borderR6(Vector2f({ 50,200 }));
+
+RectangleShape borderL1(Vector2f({ 50,1000 })); 
+RectangleShape borderL2(Vector2f({ 50,200 })); 
+RectangleShape borderL3(Vector2f({ 50,800 })); 
+RectangleShape borderL4(Vector2f({ 50, 100 })); 
+RectangleShape borderL5(Vector2f({ 50, 1000 }));
+RectangleShape borderL6(Vector2f({ 50, 200 }));
+
+
+RectangleShape borderU1(Vector2f({ 700,50 }));
+RectangleShape borderU2(Vector2f({ 700,50 }));
+RectangleShape borderU3(Vector2f({ 100,50 }));
+RectangleShape borderU4(Vector2f({ 100,50 }));
+RectangleShape borderU5(Vector2f({ 900,50 }));
+RectangleShape borderU6(Vector2f({ 900,50 }));
+
+RectangleShape borderD1(Vector2f({ 2000,50 }));
+RectangleShape borderD2(Vector2f({ 700,50 }));
+RectangleShape borderD3(Vector2f({ 700,50 }));
+RectangleShape borderD4(Vector2f({ 100,50 }));
+RectangleShape borderD5(Vector2f({ 100,50 }));
+
+RectangleShape gates[] = { gate1, gate2 };
+RectangleShape right_borders[] = { borderR1 , borderR2 , borderR3 , borderR4 ,borderR5, borderR6};
+RectangleShape left_borders[] = { borderL1,borderL2 , borderL3 , borderL4, borderL5 , borderL6};
+RectangleShape up_borders[] = { borderU1, borderU2 , borderU3 , borderU4, borderU5, borderU6};
+RectangleShape down_borders[] = { borderD1,borderD2, borderD3 , borderD4, borderD5};
+
 
 // Game functions
 void menu_handler();
@@ -69,7 +111,7 @@ void update();
 void trackView();
 void playerMovement();
 void setTextures();
-// void checkHit();
+void checkCollisions();
 void Draw();
 void MonstersMovment();
 void SetMonsters();
@@ -89,8 +131,8 @@ void update()
 {
     Switch_States();
     trackView();
+    checkCollisions();
     playerMovement();
-//    checkHit();
     MonstersMovment();
     if (Keyboard::isKeyPressed(Keyboard::Escape)) {
         if (pausetimer.getElapsedTime().asSeconds() > 0.2) {
@@ -100,79 +142,37 @@ void update()
     }
 }
 
-
-void Draw()
-{
-    window.clear();
-    window.draw(Map1);
-    window.draw(Player);
-    if (BODalive) {
-        window.draw(BODmonsters[0].BOD);
-        if (showBODSpell)
-            window.draw(BODmonsters[0].spell);
-    }
-
-    window.display();
-}
-
-void playerMovement()
+void checkCollisions() 
 {
 
-    if (Keyboard::isKeyPressed(Keyboard::W) && Keyboard::isKeyPressed(Keyboard::LShift))
-    {
-        velocity.y = -run_speed * playerdeltatime;
+    if (Player.getGlobalBounds().intersects(gate1.getGlobalBounds())) ispassing = true;
+    else ispassing = false;
+    // right
+    for (int i = 0; i < right_walls; i++) {
+        if (Keyboard::isKeyPressed(Keyboard::D) && Player.getGlobalBounds().intersects(right_borders[i].getGlobalBounds())) {
+            velocity.x = 0;
+        }
     }
-    else if (Keyboard::isKeyPressed(Keyboard::S) && Keyboard::isKeyPressed(Keyboard::LShift))
-    {
-
-        velocity.y = run_speed * playerdeltatime;
+    //left
+    for (int i = 0; i < left_walls; i++) {
+        if (Keyboard::isKeyPressed(Keyboard::A) && Player.getGlobalBounds().intersects(left_borders[i].getGlobalBounds())) {
+            velocity.x = 0;
+        }
     }
-    else {
-        velocity.y = 0;
+    // up
+    for (int i = 0; i < up_walls; i++) {
+        if (Keyboard::isKeyPressed(Keyboard::W) && Player.getGlobalBounds().intersects(up_borders[i].getGlobalBounds())) {
+            velocity.y = 0;
+        }
     }
-    if (Keyboard::isKeyPressed(Keyboard::A) && Keyboard::isKeyPressed(Keyboard::LShift))
-    {
-        Player.setScale(-0.2, 0.2);
-        velocity.x = -run_speed * playerdeltatime;
+    //down
+    for (int i = 0; i < down_walls; i++) {
+        if (Keyboard::isKeyPressed(Keyboard::S) && Player.getGlobalBounds().intersects(down_borders[i].getGlobalBounds())) {
+            velocity.y = 0;
+        }
     }
-    else if (Keyboard::isKeyPressed(Keyboard::D) && Keyboard::isKeyPressed(Keyboard::LShift))
-    {
-        Player.setScale(0.2, 0.2);
-        velocity.x = run_speed * playerdeltatime;
-    }
-    else {
-        velocity.x = 0;
-    }
-    Player.move(velocity);
-    if (Keyboard::isKeyPressed(Keyboard::W))
-    {
-        velocity.y = -walk_speed * playerdeltatime;
-    }
-    else if (Keyboard::isKeyPressed(Keyboard::S))
-    {
-        velocity.y = walk_speed * playerdeltatime;
-    }
-    else {
-        velocity.y = 0;
-    }
-    if (Keyboard::isKeyPressed(Keyboard::A))
-    {
-        Player.setScale(-0.2, 0.2);
-        velocity.x = -walk_speed * playerdeltatime;
-    }
-    else if (Keyboard::isKeyPressed(Keyboard::D))
-    {
-        Player.setScale(0.2, 0.2);
-        velocity.x = walk_speed * playerdeltatime;
-    }
-    else {
-        velocity.x = 0;
-    }
-
-    Player.move(velocity);
-
+  
 }
-
 
 void setTextures()
 {
@@ -206,10 +206,40 @@ void setTextures()
     Player.setPosition(initial_position);
 
     // walls
-    border2.setPosition(1500, 0);
-    border3.setPosition(0, 1035);
-    border4.setPosition(-150, 150);
-    border5.setPosition(1050, 150);
+
+    gate1.setPosition(-60, 6500);
+    gate2.setPosition(-60, 4600);
+    gates[0].setPosition(-60, 6500);
+    gates[1].setPosition(-60, 4600);
+
+    right_borders[0].setPosition(650, 6700);
+    right_borders[1].setPosition(100, 6330);
+    right_borders[2].setPosition(880, 5650);
+    right_borders[3].setPosition(750, 5525);
+    right_borders[4].setPosition(1050, 4750);
+    right_borders[5].setPosition(100, 4450);
+
+    left_borders[0].setPosition(-990, 6700);
+    left_borders[1].setPosition(-250, 6330);
+    left_borders[2].setPosition(-1050, 5650);
+    left_borders[3].setPosition(-925,5525);
+    left_borders[4].setPosition(-1225,4750);
+    left_borders[5].setPosition(-250,4450);
+    
+    up_borders[0].setPosition(-1000, 6500);
+    up_borders[1].setPosition(120, 6500);
+    up_borders[2].setPosition(-1000, 5600);
+    up_borders[3].setPosition(800, 5600);
+    up_borders[4].setPosition(-1150, 4700);
+    up_borders[5].setPosition(125 , 4700);
+
+    down_borders[0].setPosition(-900, 7450);
+    down_borders[1].setPosition(-970, 6300);
+    down_borders[2].setPosition(130, 6300);
+    down_borders[3].setPosition(-975, 5500);
+    down_borders[4].setPosition(750, 5500);
+   
+
 
     // monsters
     SetMonsters();
@@ -241,21 +271,96 @@ void setTextures()
     }
 }
 
-
-/*void checkHit()
+void Draw()
 {
-    if (BODmonsters[0].BOD.getGlobalBounds().intersects(Player.getGlobalBounds()) && BODstate == BODattacks && !ishit )
-   {
-       if  (attacktimer.getElapsedTime().asSeconds() > 0.5) {
-            ishit = true;
-            if (attacktimer.getElapsedTime().asSeconds() > 2) {
-                Player_Health -= 5;
-                attacktimer.restart();
-            }
-       }
-   }
+    window.clear();
+    window.draw(Map1);
+    if (!ispassing)
+        window.draw(Player);
+    /*for (int i = 0; i < doors; i++) {
+        window.draw(gates[i]);
+    }   
+    for(int i = 0; i < left_walls;i++){
+        window.draw(left_borders[i]);
+    }
+    for(int i = 0; i < up_walls;i++){
+        window.draw(up_borders[i]);
+    }
+    for(int i = 0; i < right_walls;i++)
+      window.draw(right_borders[i]);
 
-}*/
+     for(int i = 0; i < down_walls;i++)
+      window.draw(down_borders[i]);*/
+
+    if (BODalive) {
+        window.draw(BODmonsters[0].BOD);
+        if (showBODSpell)
+            window.draw(BODmonsters[0].spell);
+    }
+
+    window.display();
+}
+
+void playerMovement()
+{
+    
+    if (Keyboard::isKeyPressed(Keyboard::W) && Keyboard::isKeyPressed(Keyboard::LShift))
+    {
+        velocity.y = -run_speed * playerdeltatime;
+    }
+    else if (Keyboard::isKeyPressed(Keyboard::S) && Keyboard::isKeyPressed(Keyboard::LShift))
+    {
+
+        velocity.y = run_speed * playerdeltatime;
+    }
+    else {
+        velocity.y = 0;
+    }
+    if (Keyboard::isKeyPressed(Keyboard::A) && Keyboard::isKeyPressed(Keyboard::LShift))
+    {
+        Player.setScale(-0.2, 0.2);
+        velocity.x = -run_speed * playerdeltatime;
+    }
+    else if (Keyboard::isKeyPressed(Keyboard::D) && Keyboard::isKeyPressed(Keyboard::LShift))
+    {
+        Player.setScale(0.2, 0.2);
+        velocity.x = run_speed * playerdeltatime;
+    }
+    else {
+        velocity.x = 0;
+    }
+
+    checkCollisions();
+    Player.move(velocity);
+    if (Keyboard::isKeyPressed(Keyboard::W))
+    {
+        velocity.y = -walk_speed * playerdeltatime;
+    }
+    else if (Keyboard::isKeyPressed(Keyboard::S))
+    {
+        velocity.y = walk_speed * playerdeltatime;
+    }
+    else {
+        velocity.y = 0;
+    }
+    if (Keyboard::isKeyPressed(Keyboard::A))
+    {
+        Player.setScale(-0.2, 0.2);
+        velocity.x = -walk_speed * playerdeltatime;
+    }
+    else if (Keyboard::isKeyPressed(Keyboard::D))
+    {
+        Player.setScale(0.2, 0.2);
+        velocity.x = walk_speed * playerdeltatime;
+    }
+    else {
+        velocity.x = 0;
+    }
+    checkCollisions();
+    Player.move(velocity);
+
+}
+
 
 
 void trackView()
@@ -348,12 +453,7 @@ void Switch_States()
     case state::dead: Player.setTexture(DeathAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
     case state::hit:Player.setTexture(HitAnimation[ImageCounter]); UpdateAnimationCounter(0.15); break;    
     }
-   /* if (curr_state == state::hit) {
-        if (attacktimer.getElapsedTime().asSeconds() > 0.5) {
-            Player.setTexture(HitAnimation[ImageCounter]);
-            UpdateAnimationCounter(0.025);
-        }
-    }*/
+
 }
 
 void UpdateAnimationCounter(float st)
@@ -440,8 +540,8 @@ void Game_play(RenderWindow& window)
         }
         update();
         Draw();
-        // cout << Player.getPosition().x << " " << Player.getPosition().y << endl;
-        cout << Player_Health << endl;
+        cout << Player.getPosition().x << " " << Player.getPosition().y << endl;
+        //cout << Player_Health << endl;
     }
 }
 
@@ -527,6 +627,7 @@ void PauseMenuHandler(RenderWindow& window)
     }
 
 }
+
 void game_reset() {
     Player_Health = 100;
     Player.setPosition(initial_position);

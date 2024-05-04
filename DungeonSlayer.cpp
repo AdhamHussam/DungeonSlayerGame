@@ -246,7 +246,7 @@ void setTextures()
 
 void checkHit()
 {
-    if (BODmonsters[0].BOD.getGlobalBounds().intersects(Player.getGlobalBounds()) && BODstate == BODattacks && !ishit && (curr_state == state::idle || curr_state == state::run || curr_state == state::walk ))
+    if (BODmonsters[0].BOD.getGlobalBounds().intersects(Player.getGlobalBounds()) && BODstate == BODattacks && !ishit )
    {
        if  (attacktimer.getElapsedTime().asSeconds() > 0.5) {
             ishit = true;

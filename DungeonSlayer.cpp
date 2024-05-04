@@ -14,10 +14,10 @@ enum state
 // menu number
 int pagenum = 69;
 int doors = 2;
-int right_walls = 6;
-int left_walls = 6;
-int up_walls = 6;
-int down_walls = 5;
+int right_walls = 10;
+int left_walls = 10;
+int up_walls = 10;
+int down_walls = 11;
 
 
 
@@ -40,7 +40,9 @@ Clock pausetimer;
 Clock attacktimer;
 View view(Vector2f(0, 0), Vector2f(1920, 1080));
 Vector2f initial_position(-500, 7000);
+
 // Textures
+
 Texture Idle;
 Texture RunAnimation[8];
 Texture DeathAnimation[3];
@@ -71,6 +73,10 @@ RectangleShape borderR3(Vector2f({ 50,800 }));
 RectangleShape borderR4(Vector2f({ 50,100 }));
 RectangleShape borderR5(Vector2f({ 50,1000 }));
 RectangleShape borderR6(Vector2f({ 50,200 }));
+RectangleShape borderR7(Vector2f({ 50,150 }));
+RectangleShape borderR8(Vector2f({ 50,150 }));
+RectangleShape borderR9(Vector2f({ 50,1000 }));
+RectangleShape borderR10(Vector2f({ 100,50 }));
 
 RectangleShape borderL1(Vector2f({ 50,1000 })); 
 RectangleShape borderL2(Vector2f({ 50,200 })); 
@@ -78,6 +84,10 @@ RectangleShape borderL3(Vector2f({ 50,800 }));
 RectangleShape borderL4(Vector2f({ 50, 100 })); 
 RectangleShape borderL5(Vector2f({ 50, 1000 }));
 RectangleShape borderL6(Vector2f({ 50, 200 }));
+RectangleShape borderL7(Vector2f({ 50, 150 }));
+RectangleShape borderL8(Vector2f({ 50, 150 }));
+RectangleShape borderL9(Vector2f({ 50, 1000 }));
+RectangleShape borderL10(Vector2f({ 100, 50 }));
 
 
 RectangleShape borderU1(Vector2f({ 700,50 }));
@@ -86,19 +96,28 @@ RectangleShape borderU3(Vector2f({ 100,50 }));
 RectangleShape borderU4(Vector2f({ 100,50 }));
 RectangleShape borderU5(Vector2f({ 900,50 }));
 RectangleShape borderU6(Vector2f({ 900,50 }));
+RectangleShape borderU7(Vector2f({ 100,50 }));
+RectangleShape borderU8(Vector2f({ 100,50 }));
+RectangleShape borderU9(Vector2f({ 600,50 }));
+RectangleShape borderU10(Vector2f({ 600,50 }));
 
 RectangleShape borderD1(Vector2f({ 2000,50 }));
 RectangleShape borderD2(Vector2f({ 700,50 }));
 RectangleShape borderD3(Vector2f({ 700,50 }));
 RectangleShape borderD4(Vector2f({ 100,50 }));
 RectangleShape borderD5(Vector2f({ 100,50 }));
+RectangleShape borderD6(Vector2f({ 600,50 }));
+RectangleShape borderD7(Vector2f({ 600,50 }));
+RectangleShape borderD8(Vector2f({ 50,50 }));
+RectangleShape borderD9(Vector2f({ 50,50 }));
+RectangleShape borderD10(Vector2f({ 50,50 }));
+RectangleShape borderD11(Vector2f({ 50,50 }));
 
 RectangleShape gates[] = { gate1, gate2 };
-RectangleShape right_borders[] = { borderR1 , borderR2 , borderR3 , borderR4 ,borderR5, borderR6};
-RectangleShape left_borders[] = { borderL1,borderL2 , borderL3 , borderL4, borderL5 , borderL6};
-RectangleShape up_borders[] = { borderU1, borderU2 , borderU3 , borderU4, borderU5, borderU6};
-RectangleShape down_borders[] = { borderD1,borderD2, borderD3 , borderD4, borderD5};
-
+RectangleShape right_borders[] = { borderR1 , borderR2 , borderR3 , borderR4 ,borderR5, borderR6, borderR7, borderR8, borderR9, borderR10 };
+RectangleShape left_borders[] = { borderL1,borderL2 , borderL3 , borderL4, borderL5 , borderL6 , borderL7, borderL8, borderL9, borderL10 };
+RectangleShape up_borders[] = { borderU1, borderU2 , borderU3 , borderU4, borderU5, borderU6, borderU7, borderU8, borderU9, borderU10 };
+RectangleShape down_borders[] = { borderD1,borderD2, borderD3 , borderD4, borderD5, borderD6, borderD7, borderD8, borderD9 ,borderD10, borderD11 };
 
 // Game functions
 void menu_handler();
@@ -121,8 +140,8 @@ void game_reset();
 // Main 
 int main()
 {
-    setTextures();
     window.setMouseCursorVisible(false);
+    setTextures();
     menu_handler();
 }
 
@@ -144,27 +163,30 @@ void update()
 
 void checkCollisions() 
 {
-
     if (Player.getGlobalBounds().intersects(gate1.getGlobalBounds())) ispassing = true;
     else ispassing = false;
+    
     // right
     for (int i = 0; i < right_walls; i++) {
         if (Keyboard::isKeyPressed(Keyboard::D) && Player.getGlobalBounds().intersects(right_borders[i].getGlobalBounds())) {
             velocity.x = 0;
         }
     }
+
     //left
     for (int i = 0; i < left_walls; i++) {
         if (Keyboard::isKeyPressed(Keyboard::A) && Player.getGlobalBounds().intersects(left_borders[i].getGlobalBounds())) {
             velocity.x = 0;
         }
     }
+
     // up
     for (int i = 0; i < up_walls; i++) {
         if (Keyboard::isKeyPressed(Keyboard::W) && Player.getGlobalBounds().intersects(up_borders[i].getGlobalBounds())) {
             velocity.y = 0;
         }
     }
+
     //down
     for (int i = 0; i < down_walls; i++) {
         if (Keyboard::isKeyPressed(Keyboard::S) && Player.getGlobalBounds().intersects(down_borders[i].getGlobalBounds())) {
@@ -176,10 +198,9 @@ void checkCollisions()
 
 void setTextures()
 {
-    // Menu   
+    // Menus   
     mainmenubg.loadFromFile("Main Menu.jpg");
     instructs.loadFromFile("instructions.png");
-    pausebg.loadFromFile("pausebg.png");
     pausebg.loadFromFile("pausebg.png");
 
     bg.setTexture(mainmenubg);
@@ -189,16 +210,17 @@ void setTextures()
     bg.setScale(0.5, 0.5);
     Instructions.setScale(0.5, 0.5);
     pausemenu.setScale(0.5, 0.5);
-    pausemenu.setTexture(pausebg);
-    pausemenu.setScale(0.5, 0.5);
+    
     // Room
-    map1.loadFromFile("lvl1.png");
+
+    map1.loadFromFile("lvl2.png");
     Map1.setTexture(map1);
     Map1.setScale(3.8, 3.333);
     Map1.setOrigin(map1.getSize().x / 2, map1.getSize().y / 2);
     Map1.setPosition(0, 178 * 16);
 
     //Player
+    
     Idle.loadFromFile("idle.png");
     Player.setTexture(Idle);
     Player.setScale(0.2, 0.2);
@@ -218,6 +240,10 @@ void setTextures()
     right_borders[3].setPosition(750, 5525);
     right_borders[4].setPosition(1050, 4750);
     right_borders[5].setPosition(100, 4450);
+    right_borders[6].setPosition(675, 4250);
+    right_borders[7].setPosition(805, 4025);
+    right_borders[8].setPosition(925, 3100);
+    right_borders[9].setPosition(800, 3100);
 
     left_borders[0].setPosition(-990, 6700);
     left_borders[1].setPosition(-250, 6330);
@@ -225,6 +251,10 @@ void setTextures()
     left_borders[3].setPosition(-925,5525);
     left_borders[4].setPosition(-1225,4750);
     left_borders[5].setPosition(-250,4450);
+    left_borders[6].setPosition(-850,4250);
+    left_borders[7].setPosition(-975,4025);
+    left_borders[8].setPosition(-1085,3100);
+    left_borders[9].setPosition(-1025, 3100);
     
     up_borders[0].setPosition(-1000, 6500);
     up_borders[1].setPosition(120, 6500);
@@ -232,12 +262,22 @@ void setTextures()
     up_borders[3].setPosition(800, 5600);
     up_borders[4].setPosition(-1150, 4700);
     up_borders[5].setPosition(125 , 4700);
+    up_borders[6].setPosition(-1025 , 3100);
+    up_borders[7].setPosition(825 , 3100);
+    up_borders[8].setPosition(-825 , 2900);
+    up_borders[9].setPosition(100 , 2900);
 
     down_borders[0].setPosition(-900, 7450);
     down_borders[1].setPosition(-970, 6300);
     down_borders[2].setPosition(130, 6300);
     down_borders[3].setPosition(-975, 5500);
     down_borders[4].setPosition(750, 5500);
+    down_borders[5].setPosition(-840, 4425);
+    down_borders[6].setPosition(110, 4425);
+    down_borders[7].setPosition(-850, 4225);
+    down_borders[8].setPosition(675, 4225);
+    down_borders[9].setPosition(805, 4025);
+    down_borders[10].setPosition(-975, 4025);
    
 
 
@@ -277,7 +317,7 @@ void Draw()
     window.draw(Map1);
     if (!ispassing)
         window.draw(Player);
-    /*for (int i = 0; i < doors; i++) {
+    for (int i = 0; i < doors; i++) {
         window.draw(gates[i]);
     }   
     for(int i = 0; i < left_walls;i++){
@@ -290,7 +330,7 @@ void Draw()
       window.draw(right_borders[i]);
 
      for(int i = 0; i < down_walls;i++)
-      window.draw(down_borders[i]);*/
+      window.draw(down_borders[i]);
 
     if (BODalive) {
         window.draw(BODmonsters[0].BOD);
@@ -373,6 +413,7 @@ void trackView()
 void Switch_States()
 {
     if (!sha8al) {
+
         if ((Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W)) && Keyboard::isKeyPressed(Keyboard::LShift))
         {
             curr_state = state::run;

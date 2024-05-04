@@ -19,14 +19,12 @@ int pagenum = 69;
 // player attributes
 int walk_speed = 100;
 int run_speed = 200;
-int Player_Health = 100;
 Vector2f velocity = { 0, 0 };
 float AnimationCounter = 0;
 int maximagecounter = 0;
 int ImageCounter = 0;
 bool sha8al = false;
 bool isAttack = false;
-bool ishit = false;
 bool finishedanimationonce = false;
 
 RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer");
@@ -253,7 +251,7 @@ void checkHit()
             if (attacktimer.getElapsedTime().asSeconds() > 2) {
                 Player_Health -= 5;
                 attacktimer.restart();
-            }       
+            }
        }
    }
 
@@ -530,7 +528,7 @@ void PauseMenuHandler(RenderWindow& window)
 
 }
 void game_reset() {
-    int Player_Health = 100;
+    Player_Health = 100;
     Player.setPosition(initial_position);
     float AnimationCounter = 0;
     int maximagecounter = 0;

@@ -12,6 +12,8 @@ BringerOfDeath BODoriginal;
 bool showBODSpell, BODalive;
 Sprite Player;
 float playerdeltatime = 0;
+int Player_Health = 100;
+bool ishit = false;
 enum state
 {
     idle, run, hit, base, zmove, xmove, cmove, dead, walk

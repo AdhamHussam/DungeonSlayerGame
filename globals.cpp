@@ -5,6 +5,7 @@
 // Define global variables here
 int globalInt = 0;  // Definition
 Clock GameClock;
+const int LENGTH = 1921, WIDTH = 1080;
 
 const int number_of_BODmonsters = 3;
 BringerOfDeath BODmonsters[number_of_BODmonsters];

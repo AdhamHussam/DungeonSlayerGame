@@ -15,4 +15,5 @@ enum state;
 extern state curr_state, player_idle, player_run, player_hit, player_base, player_zmove, player_xmove, player_cmove, player_dead, player_walk;
 enum BOD;
 extern BOD BODstate, BODattacks;
+extern const int LENGTH, WIDTH;
 #endif // GLOBALS_H

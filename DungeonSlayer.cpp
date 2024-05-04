@@ -14,8 +14,8 @@ enum state
 // menu number
 int pagenum = 69;
 int doors = 2;
-int right_walls = 10;
-int left_walls = 10;
+int right_walls = 11;
+int left_walls = 11;
 int up_walls = 10;
 int down_walls = 11;
 
@@ -64,8 +64,8 @@ Sprite pausemenu;
 Sprite Map1;
 
 // Room 0 Borders
-RectangleShape gate1(Vector2f({ 1,1 }));
-RectangleShape gate2(Vector2f({ 1,1 }));
+RectangleShape gate1(Vector2f({ 1, 1 }));
+RectangleShape gate2(Vector2f({ 1, 1 }));
 
 RectangleShape borderR1(Vector2f({ 100,1000 }));
 RectangleShape borderR2(Vector2f({ 50,200 }));
@@ -77,6 +77,7 @@ RectangleShape borderR7(Vector2f({ 50,150 }));
 RectangleShape borderR8(Vector2f({ 50,150 }));
 RectangleShape borderR9(Vector2f({ 50,1000 }));
 RectangleShape borderR10(Vector2f({ 100,50 }));
+RectangleShape borderR11(Vector2f({ 50,300 }));
 
 RectangleShape borderL1(Vector2f({ 50,1000 })); 
 RectangleShape borderL2(Vector2f({ 50,200 })); 
@@ -88,6 +89,7 @@ RectangleShape borderL7(Vector2f({ 50, 150 }));
 RectangleShape borderL8(Vector2f({ 50, 150 }));
 RectangleShape borderL9(Vector2f({ 50, 1000 }));
 RectangleShape borderL10(Vector2f({ 100, 50 }));
+RectangleShape borderL11(Vector2f({ 50, 300 }));
 
 
 RectangleShape borderU1(Vector2f({ 700,50 }));
@@ -114,8 +116,8 @@ RectangleShape borderD10(Vector2f({ 50,50 }));
 RectangleShape borderD11(Vector2f({ 50,50 }));
 
 RectangleShape gates[] = { gate1, gate2 };
-RectangleShape right_borders[] = { borderR1 , borderR2 , borderR3 , borderR4 ,borderR5, borderR6, borderR7, borderR8, borderR9, borderR10 };
-RectangleShape left_borders[] = { borderL1,borderL2 , borderL3 , borderL4, borderL5 , borderL6 , borderL7, borderL8, borderL9, borderL10 };
+RectangleShape right_borders[] = { borderR1 , borderR2 , borderR3 , borderR4 ,borderR5, borderR6, borderR7, borderR8, borderR9, borderR10 ,borderR11 };
+RectangleShape left_borders[] = { borderL1,borderL2 , borderL3 , borderL4, borderL5 , borderL6 , borderL7, borderL8, borderL9, borderL10, borderL11 };
 RectangleShape up_borders[] = { borderU1, borderU2 , borderU3 , borderU4, borderU5, borderU6, borderU7, borderU8, borderU9, borderU10 };
 RectangleShape down_borders[] = { borderD1,borderD2, borderD3 , borderD4, borderD5, borderD6, borderD7, borderD8, borderD9 ,borderD10, borderD11 };
 
@@ -244,6 +246,7 @@ void setTextures()
     right_borders[7].setPosition(805, 4025);
     right_borders[8].setPosition(925, 3100);
     right_borders[9].setPosition(800, 3100);
+    right_borders[10].setPosition(100, 2600);
 
     left_borders[0].setPosition(-990, 6700);
     left_borders[1].setPosition(-250, 6330);
@@ -255,6 +258,7 @@ void setTextures()
     left_borders[7].setPosition(-975,4025);
     left_borders[8].setPosition(-1085,3100);
     left_borders[9].setPosition(-1025, 3100);
+    left_borders[10].setPosition(-250, 2600);
     
     up_borders[0].setPosition(-1000, 6500);
     up_borders[1].setPosition(120, 6500);

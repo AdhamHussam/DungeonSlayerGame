@@ -346,7 +346,7 @@ void Switch_States()
     case state::xmove: Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
     case state::cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
     case state::dead: Player.setTexture(DeathAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
-    case state::hit:Player.setTexture(HitAnimation[ImageCounter]); UpdateAnimationCounter(0.05); break;    
+    case state::hit:Player.setTexture(HitAnimation[ImageCounter]); UpdateAnimationCounter(0.15); break;    
     }
    /* if (curr_state == state::hit) {
         if (attacktimer.getElapsedTime().asSeconds() > 0.5) {

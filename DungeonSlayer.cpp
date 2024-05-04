@@ -19,7 +19,7 @@ int pagenum = 69;
 // player attributes
 int walk_speed = 100;
 int run_speed = 200;
-int Player_Health = 10000;
+int Player_Health = 100;
 Vector2f velocity = { 0, 0 };
 float AnimationCounter = 0;
 int maximagecounter = 0;
@@ -239,23 +239,20 @@ void setTextures()
     }
 }
 
-int i = 1;
+
 void checkCollisions()
 {
     
 
 
-   if(BODmonsters[0].BOD.getGlobalBounds().intersects(Player.getGlobalBounds()))
-     if (BODstate == BODattacks) {
+   
+     if (BODstate == BODattacks && BODmonsters[0].BOD.getGlobalBounds().intersects(Player.getGlobalBounds())) {
 
-          Player_Health -= 2/i;
-          i++;
-          if (i >= 20)
-              i = i % 20 + 1;
-        //  ishit= true;
-
-
-    }
+       //  Player_Health -= 1;
+       //  ishit= true;
+          
+        
+     }
     
 }
 

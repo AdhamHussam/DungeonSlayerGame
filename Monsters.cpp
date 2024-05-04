@@ -37,12 +37,16 @@ void walk(int x, int y) {
 }
 
 // make monster attack
-void attack() {
+void attack(int x,int y) {
     BODmonsters[0].BOD.setTextureRect(getRect(16 + MovmentCounter));
     UpdateMonsterAnimationCounter();
     if (MovmentCounter == 10) {
         MovmentCounter = 0;
         BODstate = BOD::BODwalk;
+        if (abs(x) < 200 && abs(y) < 30) {
+            ishit = true;
+            Player_Health -= 5;
+        }
     }
 }
 
@@ -140,7 +144,7 @@ void MonstersMovment() {
         return;
     }
     else if (BODstate == BOD::BODattack){
-        attack();
+        attack(x,y);
         return;
     }
 
@@ -158,7 +162,7 @@ void MonstersMovment() {
     else if (abs(x) < 300 && abs(y) < 30){
         MovmentCounter = 0;
         BODstate = BOD::BODattack;
-        attack();
+        attack(x,y);
     }
     else
         walk(x,y);

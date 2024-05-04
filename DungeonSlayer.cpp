@@ -69,7 +69,7 @@ void update();
 void trackView();
 void playerMovement();
 void setTextures();
-void checkHit();
+// void checkHit();
 void Draw();
 void MonstersMovment();
 void SetMonsters();
@@ -90,7 +90,7 @@ void update()
     Switch_States();
     trackView();
     playerMovement();
-    checkHit();
+//    checkHit();
     MonstersMovment();
     if (Keyboard::isKeyPressed(Keyboard::Escape)) {
         if (pausetimer.getElapsedTime().asSeconds() > 0.2) {
@@ -242,7 +242,7 @@ void setTextures()
 }
 
 
-void checkHit()
+/*void checkHit()
 {
     if (BODmonsters[0].BOD.getGlobalBounds().intersects(Player.getGlobalBounds()) && BODstate == BODattacks && !ishit )
    {
@@ -255,7 +255,7 @@ void checkHit()
        }
    }
 
-}
+}*/
 
 
 void trackView()

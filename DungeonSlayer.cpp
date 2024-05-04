@@ -11,17 +11,18 @@ enum state
     idle, run, hit, base, zmove, xmove, cmove, dead, walk
 };
 
+int doors = 5;
+int right_walls = 20;
+int left_walls = 20;
+int up_walls = 19;
+int down_walls = 21;
+
 // menu number
 int pagenum = 69;
-int doors = 2;
-int right_walls = 11;
-int left_walls = 11;
-int up_walls = 10;
-int down_walls = 11;
-
 
 
 // player attributes
+
 int walk_speed = 100;
 int run_speed = 200;
 Vector2f velocity = { 0, 0 };
@@ -66,6 +67,10 @@ Sprite Map1;
 // Room 0 Borders
 RectangleShape gate1(Vector2f({ 1, 1 }));
 RectangleShape gate2(Vector2f({ 1, 1 }));
+RectangleShape gate3(Vector2f({ 1, 1 }));
+RectangleShape gate4(Vector2f({ 1, 1 }));
+RectangleShape gate5(Vector2f({ 1, 1 }));
+
 
 RectangleShape borderR1(Vector2f({ 100,1000 }));
 RectangleShape borderR2(Vector2f({ 50,200 }));
@@ -77,7 +82,16 @@ RectangleShape borderR7(Vector2f({ 50,150 }));
 RectangleShape borderR8(Vector2f({ 50,150 }));
 RectangleShape borderR9(Vector2f({ 50,1000 }));
 RectangleShape borderR10(Vector2f({ 100,50 }));
-RectangleShape borderR11(Vector2f({ 50,300 }));
+RectangleShape borderR11(Vector2f({ 50,250 }));
+RectangleShape borderR12(Vector2f({ 150,50 }));
+RectangleShape borderR13(Vector2f({ 50,900 }));
+RectangleShape borderR14(Vector2f({ 75,50 }));
+RectangleShape borderR15(Vector2f({ 50,200 }));
+RectangleShape borderR16(Vector2f({ 50,500 }));
+RectangleShape borderR17(Vector2f({ 50,600 }));
+RectangleShape borderR18(Vector2f({ 50,600 }));
+RectangleShape borderR19(Vector2f({ 50,800 }));
+RectangleShape borderR20(Vector2f({ 50,775 }));
 
 RectangleShape borderL1(Vector2f({ 50,1000 })); 
 RectangleShape borderL2(Vector2f({ 50,200 })); 
@@ -89,8 +103,16 @@ RectangleShape borderL7(Vector2f({ 50, 150 }));
 RectangleShape borderL8(Vector2f({ 50, 150 }));
 RectangleShape borderL9(Vector2f({ 50, 1000 }));
 RectangleShape borderL10(Vector2f({ 100, 50 }));
-RectangleShape borderL11(Vector2f({ 50, 300 }));
-
+RectangleShape borderL11(Vector2f({ 50, 250 }));
+RectangleShape borderL12(Vector2f({ 150, 50 }));
+RectangleShape borderL13(Vector2f({ 50, 900 }));
+RectangleShape borderL14(Vector2f({ 75,50 }));
+RectangleShape borderL15(Vector2f({ 50,200 }));
+RectangleShape borderL16(Vector2f({ 50,500 }));
+RectangleShape borderL17(Vector2f({ 50,600 }));
+RectangleShape borderL18(Vector2f({ 50,600 }));
+RectangleShape borderL19(Vector2f({ 50, 775 }));
+RectangleShape borderL20(Vector2f({ 50,800 }));
 
 RectangleShape borderU1(Vector2f({ 700,50 }));
 RectangleShape borderU2(Vector2f({ 700,50 }));
@@ -102,6 +124,15 @@ RectangleShape borderU7(Vector2f({ 100,50 }));
 RectangleShape borderU8(Vector2f({ 100,50 }));
 RectangleShape borderU9(Vector2f({ 600,50 }));
 RectangleShape borderU10(Vector2f({ 600,50 }));
+RectangleShape borderU11(Vector2f({ 75,50 }));
+RectangleShape borderU12(Vector2f({ 75,50 }));
+RectangleShape borderU13(Vector2f({ 1000,50 }));
+RectangleShape borderU14(Vector2f({ 1000,50 }));
+RectangleShape borderU15(Vector2f({ 250,50 }));
+RectangleShape borderU16(Vector2f({ 600,50 }));
+RectangleShape borderU17(Vector2f({ 600,50 }));
+RectangleShape borderU18(Vector2f({ 250,50 }));
+RectangleShape borderU19(Vector2f({ 2000,50 }));
 
 RectangleShape borderD1(Vector2f({ 2000,50 }));
 RectangleShape borderD2(Vector2f({ 700,50 }));
@@ -114,12 +145,22 @@ RectangleShape borderD8(Vector2f({ 50,50 }));
 RectangleShape borderD9(Vector2f({ 50,50 }));
 RectangleShape borderD10(Vector2f({ 50,50 }));
 RectangleShape borderD11(Vector2f({ 50,50 }));
+RectangleShape borderD12(Vector2f({ 1000,50 }));
+RectangleShape borderD13(Vector2f({ 1000,50 }));
+RectangleShape borderD14(Vector2f({ 150,50 }));
+RectangleShape borderD15(Vector2f({ 150,50 }));
+RectangleShape borderD16(Vector2f({ 750,50 }));
+RectangleShape borderD17(Vector2f({ 750,50 }));
+RectangleShape borderD18(Vector2f({ 250,50 }));
+RectangleShape borderD19(Vector2f({ 250,50 }));
+RectangleShape borderD20(Vector2f({ 550,50 }));
+RectangleShape borderD21(Vector2f({ 550,50 }));
 
-RectangleShape gates[] = { gate1, gate2 };
-RectangleShape right_borders[] = { borderR1 , borderR2 , borderR3 , borderR4 ,borderR5, borderR6, borderR7, borderR8, borderR9, borderR10 ,borderR11 };
-RectangleShape left_borders[] = { borderL1,borderL2 , borderL3 , borderL4, borderL5 , borderL6 , borderL7, borderL8, borderL9, borderL10, borderL11 };
-RectangleShape up_borders[] = { borderU1, borderU2 , borderU3 , borderU4, borderU5, borderU6, borderU7, borderU8, borderU9, borderU10 };
-RectangleShape down_borders[] = { borderD1,borderD2, borderD3 , borderD4, borderD5, borderD6, borderD7, borderD8, borderD9 ,borderD10, borderD11 };
+RectangleShape gates[] = { gate1, gate2 , gate3, gate4, gate5};
+RectangleShape right_borders[] = { borderR1 , borderR2 , borderR3 , borderR4 ,borderR5, borderR6, borderR7, borderR8, borderR9, borderR10 ,borderR11, borderR12 , borderR13 , borderR14 , borderR15 , borderR16 , borderR17, borderR18, borderR19 ,borderR20};
+RectangleShape left_borders[] = { borderL1,borderL2 , borderL3 , borderL4, borderL5 , borderL6 , borderL7, borderL8, borderL9, borderL10, borderL11 , borderL12 , borderL13 , borderL14 , borderL15 , borderL16 ,borderL17, borderL18, borderL19 , borderL20};
+RectangleShape up_borders[] = { borderU1, borderU2 , borderU3 , borderU4, borderU5, borderU6, borderU7, borderU8, borderU9, borderU10, borderU11,borderU12 ,borderU13, borderU14 , borderU15 , borderU16, borderU17, borderU18, borderU19 };
+RectangleShape down_borders[] = { borderD1,borderD2, borderD3 , borderD4, borderD5, borderD6, borderD7, borderD8, borderD9 ,borderD10, borderD11 , borderD12 , borderD13 , borderD14 , borderD15 , borderD16, borderD17, borderD18 , borderD19 ,borderD20, borderD21 };
 
 // Game functions
 void menu_handler();
@@ -165,8 +206,13 @@ void update()
 
 void checkCollisions() 
 {
-    if (Player.getGlobalBounds().intersects(gate1.getGlobalBounds())) ispassing = true;
-    else ispassing = false;
+    for (int i = 0; i < doors; i++) {
+        if (Player.getGlobalBounds().intersects(gates[i].getGlobalBounds())) {
+            ispassing = true;
+            break;
+        }
+        else ispassing = false;
+    }
     
     // right
     for (int i = 0; i < right_walls; i++) {
@@ -233,8 +279,14 @@ void setTextures()
 
     gate1.setPosition(-60, 6500);
     gate2.setPosition(-60, 4600);
+    gate3.setPosition(-60, 2830);
+    gate4.setPosition(-60, 1540);
+    gate5.setPosition(-60, -275);
     gates[0].setPosition(-60, 6500);
-    gates[1].setPosition(-60, 4600);
+    gates[1].setPosition(-60, 4640);
+    gates[2].setPosition(-60, 2830);
+    gates[3].setPosition(-60, 1540);
+    gates[4].setPosition(-60, -275);
 
     right_borders[0].setPosition(650, 6700);
     right_borders[1].setPosition(100, 6330);
@@ -246,45 +298,80 @@ void setTextures()
     right_borders[7].setPosition(805, 4025);
     right_borders[8].setPosition(925, 3100);
     right_borders[9].setPosition(800, 3100);
-    right_borders[10].setPosition(100, 2600);
+    right_borders[10].setPosition(100, 2625);
+    right_borders[11].setPosition(1225, 2535);
+    right_borders[12].setPosition(1420, 1800);
+    right_borders[13].setPosition(1250, 1675);
+    right_borders[14].setPosition(100, 1350);
+    right_borders[15].setPosition(650, 940);
+    right_borders[16].setPosition(650, -400);
+    right_borders[17].setPosition(1075, 180);
+    right_borders[18].setPosition(100, -1015);
+    right_borders[19].setPosition(850, -2000);
 
     left_borders[0].setPosition(-990, 6700);
-    left_borders[1].setPosition(-250, 6330);
+    left_borders[1].setPosition(-275, 6330);
     left_borders[2].setPosition(-1050, 5650);
     left_borders[3].setPosition(-925,5525);
     left_borders[4].setPosition(-1225,4750);
-    left_borders[5].setPosition(-250,4450);
+    left_borders[5].setPosition(-275,4450);
     left_borders[6].setPosition(-850,4250);
     left_borders[7].setPosition(-975,4025);
     left_borders[8].setPosition(-1085,3100);
     left_borders[9].setPosition(-1025, 3100);
-    left_borders[10].setPosition(-250, 2600);
+    left_borders[10].setPosition(-275, 2625);
+    left_borders[11].setPosition(-1500, 2525);
+    left_borders[12].setPosition(-1600, 1800);
+    left_borders[13].setPosition(-1450, 1675);
+    left_borders[14].setPosition(-275, 1350);
+    left_borders[15].setPosition(-850, 940);
+    left_borders[16].setPosition(-1250, 180);
+    left_borders[17].setPosition(-850, -400);
+    left_borders[18].setPosition(-275, -1015);
+    left_borders[19].setPosition(-1000, -2000);
     
     up_borders[0].setPosition(-1000, 6500);
-    up_borders[1].setPosition(120, 6500);
+    up_borders[1].setPosition(150, 6500);
     up_borders[2].setPosition(-1000, 5600);
     up_borders[3].setPosition(800, 5600);
     up_borders[4].setPosition(-1150, 4700);
-    up_borders[5].setPosition(125 , 4700);
+    up_borders[5].setPosition(150 , 4700);
     up_borders[6].setPosition(-1025 , 3100);
     up_borders[7].setPosition(825 , 3100);
-    up_borders[8].setPosition(-825 , 2900);
-    up_borders[9].setPosition(100 , 2900);
+    up_borders[8].setPosition(-875 , 2850);
+    up_borders[9].setPosition(150 , 2850);
+    up_borders[10].setPosition(-1450 , 1675);
+    up_borders[11].setPosition(1250 , 1675);
+    up_borders[12].setPosition(150 , 1575);
+    up_borders[13].setPosition(-1275 , 1575);
+    up_borders[14].setPosition(-1100 , 180);
+    up_borders[15].setPosition(-850, -250);
+    up_borders[16].setPosition( 150 , -250);
+    up_borders[17].setPosition( 720 , 180);
+    up_borders[18].setPosition( -1000 , -2100);
 
     down_borders[0].setPosition(-900, 7450);
     down_borders[1].setPosition(-970, 6300);
     down_borders[2].setPosition(130, 6300);
-    down_borders[3].setPosition(-975, 5500);
-    down_borders[4].setPosition(750, 5500);
+    down_borders[3].setPosition(-1000, 5500);
+    down_borders[4].setPosition(775, 5500);
     down_borders[5].setPosition(-840, 4425);
     down_borders[6].setPosition(110, 4425);
-    down_borders[7].setPosition(-850, 4225);
-    down_borders[8].setPosition(675, 4225);
-    down_borders[9].setPosition(805, 4025);
-    down_borders[10].setPosition(-975, 4025);
+    down_borders[7].setPosition(-875, 4225);
+    down_borders[8].setPosition(700, 4225);
+    down_borders[9].setPosition(825, 4025);
+    down_borders[10].setPosition(-1000, 4025);
+    down_borders[11].setPosition(-1275, 2600);
+    down_borders[12].setPosition(150, 2600);
+    down_borders[13].setPosition(-1525, 2500);
+    down_borders[14].setPosition(1250, 2500);
+    down_borders[15].setPosition(-1020, 1325);
+    down_borders[16].setPosition(150, 1325);
+    down_borders[17].setPosition(-1100, 900);
+    down_borders[18].setPosition(720, 900);
+    down_borders[19].setPosition(150, -1020);
+    down_borders[20].setPosition(-850, -1020);
    
-
-
     // monsters
     SetMonsters();
 
@@ -315,16 +402,23 @@ void setTextures()
     }
 }
 
+
 void Draw()
 {
     window.clear();
     window.draw(Map1);
     if (!ispassing)
         window.draw(Player);
-    for (int i = 0; i < doors; i++) {
+
+    if (BODalive) {
+        window.draw(BODmonsters[0].BOD);
+        if (showBODSpell)
+            window.draw(BODmonsters[0].spell);
+    }
+    /*for (int i = 0; i < doors; i++) {
         window.draw(gates[i]);
-    }   
-    for(int i = 0; i < left_walls;i++){
+    }*/   
+    /*for(int i = 0; i < left_walls;i++){
         window.draw(left_borders[i]);
     }
     for(int i = 0; i < up_walls;i++){
@@ -334,13 +428,8 @@ void Draw()
       window.draw(right_borders[i]);
 
      for(int i = 0; i < down_walls;i++)
-      window.draw(down_borders[i]);
+      window.draw(down_borders[i]);*/
 
-    if (BODalive) {
-        window.draw(BODmonsters[0].BOD);
-        if (showBODSpell)
-            window.draw(BODmonsters[0].spell);
-    }
 
     window.display();
 }
@@ -600,6 +689,12 @@ void Instructions_Draw() {
 
 void Instructions_Menu(RenderWindow& window) {
     while (window.isOpen()) {
+        Event instructionsMenu;
+        while (window.pollEvent(instructionsMenu)) {
+            if (instructionsMenu.type == Event::Closed) {
+                window.close();
+            }
+        }
         Instructions_Draw();
         if (Keyboard::isKeyPressed(Keyboard::Key::Escape)) {
             pagenum = 69;

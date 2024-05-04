@@ -33,6 +33,7 @@ bool sha8al = false;
 bool isAttack = false;
 bool ispassing = false;
 bool finishedanimationonce = false;
+float cooldown[4];
 
 RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer");
 Menu menu(1920, 1080);
@@ -209,6 +210,8 @@ void checkCollisions()
     for (int i = 0; i < doors; i++) {
         if (Player.getGlobalBounds().intersects(gates[i].getGlobalBounds())) {
             ispassing = true;
+            Player.move(0, -500 * playerdeltatime);
+
             break;
         }
         else ispassing = false;
@@ -437,6 +440,7 @@ void Draw()
 void playerMovement()
 {
     
+
     if (Keyboard::isKeyPressed(Keyboard::W) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
         velocity.y = -run_speed * playerdeltatime;
@@ -505,6 +509,12 @@ void trackView()
 
 void Switch_States()
 {
+
+    for (int i = 0; i < 4; i++) {
+        cooldown[i] -= playerdeltatime;
+        if (cooldown[i] <= 0)
+            cooldown[i] = 0;
+    }
     if (!sha8al) {
 
         if ((Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W)) && Keyboard::isKeyPressed(Keyboard::LShift))
@@ -522,19 +532,37 @@ void Switch_States()
 
         if (Keyboard::isKeyPressed(Keyboard::Space) || Mouse::isButtonPressed(Mouse::Left))
         {
-            curr_state = state::base;
+            if (cooldown[0] == 0) {
+
+                curr_state = state::base;
+                cooldown[0] = 2;
+            }
         }
         if (Keyboard::isKeyPressed(Keyboard::Z))
         {
-            curr_state = state::zmove;
+            if (cooldown[1] == 0) {
+
+                curr_state = state::zmove;
+                cooldown[1] = 5;
+            }
         }
         if (Keyboard::isKeyPressed(Keyboard::X))
         {
-            curr_state = state::xmove;
+            if (cooldown[2] == 0) {
+
+                curr_state = state::xmove;
+                cooldown[2] = 6;
+            }
+
         }
         if (Keyboard::isKeyPressed(Keyboard::C))
         {
-            curr_state = state::cmove;
+            if (cooldown[3] == 0) {
+
+
+                curr_state = state::cmove;
+                cooldown[3] = 7;
+            }
         }
         if (ishit)
         {

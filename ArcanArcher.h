@@ -3,10 +3,10 @@
 
 struct ArcanArcher {
 	Sprite AA,arow;
-	int health;
+	int health,speed = 300;
 };
 
 void AACreate();
 void AASet();
-void AAMove();
+void AAMove(float,Sprite);
 void AADraw(RenderWindow&);

@@ -14,7 +14,7 @@ void SetMonstersWave() {
 
 void MoveMonsters() {
 	MonstersMovment();
-    AAMove();
+    AAMove(playerdeltatime,Player);
 }
 
 void ShowMonsters() {

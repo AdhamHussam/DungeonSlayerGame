@@ -31,11 +31,13 @@ int maximagecounter = 0;
 int ImageCounter = 0;
 bool sha8al = false;
 bool isAttack = false;
+bool openertrigger = false;
+bool map_opener_trigger = false;
 bool ispassing = false;
 bool finishedanimationonce = false;
 float cooldown[4];
 
-RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer");
+RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer" ,Style::Fullscreen);
 Menu menu(1920, 1080);
 PauseMenu pause(1920, 1080);
 Clock pausetimer;
@@ -199,8 +201,19 @@ RectangleShape down_borders[] = { borderD1,borderD2, borderD3 , borderD4, border
     borderD22 , borderD23, borderD24 , borderD25 , borderD26
 };
 
+SoundBuffer menu_opener;
+Sound MenuOpener;
+
+SoundBuffer map_opener;
+Sound map_opener;
+
+SoundBuffer game_music;
+Sound GameMusic;
+
+
 // Game functions
 void menu_handler();
+void music_handler();
 void Switch_States();
 void Game_play(RenderWindow& window);
 void PauseMenuHandler(RenderWindow& window);
@@ -226,7 +239,7 @@ int main()
     menu_handler();
 }
 
-// Definitions
+// Definitions;
 void update()
 {
     Switch_States();
@@ -455,6 +468,10 @@ void setTextures()
     for (int i = 0; i < 3; i++) {
         DeathAnimation[i].loadFromFile("Dead/Dead" + to_string(i) + ".png");
     }
+
+    menu_opener.loadFromFile("Title card.mp3");
+    map_opener.loadFromFile("Title card.mp3");
+    game_music.loadFromFile("Title card.mp3");
 }
 
 
@@ -702,6 +719,13 @@ void menu_handler()
                         window.close();
                         break;
                     }
+                    if (MenuOpener.getStatus() != Sound::Playing && !openertrigger) {
+                        MenuOpener.setVolume(80);
+                        MenuOpener.setBuffer(menu_opener);
+                        MenuOpener.play();
+                        openertrigger = 1;
+                    }
+
                     if (event.type == Event::KeyPressed) {
                         if (event.key.code == Keyboard::Up)
                             menu.MoveUp();
@@ -854,10 +878,16 @@ void game_reset() {
     for (int i = 0; i < 4; i++) cooldown[i] = 0;
     Player.setPosition(initial_position);
     Player.setScale(0.2, 0.2);
+    openertrigger = false;
     float AnimationCounter = 0;
     int maximagecounter = 0;
     int ImageCounter = 0;
     int globalInt = 0;
     float playerdeltatime = 0;
     SetMonsters();
+}
+
+void music_handler()
+{
+
 }

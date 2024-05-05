@@ -4,7 +4,7 @@
 // Declare global variables here
 extern int globalInt;  // Declaration
 extern Clock GameClock;
-
+extern const int LENGTH, WIDTH;
 extern int BODnumber;
 extern BringerOfDeath BODmonsters[];
 extern BringerOfDeath BODoriginal;

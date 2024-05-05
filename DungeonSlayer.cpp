@@ -225,16 +225,13 @@ void playerMovement();
 void setTextures();
 void checkCollisions();
 void Draw();
-void MonstersMovment();
-void SetMonsters();
 void UpdateAnimationCounter(float st = 0.1);
 void game_reset();
-void CreateMonsters();
 // Main 
 int main()
 {
     window.setMouseCursorVisible(false);
-    CreateMonsters();
+    SetMonstersSprites();
     setTextures();
     menu_handler();
 }
@@ -246,7 +243,7 @@ void update()
     trackView();
     checkCollisions();
     playerMovement();
-    MonstersMovment();
+    MoveMonsters();
     if (Keyboard::isKeyPressed(Keyboard::Escape)) {
         if (pausetimer.getElapsedTime().asSeconds() > 0.2) {
             PauseMenuHandler(window);
@@ -441,7 +438,7 @@ void setTextures()
     down_borders[25].setPosition(730, 2100);
    
     // monsters
-    SetMonsters();
+    SetMonstersWave();
 
     for (int i = 0; i < 8; i++) {
         RunAnimation[i].loadFromFile("Run/run" + to_string(i) + ".png");
@@ -482,12 +479,8 @@ void Draw()
     if (!ispassing)
         window.draw(Player);
 
-    for (int i = 0; i < BODnumber; i++)
-        if (BODalive[i]) {
-           window.draw(BODmonsters[i].BOD);
-            if (showBODSpell[i])
-                window.draw(BODmonsters[i].spell);
-        }
+    ShowMonsters();
+    
     /*for (int i = 0; i < doors; i++) {
         window.draw(gates[i]);
     } */ 
@@ -884,7 +877,7 @@ void game_reset() {
     int ImageCounter = 0;
     int globalInt = 0;
     float playerdeltatime = 0;
-    SetMonsters();
+    SetMonstersWave();
 }
 
 void music_handler()

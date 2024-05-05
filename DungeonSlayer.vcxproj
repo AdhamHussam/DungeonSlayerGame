@@ -137,13 +137,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BOD.cpp" />
     <ClCompile Include="DungeonSlayer.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Monsters.cpp" />
     <ClCompile Include="globals.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
+    <ClCompile Include="NightBorne.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BOD.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="includes.h" />
     <ClInclude Include="Menu.h" />

@@ -4,14 +4,17 @@
 
 void SetMonstersSprites() {
 	CreateMonsters();
+    AACreate();
 }
 
 void SetMonstersWave() {
 	SetMonsters();
+    //AASet();
 }
 
 void MoveMonsters() {
 	MonstersMovment();
+    //AAMove();
 }
 
 void ShowMonsters() {
@@ -21,4 +24,5 @@ void ShowMonsters() {
             if (showBODSpell[i])
                 window.draw(BODmonsters[i].spell);
         }
+    //AADraw();
 }

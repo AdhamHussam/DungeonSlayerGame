@@ -6,7 +6,6 @@ enum BOD {
     BODwalk, BODattack, BODcast, BODhurt, BODdie, BODspawn
 };
 
-
 // animation counters
 int MovmentCounter[30];
 float MonsterCounter[30];
@@ -29,12 +28,19 @@ void UpdateMonsterAnimationCounter(int i,float st = 0.15){
 }
 
 // make monster walk
+    
 void walk(int x, int y, int i) {
     BODmonsters[i].BOD.setTextureRect(getRect(8 + MovmentCounter[i]));
-    BODmonsters[i].BOD.move(((abs(x) > 1) ? ((x > 0) ? BODmonsters[i].speed*playerdeltatime : -BODmonsters[i].speed* playerdeltatime) : 0), ((y < 0) ? BODmonsters[i].speed* playerdeltatime : -BODmonsters[i].speed* playerdeltatime));
+    Vector2f Direction = Player.getPosition() - BODmonsters[i].BOD.getPosition();
+    float magnitude = sqrt(Direction.x * Direction.x + Direction.y * Direction.y);
+    Vector2f norm_direction = Direction / magnitude;
+    BODmonsters[i].BOD.move(Vector2f(norm_direction.x * BODmonsters[i].speed * playerdeltatime, norm_direction.y * BODmonsters[i].speed * playerdeltatime));
+    //BODmonsters[i].BOD.move(((abs(x) > 1) ? ((x > 0) ? BODmonsters[i].speed*playerdeltatime : -BODmonsters[i].speed* playerdeltatime) : 0), ((y < 0) ? BODmonsters[i].speed* playerdeltatime : -BODmonsters[i].speed* playerdeltatime));
     UpdateMonsterAnimationCounter(i);
     MovmentCounter[i] %= 8;
+
 }
+
 
 // make monster attack
 void attack(int x,int y, int i) {

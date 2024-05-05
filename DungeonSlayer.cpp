@@ -40,7 +40,7 @@ Menu menu(1920, 1080);
 PauseMenu pause(1920, 1080);
 Clock pausetimer;
 Clock attacktimer;
-View view(Vector2f(0, 0), Vector2f(1920, 1080));
+
 Vector2f initial_position(-500, 7000);
 
 // Textures

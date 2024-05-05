@@ -4,6 +4,8 @@
 // Declare global variables here
 extern int globalInt;  // Declaration
 extern Clock GameClock;
+extern View view;
+
 extern int BODnumber;
 extern BringerOfDeath BODmonsters[];
 extern BringerOfDeath BODoriginal;

@@ -6,7 +6,7 @@
 int globalInt = 0;  // Definition
 Clock GameClock;
 
-int level;
+int BODnumber;
 BringerOfDeath BODmonsters[30];
 BringerOfDeath BODoriginal;
 Texture BODtexture;

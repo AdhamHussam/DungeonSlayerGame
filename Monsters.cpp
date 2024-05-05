@@ -84,7 +84,7 @@ void die(int i) {
 
 // update monster
 void MonstersMovment() {
-    for (int i = 0; i < level; i++){
+    for (int i = 0; i < BODnumber; i++){
 
         // hide BOD spell
         showBODSpell[i] = false;
@@ -175,12 +175,12 @@ void MonstersMovment() {
 
 // set monsters at the begining of the wave
 void SetMonsters() {
-    level = 10;
-    for (int i = 0; i < level; i++) {
+    BODnumber = rand()%10 + 1;
+    for (int i = 0; i < BODnumber; i++) {
         BODalive[i] = true;
         BODstate[i] = BOD::BODwalk;
         BODmonsters[i] = BODoriginal;
-        BODmonsters[i].BOD.setPosition(500, 7000 + i*100);
+        BODmonsters[i].BOD.setPosition(500 + rand()%100, 7000 + rand() % 1000);
     }
 }
 

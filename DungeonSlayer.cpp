@@ -465,7 +465,7 @@ void Draw()
     if (!ispassing)
         window.draw(Player);
 
-    for (int i = 0; i < level; i++)
+    for (int i = 0; i < BODnumber; i++)
         if (BODalive[i]) {
            window.draw(BODmonsters[i].BOD);
             if (showBODSpell[i])

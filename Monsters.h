@@ -6,5 +6,6 @@ struct BringerOfDeath
 	Sprite BOD,spell;
 
 	int health = 10;
-	int speed = 100, cooldown = 5;
+	int speed = 100;
+	float cooldown = 5;
 };

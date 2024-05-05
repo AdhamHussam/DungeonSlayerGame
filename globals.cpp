@@ -24,6 +24,6 @@ state player_idle = state::idle, player_run = state::run, player_hit = state::hi
 
 
 enum BOD {
-    BODwalk, BODattack, BODcast, BODhurt, BODdie
+    BODwalk, BODattack, BODcast, BODhurt, BODdie, BODspawn
 };
 BOD BODstate[30], BODattacks = BOD::BODattack;

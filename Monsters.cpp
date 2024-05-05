@@ -3,7 +3,7 @@
 #include "globals.h"
 
 enum BOD {
-    BODwalk, BODattack, BODcast, BODhurt, BODdie
+    BODwalk, BODattack, BODcast, BODhurt, BODdie, BODspawn
 };
 
 
@@ -82,6 +82,16 @@ void die(int i) {
         BODalive[i] = false;
 }
 
+// make monster spawn
+void spawn(int i) {
+    BODmonsters[i].BOD.setTextureRect(getRect(29+9-MovmentCounter[i]));
+    UpdateMonsterAnimationCounter(i);
+    if (MovmentCounter[i] == 10) {
+        MovmentCounter[i] = 0;
+        BODstate[i] = BOD::BODwalk;
+    }
+}
+
 // update monster
 void MonstersMovment() {
     for (int i = 0; i < BODnumber; i++){
@@ -97,6 +107,10 @@ void MonstersMovment() {
             continue;
         }
 
+        if (BODstate[i] == BOD::BODspawn) {
+            spawn(i);
+            continue;
+        }
         // check distance between BOD and Player and make BOD look forward Player
         double x = Player.getPosition().x - BODmonsters[i].BOD.getPosition().x, y = BODmonsters[i].BOD.getPosition().y - Player.getPosition().y;
         if (x > 0)
@@ -178,7 +192,8 @@ void SetMonsters() {
     BODnumber = rand()%10 + 1;
     for (int i = 0; i < BODnumber; i++) {
         BODalive[i] = true;
-        BODstate[i] = BOD::BODwalk;
+        MonsterCounter[i] = 0;
+        BODstate[i] = BOD::BODspawn;
         BODmonsters[i] = BODoriginal;
         BODmonsters[i].BOD.setPosition(500 + rand()%100, 7000 + rand() % 1000);
     }

@@ -30,4 +30,5 @@ struct ParentsCostPair
 {
 	vector<vector<Coordinates>> parents;
 	vector<vector<int>> cost;
+	int speed = 100, cooldown = 5;
 };

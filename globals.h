@@ -16,4 +16,6 @@ extern state curr_state, player_idle, player_run, player_hit, player_base, playe
 enum BOD;
 extern BOD BODstate, BODattacks;
 extern const int LENGTH, WIDTH;
+extern int Player_Health;
+extern bool ishit;
 #endif // GLOBALS_H

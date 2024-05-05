@@ -853,6 +853,7 @@ void game_reset() {
     Player_Health = 100;
     for (int i = 0; i < 4; i++) cooldown[i] = 0;
     Player.setPosition(initial_position);
+    Player.setScale(0.2, 0.2);
     float AnimationCounter = 0;
     int maximagecounter = 0;
     int ImageCounter = 0;

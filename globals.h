@@ -6,6 +6,7 @@ extern int globalInt;  // Declaration
 extern Clock GameClock;
 extern View view;
 
+extern RenderWindow window;
 extern int BODnumber;
 extern BringerOfDeath BODmonsters[];
 extern BringerOfDeath BODoriginal;

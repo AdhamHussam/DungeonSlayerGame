@@ -23,3 +23,8 @@ struct ParentsCostPair
 	vector<vector<Coordinates>> parents;
 	vector<vector<int>> cost;
 };
+
+void SetMonstersSprites();
+void SetMonstersWave();
+void MoveMonsters();
+void ShowMonsters();

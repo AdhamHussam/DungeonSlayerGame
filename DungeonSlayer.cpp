@@ -212,11 +212,8 @@ void playerMovement();
 void setTextures();
 void checkCollisions();
 void Draw();
-void MonstersMovment();
-void SetMonsters();
 void UpdateAnimationCounter(float st = 0.1);
 void game_reset();
-void CreateMonsters();
 // Main 
 int main()
 {

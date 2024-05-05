@@ -16,9 +16,9 @@ int Player_Health = 100;
 bool ishit = false;
 enum state
 {
-    idle, run, hit, base, zmove, xmove, cmove, dead, walk
+    idle, run, hit, base,  xmove, cmove, vmove, dead, walk
 };
-state curr_state = state::idle, player_base = state::base, player_zmove = state::zmove, player_xmove = state::xmove, player_cmove = state::cmove;
+state curr_state = state::idle, player_base = state::base, player_vmove = state::vmove, player_xmove = state::xmove, player_cmove = state::cmove;
 state player_idle = state::idle, player_run = state::run, player_hit = state::hit, player_dead = state::dead, player_walk = state::walk;
 
 

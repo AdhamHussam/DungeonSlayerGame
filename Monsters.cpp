@@ -114,17 +114,17 @@ void MonstersMovment() {
             MovmentCounter = 0;
             BODstate = BOD::BODhurt;
         }
-        else if(curr_state == player_zmove) {
-            BODmonsters[0].health -= 2;
-            MovmentCounter = 0;
-            BODstate = BOD::BODhurt;
-        }
-        else if (curr_state == player_xmove) {
+        else if(curr_state == player_xmove) {
             BODmonsters[0].health -= 3;
             MovmentCounter = 0;
             BODstate = BOD::BODhurt;
         }
         else if (curr_state == player_cmove) {
+            BODmonsters[0].health -= 5;
+            MovmentCounter = 0;
+            BODstate = BOD::BODhurt;
+        }
+        else if (curr_state == player_vmove) {
             BODmonsters[0].health -= 10;
             MovmentCounter = 0;
             BODstate = BOD::BODhurt;

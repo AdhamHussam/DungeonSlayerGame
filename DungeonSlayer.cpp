@@ -8,14 +8,14 @@
 // Game properties
 enum state
 {
-    idle, run, hit, base, zmove, xmove, cmove, dead, walk
+    idle, run, hit, base,  xmove, cmove, vmove, dead, walk
 };
 
 int doors = 5;
-int right_walls = 20;
-int left_walls = 20;
-int up_walls = 19;
-int down_walls = 21;
+int right_walls = 25;
+int left_walls = 25;
+int up_walls = 24;
+int down_walls = 26;
 
 // menu number
 int pagenum = 69;
@@ -50,7 +50,7 @@ Texture RunAnimation[8];
 Texture DeathAnimation[3];
 Texture HitAnimation[3];
 Texture BaseAttack[8];
-Texture Zmove[7];
+Texture Vmove[7];
 Texture Xmove[7];
 Texture Cmove[8];
 Texture walkAnimation[8];
@@ -93,6 +93,11 @@ RectangleShape borderR17(Vector2f({ 50,600 }));
 RectangleShape borderR18(Vector2f({ 50,600 }));
 RectangleShape borderR19(Vector2f({ 50,800 }));
 RectangleShape borderR20(Vector2f({ 50,775 }));
+RectangleShape borderR21(Vector2f({ 10,10 }));
+RectangleShape borderR22(Vector2f({ 10,10 }));
+RectangleShape borderR23(Vector2f({ 10,10 }));
+RectangleShape borderR24(Vector2f({ 10,10 }));
+RectangleShape borderR25(Vector2f({ 10,10 }));
 
 RectangleShape borderL1(Vector2f({ 50,1000 })); 
 RectangleShape borderL2(Vector2f({ 50,200 })); 
@@ -114,6 +119,11 @@ RectangleShape borderL17(Vector2f({ 50,600 }));
 RectangleShape borderL18(Vector2f({ 50,600 }));
 RectangleShape borderL19(Vector2f({ 50, 775 }));
 RectangleShape borderL20(Vector2f({ 50,800 }));
+RectangleShape borderL21(Vector2f({ 10,10 }));
+RectangleShape borderL22(Vector2f({ 10,10 }));
+RectangleShape borderL23(Vector2f({ 10,10 }));
+RectangleShape borderL24(Vector2f({ 10,10 }));
+RectangleShape borderL25(Vector2f({ 10,10 }));
 
 RectangleShape borderU1(Vector2f({ 700,50 }));
 RectangleShape borderU2(Vector2f({ 700,50 }));
@@ -134,6 +144,11 @@ RectangleShape borderU16(Vector2f({ 600,50 }));
 RectangleShape borderU17(Vector2f({ 600,50 }));
 RectangleShape borderU18(Vector2f({ 250,50 }));
 RectangleShape borderU19(Vector2f({ 2000,50 }));
+RectangleShape borderU20(Vector2f({ 10,10 }));
+RectangleShape borderU21(Vector2f({ 10,10 }));
+RectangleShape borderU22(Vector2f({ 10,10 }));
+RectangleShape borderU23(Vector2f({ 10,10 }));
+RectangleShape borderU24(Vector2f({ 10,10 }));
 
 RectangleShape borderD1(Vector2f({ 2000,50 }));
 RectangleShape borderD2(Vector2f({ 700,50 }));
@@ -156,12 +171,33 @@ RectangleShape borderD18(Vector2f({ 250,50 }));
 RectangleShape borderD19(Vector2f({ 250,50 }));
 RectangleShape borderD20(Vector2f({ 550,50 }));
 RectangleShape borderD21(Vector2f({ 550,50 }));
+RectangleShape borderD22(Vector2f({ 10,10 }));
+RectangleShape borderD23(Vector2f({ 10,10 }));
+RectangleShape borderD24(Vector2f({ 10,10 }));
+RectangleShape borderD25(Vector2f({ 10,10 }));
+RectangleShape borderD26(Vector2f({ 10,10 }));
 
 RectangleShape gates[] = { gate1, gate2 , gate3, gate4, gate5};
-RectangleShape right_borders[] = { borderR1 , borderR2 , borderR3 , borderR4 ,borderR5, borderR6, borderR7, borderR8, borderR9, borderR10 ,borderR11, borderR12 , borderR13 , borderR14 , borderR15 , borderR16 , borderR17, borderR18, borderR19 ,borderR20};
-RectangleShape left_borders[] = { borderL1,borderL2 , borderL3 , borderL4, borderL5 , borderL6 , borderL7, borderL8, borderL9, borderL10, borderL11 , borderL12 , borderL13 , borderL14 , borderL15 , borderL16 ,borderL17, borderL18, borderL19 , borderL20};
-RectangleShape up_borders[] = { borderU1, borderU2 , borderU3 , borderU4, borderU5, borderU6, borderU7, borderU8, borderU9, borderU10, borderU11,borderU12 ,borderU13, borderU14 , borderU15 , borderU16, borderU17, borderU18, borderU19 };
-RectangleShape down_borders[] = { borderD1,borderD2, borderD3 , borderD4, borderD5, borderD6, borderD7, borderD8, borderD9 ,borderD10, borderD11 , borderD12 , borderD13 , borderD14 , borderD15 , borderD16, borderD17, borderD18 , borderD19 ,borderD20, borderD21 };
+
+RectangleShape right_borders[] = { borderR1 , borderR2 , borderR3 , borderR4 ,borderR5, borderR6, borderR7, borderR8, borderR9, borderR10 ,
+    borderR11, borderR12 , borderR13 , borderR14 , borderR15 , borderR16 , borderR17, borderR18, borderR19 ,borderR20, borderR21 , borderR22,
+    borderR23, borderR24 , borderR25
+};
+
+RectangleShape left_borders[] = { borderL1,borderL2 , borderL3 , borderL4, borderL5 , borderL6 , borderL7, borderL8, borderL9, borderL10,
+    borderL11 , borderL12 , borderL13 , borderL14 , borderL15 , borderL16 ,borderL17, borderL18, borderL19 , borderL20, borderL21, borderL22,
+    borderL23 ,borderL24 , borderL25
+};
+
+RectangleShape up_borders[] = { borderU1, borderU2 , borderU3 , borderU4, borderU5, borderU6, borderU7, borderU8, borderU9, borderU10,
+    borderU11,borderU12 ,borderU13, borderU14 , borderU15 , borderU16, borderU17, borderU18, borderU19,borderU20 , borderU21, borderU22,
+    borderU23 , borderU24
+};
+
+RectangleShape down_borders[] = { borderD1,borderD2, borderD3 , borderD4, borderD5, borderD6, borderD7, borderD8, borderD9 ,borderD10,
+    borderD11 , borderD12 , borderD13 , borderD14 , borderD15 , borderD16, borderD17, borderD18 , borderD19 ,borderD20, borderD21 , 
+    borderD22 , borderD23, borderD24 , borderD25 , borderD26
+};
 
 // Game functions
 void menu_handler();
@@ -264,7 +300,7 @@ void setTextures()
     
     // Room
 
-    map1.loadFromFile("lvl2.png");
+    map1.loadFromFile("lvl1.png");
     Map1.setTexture(map1);
     Map1.setScale(3.8, 3.333);
     Map1.setOrigin(map1.getSize().x / 2, map1.getSize().y / 2);
@@ -280,11 +316,6 @@ void setTextures()
 
     // walls
 
-    gate1.setPosition(-60, 6500);
-    gate2.setPosition(-60, 4600);
-    gate3.setPosition(-60, 2830);
-    gate4.setPosition(-60, 1540);
-    gate5.setPosition(-60, -275);
     gates[0].setPosition(-60, 6500);
     gates[1].setPosition(-60, 4640);
     gates[2].setPosition(-60, 2830);
@@ -311,6 +342,11 @@ void setTextures()
     right_borders[17].setPosition(1075, 180);
     right_borders[18].setPosition(100, -1015);
     right_borders[19].setPosition(850, -2000);
+    right_borders[20].setPosition(-120, 5940);
+    right_borders[21].setPosition(-145, 5240);
+    right_borders[22].setPosition(-145, 2160);
+    right_borders[23].setPosition(-900, 2150);
+    right_borders[24].setPosition(655, 2150);
 
     left_borders[0].setPosition(-990, 6700);
     left_borders[1].setPosition(-275, 6330);
@@ -332,6 +368,11 @@ void setTextures()
     left_borders[17].setPosition(-850, -400);
     left_borders[18].setPosition(-275, -1015);
     left_borders[19].setPosition(-1000, -2000);
+    left_borders[20].setPosition(0, 5940);
+    left_borders[21].setPosition(25, 5240);
+    left_borders[22].setPosition(25, 2160);
+    left_borders[23].setPosition(-825, 2150);
+    left_borders[24].setPosition(755, 2150);
     
     up_borders[0].setPosition(-1000, 6500);
     up_borders[1].setPosition(150, 6500);
@@ -352,6 +393,11 @@ void setTextures()
     up_borders[16].setPosition( 150 , -250);
     up_borders[17].setPosition( 720 , 180);
     up_borders[18].setPosition( -1000 , -2100);
+    up_borders[19].setPosition( -60 , 5950);
+    up_borders[20].setPosition( -60 , 5300);
+    up_borders[21].setPosition( -60 , 2175);
+    up_borders[22].setPosition( -850 , 2160);
+    up_borders[23].setPosition( 730 , 2160);
 
     down_borders[0].setPosition(-900, 7450);
     down_borders[1].setPosition(-970, 6300);
@@ -374,6 +420,11 @@ void setTextures()
     down_borders[18].setPosition(720, 900);
     down_borders[19].setPosition(150, -1020);
     down_borders[20].setPosition(-850, -1020);
+    down_borders[21].setPosition(-60, 5900);
+    down_borders[22].setPosition(-60, 5150);
+    down_borders[23].setPosition(-60, 2050);
+    down_borders[24].setPosition(-850, 2100);
+    down_borders[25].setPosition(730, 2100);
    
     // monsters
     SetMonsters();
@@ -382,7 +433,7 @@ void setTextures()
         RunAnimation[i].loadFromFile("Run/run" + to_string(i) + ".png");
     }
     for (int i = 0; i < 7; i++) {
-        Zmove[i].loadFromFile("Z move/Zmove" + to_string(i) + ".png");
+        Vmove[i].loadFromFile("V move/Vmove" + to_string(i) + ".png");
     }
     for (int i = 0; i < 7; i++) {
         Xmove[i].loadFromFile("X move/Xmove" + to_string(i) + ".png");
@@ -420,7 +471,7 @@ void Draw()
     }
     /*for (int i = 0; i < doors; i++) {
         window.draw(gates[i]);
-    }*/   
+    } */ 
     /*for(int i = 0; i < left_walls;i++){
         window.draw(left_borders[i]);
     }
@@ -440,19 +491,18 @@ void Draw()
 void playerMovement()
 {
     
-
     if (Keyboard::isKeyPressed(Keyboard::W) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
         velocity.y = -run_speed * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::S) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
-
         velocity.y = run_speed * playerdeltatime;
     }
     else {
         velocity.y = 0;
     }
+
     if (Keyboard::isKeyPressed(Keyboard::A) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
         Player.setScale(-0.2, 0.2);
@@ -469,6 +519,7 @@ void playerMovement()
 
     checkCollisions();
     Player.move(velocity);
+
     if (Keyboard::isKeyPressed(Keyboard::W))
     {
         velocity.y = -walk_speed * playerdeltatime;
@@ -480,6 +531,7 @@ void playerMovement()
     else {
         velocity.y = 0;
     }
+
     if (Keyboard::isKeyPressed(Keyboard::A))
     {
         Player.setScale(-0.2, 0.2);
@@ -493,6 +545,7 @@ void playerMovement()
     else {
         velocity.x = 0;
     }
+
     checkCollisions();
     Player.move(velocity);
 
@@ -533,35 +586,33 @@ void Switch_States()
         if (Keyboard::isKeyPressed(Keyboard::Space) || Mouse::isButtonPressed(Mouse::Left))
         {
             if (cooldown[0] == 0) {
-
                 curr_state = state::base;
-                cooldown[0] = 2;
+                cooldown[0] = 1.5;
             }
         }
-        if (Keyboard::isKeyPressed(Keyboard::Z))
+     
+        if (Keyboard::isKeyPressed(Keyboard::X))
         {
             if (cooldown[1] == 0) {
 
-                curr_state = state::zmove;
-                cooldown[1] = 5;
-            }
-        }
-        if (Keyboard::isKeyPressed(Keyboard::X))
-        {
-            if (cooldown[2] == 0) {
-
                 curr_state = state::xmove;
-                cooldown[2] = 6;
+                cooldown[1] = 3;
             }
 
         }
         if (Keyboard::isKeyPressed(Keyboard::C))
         {
+            if (cooldown[2] == 0) {
+                curr_state = state::cmove;
+                cooldown[2] = 6;
+            }
+        }
+        if (Keyboard::isKeyPressed(Keyboard::V))
+        {
             if (cooldown[3] == 0) {
 
-
-                curr_state = state::cmove;
-                cooldown[3] = 7;
+                curr_state = state::vmove;
+                cooldown[3] = 9;
             }
         }
         if (ishit)
@@ -581,7 +632,7 @@ void Switch_States()
             maximagecounter = 8;
             ImageCounter = 0; sha8al = true;
             break;
-        case state::zmove:
+        case state::vmove:
             maximagecounter = 7;
             ImageCounter = 0; sha8al = true;
             break;
@@ -609,7 +660,7 @@ void Switch_States()
     case state::walk: maximagecounter = 8; Player.setTexture(walkAnimation[ImageCounter]); UpdateAnimationCounter(0.2); break;
     case state::idle: Player.setTexture(Idle); UpdateAnimationCounter(0.1); break;
     case state::base: Player.setTexture(BaseAttack[ImageCounter]); UpdateAnimationCounter(0.08); break;//0.12
-    case state::zmove: Player.setTexture(Zmove[ImageCounter]); UpdateAnimationCounter(0.11); break;
+    case state::vmove: Player.setTexture(Vmove[ImageCounter]); UpdateAnimationCounter(0.11); break;
     case state::xmove: Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
     case state::cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
     case state::dead: Player.setTexture(DeathAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
@@ -702,7 +753,7 @@ void Game_play(RenderWindow& window)
         }
         update();
         Draw();
-        cout << Player.getPosition().x << " " << Player.getPosition().y << endl;
+        //cout << Player.getPosition().x << " " << Player.getPosition().y << endl;
         //cout << Player_Health << endl;
     }
 }
@@ -798,6 +849,7 @@ void PauseMenuHandler(RenderWindow& window)
 
 void game_reset() {
     Player_Health = 100;
+    for (int i = 0; i < 4; i++) cooldown[i] = 0;
     Player.setPosition(initial_position);
     float AnimationCounter = 0;
     int maximagecounter = 0;

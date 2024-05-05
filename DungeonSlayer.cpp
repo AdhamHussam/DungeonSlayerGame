@@ -34,14 +34,16 @@ bool isAttack = false;
 bool openertrigger = false;
 bool map_opener_trigger = false;
 bool ispassing = false;
+bool wave_cleared = true;
 bool finishedanimationonce = false;
 float cooldown[4];
 
-RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer" ,Style::Fullscreen);
+//RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer" ,Style::Fullscreen);
 Menu menu(1920, 1080);
 PauseMenu pause(1920, 1080);
 Clock pausetimer;
 Clock attacktimer;
+
 
 Vector2f initial_position(-500, 7000);
 
@@ -205,7 +207,7 @@ SoundBuffer menu_opener;
 Sound MenuOpener;
 
 SoundBuffer map_opener;
-Sound map_opener;
+Sound MapOpener;
 
 SoundBuffer game_music;
 Sound GameMusic;
@@ -254,11 +256,13 @@ void update()
 
 void checkCollisions() 
 {
+    //doors
     for (int i = 0; i < doors; i++) {
         if (Player.getGlobalBounds().intersects(gates[i].getGlobalBounds())) {
             ispassing = true;
             Player.move(0, -500 * playerdeltatime);
-
+            wave_cleared = false;
+            GameMusic.setVolume(80);
             break;
         }
         else ispassing = false;
@@ -467,8 +471,8 @@ void setTextures()
     }
 
     menu_opener.loadFromFile("Title card.mp3");
-    map_opener.loadFromFile("Title card.mp3");
-    game_music.loadFromFile("Title card.mp3");
+    map_opener.loadFromFile("Map opener.mp3");
+    game_music.loadFromFile("Game music.mp3");
 }
 
 
@@ -716,7 +720,7 @@ void menu_handler()
                         MenuOpener.setVolume(80);
                         MenuOpener.setBuffer(menu_opener);
                         MenuOpener.play();
-                        openertrigger = 1;
+                        openertrigger = true;
                     }
 
                     if (event.type == Event::KeyPressed) {
@@ -747,6 +751,7 @@ void menu_handler()
             }
             if (pagenum == -1) {
                 window.close();
+                MenuOpener.stop();
                 break;
             }
             if (pagenum == 0) {
@@ -760,7 +765,7 @@ void menu_handler()
 }
 
 void Game_play(RenderWindow& window)
-{
+{  
     while (window.isOpen()) {
         float elapsed = GameClock.restart().asSeconds();
         playerdeltatime = elapsed;
@@ -770,6 +775,7 @@ void Game_play(RenderWindow& window)
                 window.close();
             }
         }
+        music_handler();
         update();
         Draw();
         //cout << Player.getPosition().x << " " << Player.getPosition().y << endl;
@@ -805,13 +811,16 @@ void Instructions_Menu(RenderWindow& window) {
 
 void PauseMenuHandler(RenderWindow& window)
 {
+    if (GameMusic.getStatus() == Sound::Playing) GameMusic.pause();
     while (window.isOpen()) {
         Event event;
+
         while (window.pollEvent(event)) {
             if (event.type == Event::Closed) {
                 window.close();
             }
         }
+     
         view.setCenter(960, 540); //update
         window.setView(view);
 
@@ -833,6 +842,7 @@ void PauseMenuHandler(RenderWindow& window)
         if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 0) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 GameClock.restart();
+                GameMusic.play();
                 break;
             }
         }
@@ -872,6 +882,8 @@ void game_reset() {
     Player.setPosition(initial_position);
     Player.setScale(0.2, 0.2);
     openertrigger = false;
+    map_opener_trigger = false;
+    wave_cleared = true;
     float AnimationCounter = 0;
     int maximagecounter = 0;
     int ImageCounter = 0;
@@ -882,5 +894,14 @@ void game_reset() {
 
 void music_handler()
 {
-
+    if (MenuOpener.getStatus() == Sound::Playing) MenuOpener.stop();
+    if (GameMusic.getStatus() != Sound::Playing && !map_opener_trigger) {
+        if (wave_cleared)
+            GameMusic.setVolume(5);
+        else
+            GameMusic.setVolume(80);
+        GameMusic.setBuffer(game_music);
+        GameMusic.play();
+        map_opener_trigger = true;
+    }
 }

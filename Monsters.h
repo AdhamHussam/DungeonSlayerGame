@@ -5,6 +5,6 @@ struct BringerOfDeath
 {
 	Sprite BOD, spell;
 
-	int health = 10;
-	float speed = 100, cooldown = 5;
+	int health = 10,speed = 100;
+	float cooldown = 5;
 };

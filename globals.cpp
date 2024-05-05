@@ -6,10 +6,11 @@
 int globalInt = 0;  // Definition
 Clock GameClock;
 
-BringerOfDeath BODmonsters[3];
+int level;
+BringerOfDeath BODmonsters[30];
 BringerOfDeath BODoriginal;
 Texture BODtexture;
-bool showBODSpell[3], BODalive[3];
+bool showBODSpell[30], BODalive[30];
 Sprite Player;
 float playerdeltatime = 0;
 int Player_Health = 100;
@@ -25,4 +26,4 @@ state player_idle = state::idle, player_run = state::run, player_hit = state::hi
 enum BOD {
     BODwalk, BODattack, BODcast, BODhurt, BODdie
 };
-BOD BODstate[3], BODattacks = BOD::BODattack;
+BOD BODstate[30], BODattacks = BOD::BODattack;

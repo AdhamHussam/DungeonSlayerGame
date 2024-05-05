@@ -465,7 +465,7 @@ void Draw()
     if (!ispassing)
         window.draw(Player);
 
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < level; i++)
         if (BODalive[i]) {
            window.draw(BODmonsters[i].BOD);
             if (showBODSpell[i])
@@ -857,7 +857,6 @@ void game_reset() {
     int maximagecounter = 0;
     int ImageCounter = 0;
     int globalInt = 0;
-    int number_of_BODmonsters = 1;
     float playerdeltatime = 0;
     SetMonsters();
 }

@@ -8,8 +8,8 @@ enum BOD {
 
 
 // animation counters
-int MovmentCounter[3];
-float MonsterCounter[3];
+int MovmentCounter[30];
+float MonsterCounter[30];
 
 // function for setting rectangle of texture
 IntRect getRect(int pos) {
@@ -84,7 +84,7 @@ void die(int i) {
 
 // update monster
 void MonstersMovment() {
-    for (int i = 0; i < 3; i++){
+    for (int i = 0; i < level; i++){
 
         // hide BOD spell
         showBODSpell[i] = false;
@@ -175,7 +175,8 @@ void MonstersMovment() {
 
 // set monsters at the begining of the wave
 void SetMonsters() {
-    for (int i = 0; i < 3; i++) {
+    level = 10;
+    for (int i = 0; i < level; i++) {
         BODalive[i] = true;
         BODstate[i] = BOD::BODwalk;
         BODmonsters[i] = BODoriginal;

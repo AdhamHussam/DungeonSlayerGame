@@ -4,9 +4,8 @@
 struct BringerOfDeath
 {
 	Sprite BOD,spell;
-
 	int health = 10;
-	float speed = 0.1, cooldown = 5;
+	float speed = 100, cooldown = 5;
 };
 
 struct Coordinates

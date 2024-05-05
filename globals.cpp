@@ -5,7 +5,7 @@
 // Define global variables here
 int globalInt = 0;  // Definition
 Clock GameClock;
-const int LENGTH = 1921, WIDTH = 1080;
+View view(Vector2f(0, 0), Vector2f(1920, 1080));
 
 int BODnumber;
 BringerOfDeath BODmonsters[30];

@@ -4,6 +4,7 @@
 // Declare global variables here
 extern int globalInt;  // Declaration
 extern Clock GameClock;
+extern View view;
 
 extern int BODnumber;
 extern BringerOfDeath BODmonsters[];
@@ -15,7 +16,6 @@ extern float playerdeltatime;
 enum state;
 extern state curr_state, player_idle, player_run, player_hit, player_base,  player_xmove, player_cmove, player_vmove, player_dead, player_walk;
 enum BOD;
-extern const int LENGTH, WIDTH;
 extern BOD BODstate[], BODattacks;
 extern int Player_Health;
 extern bool ishit;

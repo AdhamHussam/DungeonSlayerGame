@@ -19,11 +19,12 @@ struct Cell
 {
 	int cost;
 	Coordinates node;
-
-	bool operator<(const Cell& other) const {
-		return cost > other.cost; // Compare based on cost
-	}
 };
+
+inline bool operator>(const Cell& lhs, const Cell& rhs) {
+	// Compare based on cost
+	return lhs.cost > rhs.cost;
+}
 
 struct ParentsCostPair
 {

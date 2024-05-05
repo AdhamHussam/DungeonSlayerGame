@@ -1,8 +1,9 @@
 #include "includes.h"
 #include "Monsters.h"
 #include "globals.h"
-#define LENGTH 1921
-#define WIDTH 1081
+
+const int LENGTH = view.getSize().x;
+const int WIDTH = view.getSize().y;
 
 enum BOD {
     BODwalk, BODattack, BODcast, BODhurt, BODdie
@@ -21,7 +22,7 @@ int heuristic(int startx, int starty, int endx, int endy) {
 }
 
 // Time to move
-int grid[LENGTH][WIDTH];
+vector<vector<int>> grid(LENGTH, vector<int>(WIDTH));
 // traversing the grid using A* algrithm to find the shortest path 
 ParentsCostPair Astar(int startx, int starty, int endx, int endy) {   
     for (int x = 0; x < LENGTH; x++) {
@@ -30,8 +31,13 @@ ParentsCostPair Astar(int startx, int starty, int endx, int endy) {
         }
     }
 
-    vector<vector<Coordinates>> parents;
-    vector<vector<int>> cost(LENGTH, vector<int>(WIDTH, INT32_MAX));
+    vector<vector<Coordinates>> parents(LENGTH, vector<Coordinates>(WIDTH));
+    vector<vector<int>> cost(LENGTH, vector<int>(WIDTH));
+    for (int idx = 0; idx < LENGTH; idx++) {
+        for (int jdx = 0; jdx < WIDTH; jdx++) {
+            cost[idx][jdx] = INT32_MAX;
+        }
+    }
     priority_queue<Cell, vector<Cell>, greater<Cell>> pq;
     Cell start_cell;
     start_cell.cost = 0;
@@ -53,25 +59,25 @@ ParentsCostPair Astar(int startx, int starty, int endx, int endy) {
 
         // Visit neighbors of current cell
         for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                int ch_row = row + rd[i]; // child row
-                int ch_col = row + cd[i]; // child column
-                int h = heuristic(ch_row, ch_col, endx, endy);
-                bool is_better_cost = cost[ch_row][ch_col] > cur_cost + grid[ch_row][ch_col] + h;
+            
+            int ch_row = row + rd[i]; // child row
+            int ch_col = row + cd[i]; // child column
+            int h = heuristic(ch_row, ch_col, endx, endy);
+            bool is_better_cost = cost[ch_row][ch_col] > cur_cost + grid[ch_row][ch_col] + h;
 
-                if (inBound(ch_row, ch_col) && is_better_cost) {
-                    cost[ch_row][ch_col] = cur_cost + grid[ch_row][ch_col] + h;
-                    Cell child_cell;
-                    child_cell.cost = cost[ch_row][ch_col];
-                    child_cell.node = { ch_row, ch_col };
-                    parents[ch_row][ch_col] = current_cell.node;
-                    pq.push(child_cell);
+            if (inBound(ch_row, ch_col) && is_better_cost) {
+                cost[ch_row][ch_col] = cur_cost + grid[ch_row][ch_col] + h;
+                Cell child_cell;
+                child_cell.cost = cost[ch_row][ch_col];
+                child_cell.node = { ch_row, ch_col };
+                parents[ch_row][ch_col] = current_cell.node;
+                pq.push(child_cell);
 
-                    if (ch_row == endx && ch_col == endy) {
-                        return { parents, cost };
-                    }
+                if (ch_row == endx && ch_col == endy) {
+                    return { parents, cost };
                 }
             }
+            
         }
 
         return { parents, cost };
@@ -124,8 +130,19 @@ void walk(int x, int y, int i) {
     sf::Vector2f player_position = Player.getPosition();
     sf::Vector2f monster_position = BODmonsters[i].BOD.getPosition();
     ParentsCostPair front = Astar(monster_position.x, monster_position.y, player_position.x + 1, player_position.y);
-    int to_x = front.parents[player_position.x + 1][player_position.y].x;
-    int to_y = front.parents[player_position.x + 1][player_position.y].y;
+    ParentsCostPair back = Astar(monster_position.x, monster_position.y, player_position.x - 1, player_position.y);
+    
+    int to_x, to_y;
+    cout << front.parents[player_position.x + 1][player_position.y].x << '\n';
+    if (inBound(player_position.x + 1, player_position.y)) {
+        // Get the next position from the path
+        to_x = front.parents[player_position.x + 1][player_position.y].x;
+        to_y = front.parents[player_position.x + 1][player_position.y].y;
+    }
+    else {
+        to_x = back.parents[player_position.x - 1][player_position.y].x;
+        to_y = back.parents[player_position.x - 1][player_position.y].y;
+    }
     BODmonsters[i].BOD.move(to_x, to_y);
     UpdateMonsterAnimationCounter(i);
     MovmentCounter[i] %= 8;

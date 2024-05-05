@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ArcanArcher.cpp" />
     <ClCompile Include="BOD.cpp" />
     <ClCompile Include="DungeonSlayer.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -146,6 +147,7 @@
     <ClCompile Include="NightBorne.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ArcanArcher.h" />
     <ClInclude Include="BOD.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="includes.h" />

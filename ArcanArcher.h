@@ -2,10 +2,11 @@
 #include "includes.h"
 
 struct ArcanArcher {
-	int x;
+	Sprite AA,arow;
+	int health;
 };
 
 void AACreate();
 void AASet();
 void AAMove();
-void AADraw();
+void AADraw(RenderWindow&);

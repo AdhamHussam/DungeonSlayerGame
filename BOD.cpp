@@ -1,25 +1,19 @@
 #include "includes.h"
-#include "Monsters.h"
+#include "BOD.h"
 #include "globals.h"
 
-/*
-enum BOD {
-    BODwalk, BODattack, BODcast, BODhurt, BODdie, BODspawn
-};
-
-// animation counters
 int MovmentCounter[30];
 float MonsterCounter[30];
 
 // function for setting rectangle of texture
 IntRect getRect(int pos) {
-    int x = pos%8;
-    int y = pos/8;
-    return IntRect(x*140, y*93, 140, 93);
+    int x = pos % 8;
+    int y = pos / 8;
+    return IntRect(x * 140, y * 93, 140, 93);
 }
 
 // updating sprites animation
-void UpdateMonsterAnimationCounter(int i,float st = 0.15){
+void UpdateMonsterAnimationCounter(int i, float st = 0.15) {
     MonsterCounter[i] += playerdeltatime;
     if (MonsterCounter[i] >= st)
     {
@@ -29,8 +23,8 @@ void UpdateMonsterAnimationCounter(int i,float st = 0.15){
 }
 
 // make monster walk
-    
-void walk(int x, int y, int i) {
+
+void Bringerwalk(int x, int y, int i) {
     BODmonsters[i].BOD.setTextureRect(getRect(8 + MovmentCounter[i]));
     Vector2f Direction = Player.getPosition() - BODmonsters[i].BOD.getPosition();
     float magnitude = sqrt(Direction.x * Direction.x + Direction.y * Direction.y);
@@ -44,7 +38,7 @@ void walk(int x, int y, int i) {
 
 
 // make monster attack
-void attack(int x,int y, int i) {
+void attack(int x, int y, int i) {
     BODmonsters[i].BOD.setTextureRect(getRect(16 + MovmentCounter[i]));
     int initial = MovmentCounter[i];
     UpdateMonsterAnimationCounter(i);
@@ -91,7 +85,7 @@ void die(int i) {
 
 // make monster spawn
 void spawn(int i) {
-    BODmonsters[i].BOD.setTextureRect(getRect(29+9-MovmentCounter[i]));
+    BODmonsters[i].BOD.setTextureRect(getRect(29 + 9 - MovmentCounter[i]));
     UpdateMonsterAnimationCounter(i);
     if (MovmentCounter[i] == 10) {
         MovmentCounter[i] = 0;
@@ -101,7 +95,7 @@ void spawn(int i) {
 
 // update monster
 void MonstersMovment() {
-    for (int i = 0; i < BODnumber; i++){
+    for (int i = 0; i < BODnumber; i++) {
 
         // hide BOD spell
         showBODSpell[i] = false;
@@ -190,19 +184,19 @@ void MonstersMovment() {
             attack(x, y, i);
         }
         else
-            walk(x, y, i);
+            Bringerwalk(x, y, i);
     }
 }
 
 // set monsters at the begining of the wave
 void SetMonsters() {
-    BODnumber = rand()%10 + 1;
+    BODnumber = rand() % 10 + 1;
     for (int i = 0; i < BODnumber; i++) {
         BODalive[i] = true;
         MonsterCounter[i] = 0;
         BODstate[i] = BOD::BODspawn;
         BODmonsters[i] = BODoriginal;
-        BODmonsters[i].BOD.setPosition(100 + rand()%100, 400 + rand() % 1000);
+        BODmonsters[i].BOD.setPosition(100 + rand() % 100, 400 + rand() % 1000);
     }
 }
 
@@ -218,4 +212,3 @@ void CreateMonsters() {
     BODoriginal.BOD.setOrigin(105, 62);
     BODoriginal.BOD.setScale(2, 2);
 }
-*/

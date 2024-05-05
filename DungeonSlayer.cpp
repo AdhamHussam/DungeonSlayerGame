@@ -216,11 +216,12 @@ void MonstersMovment();
 void SetMonsters();
 void UpdateAnimationCounter(float st = 0.1);
 void game_reset();
-
+void CreateMonsters();
 // Main 
 int main()
 {
     window.setMouseCursorVisible(false);
+    CreateMonsters();
     setTextures();
     menu_handler();
 }
@@ -464,11 +465,12 @@ void Draw()
     if (!ispassing)
         window.draw(Player);
 
-    if (BODalive) {
-        window.draw(BODmonsters[0].BOD);
-        if (showBODSpell)
-            window.draw(BODmonsters[0].spell);
-    }
+    for (int i = 0; i < 3; i++)
+        if (BODalive[i]) {
+           window.draw(BODmonsters[i].BOD);
+            if (showBODSpell[i])
+                window.draw(BODmonsters[i].spell);
+        }
     /*for (int i = 0; i < doors; i++) {
         window.draw(gates[i]);
     } */ 

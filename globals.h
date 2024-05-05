@@ -5,17 +5,18 @@
 extern int globalInt;  // Declaration
 extern Clock GameClock;
 
-extern const int number_of_BODmonsters;
+extern int BODnumber;
 extern BringerOfDeath BODmonsters[];
 extern BringerOfDeath BODoriginal;
-extern bool showBODSpell,BODalive;
+extern Texture BODtexture;
+extern bool showBODSpell[], BODalive[];
 extern Sprite Player;
 extern float playerdeltatime;
 enum state;
-extern state curr_state, player_idle, player_run, player_hit, player_base, player_zmove, player_xmove, player_cmove, player_dead, player_walk;
+extern state curr_state, player_idle, player_run, player_hit, player_base,  player_xmove, player_cmove, player_vmove, player_dead, player_walk;
 enum BOD;
-extern BOD BODstate, BODattacks;
 extern const int LENGTH, WIDTH;
+extern BOD BODstate[], BODattacks;
 extern int Player_Health;
 extern bool ishit;
 #endif // GLOBALS_H

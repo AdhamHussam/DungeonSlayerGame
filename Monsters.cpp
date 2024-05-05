@@ -79,8 +79,8 @@ ParentsCostPair Astar(int startx, int starty, int endx, int endy) {
 }
 
 // animation counters
-int MovmentCounter;
-float MonsterCounter;
+int MovmentCounter[30];
+float MonsterCounter[30];
 
 // function for setting rectangle of texture
 IntRect getRect(int pos) {
@@ -90,21 +90,22 @@ IntRect getRect(int pos) {
 }
 
 // updating sprites animation
-void UpdateMonsterAnimationCounter(float st = 0.15){
-    MonsterCounter += playerdeltatime;
-    if (MonsterCounter >= st)
+void UpdateMonsterAnimationCounter(int i,float st = 0.15){
+    MonsterCounter[i] += playerdeltatime;
+    if (MonsterCounter[i] >= st)
     {
-        MonsterCounter = 0;
-        MovmentCounter++;
+        MonsterCounter[i] = 0;
+        MovmentCounter[i]++;
     }
 }
 
 // make monster walk
+/*
 void walk(int x, int y) {
     BODmonsters[0].BOD.setTextureRect(getRect(8 + MovmentCounter));
-    /*
+    
     BODmonsters[0].BOD.move(((abs(x) > 1) ? ((x > 0) ? BODmonsters[0].speed : -BODmonsters[0].speed) : 0), ((y < 0) ? BODmonsters[0].speed : -BODmonsters[0].speed));
-    */
+    
     sf::Vector2f player_position = Player.getPosition();
     sf::Vector2f monster_position = BODmonsters[0].BOD.getPosition();
     ParentsCostPair front = Astar(monster_position.x, monster_position.y, player_position.x + 1, player_position.y);
@@ -115,154 +116,180 @@ void walk(int x, int y) {
     UpdateMonsterAnimationCounter();
     MovmentCounter %= 8;
 }
+*/
+    
+void walk(int x, int y, int i) {
+    BODmonsters[i].BOD.setTextureRect(getRect(8 + MovmentCounter[i]));
+    //BODmonsters[i].BOD.move(((abs(x) > 1) ? ((x > 0) ? BODmonsters[i].speed*playerdeltatime : -BODmonsters[i].speed* playerdeltatime) : 0), ((y < 0) ? BODmonsters[i].speed* playerdeltatime : -BODmonsters[i].speed* playerdeltatime));
+    sf::Vector2f player_position = Player.getPosition();
+    sf::Vector2f monster_position = BODmonsters[i].BOD.getPosition();
+    ParentsCostPair front = Astar(monster_position.x, monster_position.y, player_position.x + 1, player_position.y);
+    int to_x = front.parents[player_position.x + 1][player_position.y].x;
+    int to_y = front.parents[player_position.x + 1][player_position.y].y;
+    BODmonsters[i].BOD.move(to_x, to_y);
+    UpdateMonsterAnimationCounter(i);
+    MovmentCounter[i] %= 8;
+
+}
+
 
 // make monster attack
-void attack(int x,int y) {
-    BODmonsters[0].BOD.setTextureRect(getRect(16 + MovmentCounter));
-    int initial = MovmentCounter;
-    UpdateMonsterAnimationCounter();
-    if (MovmentCounter == 5 && MovmentCounter > initial) {
+void attack(int x,int y, int i) {
+    BODmonsters[i].BOD.setTextureRect(getRect(16 + MovmentCounter[i]));
+    int initial = MovmentCounter[i];
+    UpdateMonsterAnimationCounter(i);
+    if (MovmentCounter[i] == 5 && MovmentCounter[i] > initial) {
         if (abs(x) < 200 && abs(y) < 30) {
             Player_Health -= 5;
             ishit = true;
         }
     }
-    if (MovmentCounter == 10) {
-        MovmentCounter = 0;
-        BODstate = BOD::BODwalk;
+    if (MovmentCounter[i] == 10) {
+        MovmentCounter[i] = 0;
+        BODstate[i] = BOD::BODwalk;
     }
 }
 
 // make monster cast his spell
-void cast() {
-    BODmonsters[0].BOD.setTextureRect(getRect(39 + MovmentCounter));
-    BODmonsters[0].spell.setTextureRect(getRect(52 + MovmentCounter));
-    UpdateMonsterAnimationCounter();
-    if (MovmentCounter == 9) {
-        MovmentCounter = 0;
-        BODstate = BOD::BODwalk;
+void cast(int i) {
+    BODmonsters[i].BOD.setTextureRect(getRect(39 + MovmentCounter[i]));
+    BODmonsters[i].spell.setTextureRect(getRect(52 + MovmentCounter[i]));
+    UpdateMonsterAnimationCounter(i);
+    if (MovmentCounter[i] == 9) {
+        MovmentCounter[i] = 0;
+        BODstate[i] = BOD::BODwalk;
     }
 }
 
 // make monster take damage
-void hurt() {
-    BODmonsters[0].BOD.setTextureRect(getRect(27 + ((MovmentCounter > 4)?8- MovmentCounter : MovmentCounter)));
-    UpdateMonsterAnimationCounter();
-    if (MovmentCounter == 9) {
-        MovmentCounter = 0;
-        BODstate = BOD::BODwalk;
+void hurt(int i) {
+    BODmonsters[i].BOD.setTextureRect(getRect(27 + ((MovmentCounter[i] > 4) ? 8 - MovmentCounter[i] : MovmentCounter[i])));
+    UpdateMonsterAnimationCounter(i);
+    if (MovmentCounter[i] == 9) {
+        MovmentCounter[i] = 0;
+        BODstate[i] = BOD::BODwalk;
     }
 }
 
 // make monster die
-void die() {
-    BODmonsters[0].BOD.setTextureRect(getRect(29 + MovmentCounter));
-    UpdateMonsterAnimationCounter();
-    if (MovmentCounter == 10)
-        BODalive = false;
+void die(int i) {
+    BODmonsters[i].BOD.setTextureRect(getRect(29 + MovmentCounter[i]));
+    UpdateMonsterAnimationCounter(i);
+    if (MovmentCounter[i] == 10)
+        BODalive[i] = false;
 }
 
 // update monster
 void MonstersMovment() {
+    for (int i = 0; i < BODnumber; i++){
 
-    // hide BOD spell
-    showBODSpell = false;
+        // hide BOD spell
+        showBODSpell[i] = false;
 
-    // check that BOD is alive
-    if(!BODalive)
-        return;
-    if (BODstate == BOD::BODdie) {
-        die();
-        return;
-    }
-
-    // check distance between BOD and Player and make BOD look forward Player
-    double x = Player.getPosition().x - BODmonsters[0].BOD.getPosition().x, y = BODmonsters[0].BOD.getPosition().y - Player.getPosition().y;
-    if (x > 0)
-        BODmonsters[0].BOD.setScale(Vector2f(-2, 2));
-    else
-        BODmonsters[0].BOD.setScale(Vector2f(2, 2));
-
-
-    // passing time for cooldown
-    BODmonsters[0].cooldown -= playerdeltatime;
-
-    // check if BOD is being attacked
-    if(BODstate != BOD::BODhurt && abs(x) < 100 && abs(y) < 100){
-        if (curr_state == player_base) {
-            BODmonsters[0].health --;
-            MovmentCounter = 0;
-            BODstate = BOD::BODhurt;
+        // check that BOD is alive
+        if (!BODalive[i])
+            continue;
+        if (BODstate[i] == BOD::BODdie) {
+            die(i);
+            continue;
         }
-        else if(curr_state == player_zmove) {
-            BODmonsters[0].health -= 2;
-            MovmentCounter = 0;
-            BODstate = BOD::BODhurt;
-        }
-        else if (curr_state == player_xmove) {
-            BODmonsters[0].health -= 3;
-            MovmentCounter = 0;
-            BODstate = BOD::BODhurt;
-        }
-        else if (curr_state == player_cmove) {
-            BODmonsters[0].health -= 10;
-            MovmentCounter = 0;
-            BODstate = BOD::BODhurt;
-        }
-    }
 
-    // check if BOD is doing somthing
-    if (BODstate == BOD::BODhurt) {
-        if (BODmonsters[0].health <= 0) {
-            die();
-            BODstate = BOD::BODdie;
+        // check distance between BOD and Player and make BOD look forward Player
+        double x = Player.getPosition().x - BODmonsters[i].BOD.getPosition().x, y = BODmonsters[i].BOD.getPosition().y - Player.getPosition().y;
+        if (x > 0)
+            BODmonsters[i].BOD.setScale(Vector2f(-2, 2));
+        else
+            BODmonsters[i].BOD.setScale(Vector2f(2, 2));
+
+
+        // passing time for cooldown
+        BODmonsters[i].cooldown -= playerdeltatime;
+
+        // check if BOD is being attacked
+        if (BODstate[i] != BOD::BODhurt && abs(x) < 100 && abs(y) < 100) {
+            if (curr_state == player_base) {
+                BODmonsters[i].health--;
+                MovmentCounter[i] = 0;
+                BODstate[i] = BOD::BODhurt;
+            }
+            else if (curr_state == player_xmove) {
+                BODmonsters[i].health -= 3;
+                MovmentCounter[i] = 0;
+                BODstate[i] = BOD::BODhurt;
+            }
+            else if (curr_state == player_cmove) {
+                BODmonsters[i].health -= 5;
+                MovmentCounter[i] = 0;
+                BODstate[i] = BOD::BODhurt;
+            }
+            else if (curr_state == player_vmove) {
+                BODmonsters[i].health -= 10;
+                MovmentCounter[i] = 0;
+                BODstate[i] = BOD::BODhurt;
+            }
+        }
+
+        // check if BOD is doing somthing
+        if (BODstate[i] == BOD::BODhurt) {
+            if (BODmonsters[i].health <= 0) {
+                die(i);
+                BODstate[i] = BOD::BODdie;
+            }
+            else
+                hurt(i);
+            continue;
+        }
+        else if (BODstate[i] == BOD::BODcast) {
+            cast(i);
+            showBODSpell[i] = true;
+            continue;
+        }
+        else if (BODstate[i] == BOD::BODattack) {
+            attack(x, y, i);
+            continue;
+        }
+
+
+
+        // making BOD decision
+        if ((long long)abs(x) * abs(x) + abs(y) * abs(y) < 100000 && BODmonsters[i].cooldown <= 0) {
+            BODmonsters[i].spell.setPosition(Player.getPosition().x - 100, Player.getPosition().y - 200);
+            MovmentCounter[i] = 0;
+            BODstate[i] = BOD::BODcast;
+            cast(i);
+            showBODSpell[i] = true;
+            BODmonsters[i].cooldown = 5;
+        }
+        else if (abs(x) < 300 && abs(y) < 30) {
+            MovmentCounter[i] = 0;
+            BODstate[i] = BOD::BODattack;
+            attack(x, y, i);
         }
         else
-            hurt();
-        return;
+            walk(x, y, i);
     }
-    else if (BODstate == BOD::BODcast) {
-        cast();
-        showBODSpell = true;
-        return;
-    }
-    else if (BODstate == BOD::BODattack){
-        attack(x,y);
-        return;
-    }
-
-
-
-    // making BOD decision
-    if ((long long)abs(x) * abs(x) + abs(y) * abs(y) < 100000 && BODmonsters[0].cooldown <= 0) {
-        BODmonsters[0].spell.setPosition(Player.getPosition().x - 100, Player.getPosition().y - 200);
-        MovmentCounter = 0;
-        BODstate = BOD::BODcast;
-        cast();
-        showBODSpell = true;
-        BODmonsters[0].cooldown = 5;
-    }
-    else if (abs(x) < 300 && abs(y) < 30){
-        MovmentCounter = 0;
-        BODstate = BOD::BODattack;
-        attack(x,y);
-    }
-    else
-        walk(x,y);
 }
 
 // set monsters at the begining of the wave
 void SetMonsters() {
-        BODalive = true;
-        BODmonsters[0].health = 10;
-        BODstate = BOD::BODwalk;
-        BODmonsters[0].texture.loadFromFile("enemies/Bringer-Of-Death/SpriteSheet/Bringer-of-Death-SpritSheet.png");
-        BODmonsters[0].spell.setTexture(BODmonsters[0].texture);
-        BODmonsters[0].spell.setTextureRect(getRect(48));
-        BODmonsters[0].spell.setScale(2, 2);
-        BODmonsters[0].BOD.setTexture(BODmonsters[0].texture);
-        BODmonsters[0].BOD.setTextureRect(getRect(0));
-        BODmonsters[0].BOD.setOrigin(105, 62);
-        BODmonsters[0].BOD.setPosition(500, 7000);
-    
+    BODnumber = rand()%10 + 1;
+    for (int i = 0; i < BODnumber; i++) {
+        BODalive[i] = true;
+        BODstate[i] = BOD::BODwalk;
+        BODmonsters[i] = BODoriginal;
+        BODmonsters[i].BOD.setPosition(500 + rand()%100, 7000 + rand() % 1000);
+    }
+}
+
+// create monsters when opening the game
+void CreateMonsters() {
+    BODtexture.loadFromFile("enemies/Bringer-Of-Death/SpriteSheet/Bringer-of-Death-SpritSheet.png");
+    BODoriginal.health = 10;
+    BODoriginal.spell.setTexture(BODtexture);
+    BODoriginal.spell.setTextureRect(getRect(48));
+    BODoriginal.spell.setScale(2, 2);
+    BODoriginal.BOD.setTexture(BODtexture);
+    BODoriginal.BOD.setTextureRect(getRect(0));
+    BODoriginal.BOD.setOrigin(105, 62);
+    BODoriginal.BOD.setScale(2, 2);
 }

@@ -7,23 +7,24 @@ int globalInt = 0;  // Definition
 Clock GameClock;
 const int LENGTH = 1921, WIDTH = 1080;
 
-const int number_of_BODmonsters = 3;
-BringerOfDeath BODmonsters[number_of_BODmonsters];
+int BODnumber;
+BringerOfDeath BODmonsters[30];
 BringerOfDeath BODoriginal;
-bool showBODSpell, BODalive;
+Texture BODtexture;
+bool showBODSpell[30], BODalive[30];
 Sprite Player;
 float playerdeltatime = 0;
 int Player_Health = 100;
 bool ishit = false;
 enum state
 {
-    idle, run, hit, base, zmove, xmove, cmove, dead, walk
+    idle, run, hit, base,  xmove, cmove, vmove, dead, walk
 };
-state curr_state = state::idle, player_base = state::base, player_zmove = state::zmove, player_xmove = state::xmove, player_cmove = state::cmove;
+state curr_state = state::idle, player_base = state::base, player_vmove = state::vmove, player_xmove = state::xmove, player_cmove = state::cmove;
 state player_idle = state::idle, player_run = state::run, player_hit = state::hit, player_dead = state::dead, player_walk = state::walk;
 
 
 enum BOD {
     BODwalk, BODattack, BODcast, BODhurt, BODdie
 };
-BOD BODstate = BOD::BODwalk, BODattacks = BOD::BODattack;
+BOD BODstate[30], BODattacks = BOD::BODattack;

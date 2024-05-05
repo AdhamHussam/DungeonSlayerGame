@@ -8,20 +8,21 @@
 // Game properties
 enum state
 {
-    idle, run, hit, base, zmove, xmove, cmove, dead, walk
+    idle, run, hit, base,  xmove, cmove, vmove, dead, walk
 };
+
+int doors = 5;
+int right_walls = 25;
+int left_walls = 25;
+int up_walls = 24;
+int down_walls = 26;
 
 // menu number
 int pagenum = 69;
-int doors = 2;
-int right_walls = 10;
-int left_walls = 10;
-int up_walls = 10;
-int down_walls = 11;
-
 
 
 // player attributes
+
 int walk_speed = 100;
 int run_speed = 200;
 Vector2f velocity = { 0, 0 };
@@ -32,6 +33,7 @@ bool sha8al = false;
 bool isAttack = false;
 bool ispassing = false;
 bool finishedanimationonce = false;
+float cooldown[4];
 
 RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer");
 Menu menu(1920, 1080);
@@ -48,7 +50,7 @@ Texture RunAnimation[8];
 Texture DeathAnimation[3];
 Texture HitAnimation[3];
 Texture BaseAttack[8];
-Texture Zmove[7];
+Texture Vmove[7];
 Texture Xmove[7];
 Texture Cmove[8];
 Texture walkAnimation[8];
@@ -64,8 +66,12 @@ Sprite pausemenu;
 Sprite Map1;
 
 // Room 0 Borders
-RectangleShape gate1(Vector2f({ 1,1 }));
-RectangleShape gate2(Vector2f({ 1,1 }));
+RectangleShape gate1(Vector2f({ 1, 1 }));
+RectangleShape gate2(Vector2f({ 1, 1 }));
+RectangleShape gate3(Vector2f({ 1, 1 }));
+RectangleShape gate4(Vector2f({ 1, 1 }));
+RectangleShape gate5(Vector2f({ 1, 1 }));
+
 
 RectangleShape borderR1(Vector2f({ 100,1000 }));
 RectangleShape borderR2(Vector2f({ 50,200 }));
@@ -77,6 +83,21 @@ RectangleShape borderR7(Vector2f({ 50,150 }));
 RectangleShape borderR8(Vector2f({ 50,150 }));
 RectangleShape borderR9(Vector2f({ 50,1000 }));
 RectangleShape borderR10(Vector2f({ 100,50 }));
+RectangleShape borderR11(Vector2f({ 50,250 }));
+RectangleShape borderR12(Vector2f({ 150,50 }));
+RectangleShape borderR13(Vector2f({ 50,900 }));
+RectangleShape borderR14(Vector2f({ 75,50 }));
+RectangleShape borderR15(Vector2f({ 50,200 }));
+RectangleShape borderR16(Vector2f({ 50,500 }));
+RectangleShape borderR17(Vector2f({ 50,600 }));
+RectangleShape borderR18(Vector2f({ 50,600 }));
+RectangleShape borderR19(Vector2f({ 50,800 }));
+RectangleShape borderR20(Vector2f({ 50,775 }));
+RectangleShape borderR21(Vector2f({ 10,10 }));
+RectangleShape borderR22(Vector2f({ 10,10 }));
+RectangleShape borderR23(Vector2f({ 10,10 }));
+RectangleShape borderR24(Vector2f({ 10,10 }));
+RectangleShape borderR25(Vector2f({ 10,10 }));
 
 RectangleShape borderL1(Vector2f({ 50,1000 })); 
 RectangleShape borderL2(Vector2f({ 50,200 })); 
@@ -88,7 +109,21 @@ RectangleShape borderL7(Vector2f({ 50, 150 }));
 RectangleShape borderL8(Vector2f({ 50, 150 }));
 RectangleShape borderL9(Vector2f({ 50, 1000 }));
 RectangleShape borderL10(Vector2f({ 100, 50 }));
-
+RectangleShape borderL11(Vector2f({ 50, 250 }));
+RectangleShape borderL12(Vector2f({ 150, 50 }));
+RectangleShape borderL13(Vector2f({ 50, 900 }));
+RectangleShape borderL14(Vector2f({ 75,50 }));
+RectangleShape borderL15(Vector2f({ 50,200 }));
+RectangleShape borderL16(Vector2f({ 50,500 }));
+RectangleShape borderL17(Vector2f({ 50,600 }));
+RectangleShape borderL18(Vector2f({ 50,600 }));
+RectangleShape borderL19(Vector2f({ 50, 775 }));
+RectangleShape borderL20(Vector2f({ 50,800 }));
+RectangleShape borderL21(Vector2f({ 10,10 }));
+RectangleShape borderL22(Vector2f({ 10,10 }));
+RectangleShape borderL23(Vector2f({ 10,10 }));
+RectangleShape borderL24(Vector2f({ 10,10 }));
+RectangleShape borderL25(Vector2f({ 10,10 }));
 
 RectangleShape borderU1(Vector2f({ 700,50 }));
 RectangleShape borderU2(Vector2f({ 700,50 }));
@@ -100,6 +135,20 @@ RectangleShape borderU7(Vector2f({ 100,50 }));
 RectangleShape borderU8(Vector2f({ 100,50 }));
 RectangleShape borderU9(Vector2f({ 600,50 }));
 RectangleShape borderU10(Vector2f({ 600,50 }));
+RectangleShape borderU11(Vector2f({ 75,50 }));
+RectangleShape borderU12(Vector2f({ 75,50 }));
+RectangleShape borderU13(Vector2f({ 1000,50 }));
+RectangleShape borderU14(Vector2f({ 1000,50 }));
+RectangleShape borderU15(Vector2f({ 250,50 }));
+RectangleShape borderU16(Vector2f({ 600,50 }));
+RectangleShape borderU17(Vector2f({ 600,50 }));
+RectangleShape borderU18(Vector2f({ 250,50 }));
+RectangleShape borderU19(Vector2f({ 2000,50 }));
+RectangleShape borderU20(Vector2f({ 10,10 }));
+RectangleShape borderU21(Vector2f({ 10,10 }));
+RectangleShape borderU22(Vector2f({ 10,10 }));
+RectangleShape borderU23(Vector2f({ 10,10 }));
+RectangleShape borderU24(Vector2f({ 10,10 }));
 
 RectangleShape borderD1(Vector2f({ 2000,50 }));
 RectangleShape borderD2(Vector2f({ 700,50 }));
@@ -112,12 +161,43 @@ RectangleShape borderD8(Vector2f({ 50,50 }));
 RectangleShape borderD9(Vector2f({ 50,50 }));
 RectangleShape borderD10(Vector2f({ 50,50 }));
 RectangleShape borderD11(Vector2f({ 50,50 }));
+RectangleShape borderD12(Vector2f({ 1000,50 }));
+RectangleShape borderD13(Vector2f({ 1000,50 }));
+RectangleShape borderD14(Vector2f({ 150,50 }));
+RectangleShape borderD15(Vector2f({ 150,50 }));
+RectangleShape borderD16(Vector2f({ 750,50 }));
+RectangleShape borderD17(Vector2f({ 750,50 }));
+RectangleShape borderD18(Vector2f({ 250,50 }));
+RectangleShape borderD19(Vector2f({ 250,50 }));
+RectangleShape borderD20(Vector2f({ 550,50 }));
+RectangleShape borderD21(Vector2f({ 550,50 }));
+RectangleShape borderD22(Vector2f({ 10,10 }));
+RectangleShape borderD23(Vector2f({ 10,10 }));
+RectangleShape borderD24(Vector2f({ 10,10 }));
+RectangleShape borderD25(Vector2f({ 10,10 }));
+RectangleShape borderD26(Vector2f({ 10,10 }));
 
-RectangleShape gates[] = { gate1, gate2 };
-RectangleShape right_borders[] = { borderR1 , borderR2 , borderR3 , borderR4 ,borderR5, borderR6, borderR7, borderR8, borderR9, borderR10 };
-RectangleShape left_borders[] = { borderL1,borderL2 , borderL3 , borderL4, borderL5 , borderL6 , borderL7, borderL8, borderL9, borderL10 };
-RectangleShape up_borders[] = { borderU1, borderU2 , borderU3 , borderU4, borderU5, borderU6, borderU7, borderU8, borderU9, borderU10 };
-RectangleShape down_borders[] = { borderD1,borderD2, borderD3 , borderD4, borderD5, borderD6, borderD7, borderD8, borderD9 ,borderD10, borderD11 };
+RectangleShape gates[] = { gate1, gate2 , gate3, gate4, gate5};
+
+RectangleShape right_borders[] = { borderR1 , borderR2 , borderR3 , borderR4 ,borderR5, borderR6, borderR7, borderR8, borderR9, borderR10 ,
+    borderR11, borderR12 , borderR13 , borderR14 , borderR15 , borderR16 , borderR17, borderR18, borderR19 ,borderR20, borderR21 , borderR22,
+    borderR23, borderR24 , borderR25
+};
+
+RectangleShape left_borders[] = { borderL1,borderL2 , borderL3 , borderL4, borderL5 , borderL6 , borderL7, borderL8, borderL9, borderL10,
+    borderL11 , borderL12 , borderL13 , borderL14 , borderL15 , borderL16 ,borderL17, borderL18, borderL19 , borderL20, borderL21, borderL22,
+    borderL23 ,borderL24 , borderL25
+};
+
+RectangleShape up_borders[] = { borderU1, borderU2 , borderU3 , borderU4, borderU5, borderU6, borderU7, borderU8, borderU9, borderU10,
+    borderU11,borderU12 ,borderU13, borderU14 , borderU15 , borderU16, borderU17, borderU18, borderU19,borderU20 , borderU21, borderU22,
+    borderU23 , borderU24
+};
+
+RectangleShape down_borders[] = { borderD1,borderD2, borderD3 , borderD4, borderD5, borderD6, borderD7, borderD8, borderD9 ,borderD10,
+    borderD11 , borderD12 , borderD13 , borderD14 , borderD15 , borderD16, borderD17, borderD18 , borderD19 ,borderD20, borderD21 , 
+    borderD22 , borderD23, borderD24 , borderD25 , borderD26
+};
 
 // Game functions
 void menu_handler();
@@ -136,11 +216,12 @@ void MonstersMovment();
 void SetMonsters();
 void UpdateAnimationCounter(float st = 0.1);
 void game_reset();
-
+void CreateMonsters();
 // Main 
 int main()
 {
     window.setMouseCursorVisible(false);
+    CreateMonsters();
     setTextures();
     menu_handler();
 }
@@ -163,8 +244,15 @@ void update()
 
 void checkCollisions() 
 {
-    if (Player.getGlobalBounds().intersects(gate1.getGlobalBounds())) ispassing = true;
-    else ispassing = false;
+    for (int i = 0; i < doors; i++) {
+        if (Player.getGlobalBounds().intersects(gates[i].getGlobalBounds())) {
+            ispassing = true;
+            Player.move(0, -500 * playerdeltatime);
+
+            break;
+        }
+        else ispassing = false;
+    }
     
     // right
     for (int i = 0; i < right_walls; i++) {
@@ -213,7 +301,7 @@ void setTextures()
     
     // Room
 
-    map1.loadFromFile("lvl2.png");
+    map1.loadFromFile("lvl1.png");
     Map1.setTexture(map1);
     Map1.setScale(3.8, 3.333);
     Map1.setOrigin(map1.getSize().x / 2, map1.getSize().y / 2);
@@ -229,10 +317,11 @@ void setTextures()
 
     // walls
 
-    gate1.setPosition(-60, 6500);
-    gate2.setPosition(-60, 4600);
     gates[0].setPosition(-60, 6500);
-    gates[1].setPosition(-60, 4600);
+    gates[1].setPosition(-60, 4640);
+    gates[2].setPosition(-60, 2830);
+    gates[3].setPosition(-60, 1540);
+    gates[4].setPosition(-60, -275);
 
     right_borders[0].setPosition(650, 6700);
     right_borders[1].setPosition(100, 6330);
@@ -244,43 +333,100 @@ void setTextures()
     right_borders[7].setPosition(805, 4025);
     right_borders[8].setPosition(925, 3100);
     right_borders[9].setPosition(800, 3100);
+    right_borders[10].setPosition(100, 2625);
+    right_borders[11].setPosition(1225, 2535);
+    right_borders[12].setPosition(1420, 1800);
+    right_borders[13].setPosition(1250, 1675);
+    right_borders[14].setPosition(100, 1350);
+    right_borders[15].setPosition(650, 940);
+    right_borders[16].setPosition(650, -400);
+    right_borders[17].setPosition(1075, 180);
+    right_borders[18].setPosition(100, -1015);
+    right_borders[19].setPosition(850, -2000);
+    right_borders[20].setPosition(-120, 5940);
+    right_borders[21].setPosition(-145, 5240);
+    right_borders[22].setPosition(-145, 2160);
+    right_borders[23].setPosition(-900, 2150);
+    right_borders[24].setPosition(655, 2150);
 
     left_borders[0].setPosition(-990, 6700);
-    left_borders[1].setPosition(-250, 6330);
+    left_borders[1].setPosition(-275, 6330);
     left_borders[2].setPosition(-1050, 5650);
     left_borders[3].setPosition(-925,5525);
     left_borders[4].setPosition(-1225,4750);
-    left_borders[5].setPosition(-250,4450);
+    left_borders[5].setPosition(-275,4450);
     left_borders[6].setPosition(-850,4250);
     left_borders[7].setPosition(-975,4025);
     left_borders[8].setPosition(-1085,3100);
     left_borders[9].setPosition(-1025, 3100);
+    left_borders[10].setPosition(-275, 2625);
+    left_borders[11].setPosition(-1500, 2525);
+    left_borders[12].setPosition(-1600, 1800);
+    left_borders[13].setPosition(-1450, 1675);
+    left_borders[14].setPosition(-275, 1350);
+    left_borders[15].setPosition(-850, 940);
+    left_borders[16].setPosition(-1250, 180);
+    left_borders[17].setPosition(-850, -400);
+    left_borders[18].setPosition(-275, -1015);
+    left_borders[19].setPosition(-1000, -2000);
+    left_borders[20].setPosition(0, 5940);
+    left_borders[21].setPosition(25, 5240);
+    left_borders[22].setPosition(25, 2160);
+    left_borders[23].setPosition(-825, 2150);
+    left_borders[24].setPosition(755, 2150);
     
     up_borders[0].setPosition(-1000, 6500);
-    up_borders[1].setPosition(120, 6500);
+    up_borders[1].setPosition(150, 6500);
     up_borders[2].setPosition(-1000, 5600);
     up_borders[3].setPosition(800, 5600);
     up_borders[4].setPosition(-1150, 4700);
-    up_borders[5].setPosition(125 , 4700);
+    up_borders[5].setPosition(150 , 4700);
     up_borders[6].setPosition(-1025 , 3100);
     up_borders[7].setPosition(825 , 3100);
-    up_borders[8].setPosition(-825 , 2900);
-    up_borders[9].setPosition(100 , 2900);
+    up_borders[8].setPosition(-875 , 2850);
+    up_borders[9].setPosition(150 , 2850);
+    up_borders[10].setPosition(-1450 , 1675);
+    up_borders[11].setPosition(1250 , 1675);
+    up_borders[12].setPosition(150 , 1575);
+    up_borders[13].setPosition(-1275 , 1575);
+    up_borders[14].setPosition(-1100 , 180);
+    up_borders[15].setPosition(-850, -250);
+    up_borders[16].setPosition( 150 , -250);
+    up_borders[17].setPosition( 720 , 180);
+    up_borders[18].setPosition( -1000 , -2100);
+    up_borders[19].setPosition( -60 , 5950);
+    up_borders[20].setPosition( -60 , 5300);
+    up_borders[21].setPosition( -60 , 2175);
+    up_borders[22].setPosition( -850 , 2160);
+    up_borders[23].setPosition( 730 , 2160);
 
     down_borders[0].setPosition(-900, 7450);
     down_borders[1].setPosition(-970, 6300);
     down_borders[2].setPosition(130, 6300);
-    down_borders[3].setPosition(-975, 5500);
-    down_borders[4].setPosition(750, 5500);
+    down_borders[3].setPosition(-1000, 5500);
+    down_borders[4].setPosition(775, 5500);
     down_borders[5].setPosition(-840, 4425);
     down_borders[6].setPosition(110, 4425);
-    down_borders[7].setPosition(-850, 4225);
-    down_borders[8].setPosition(675, 4225);
-    down_borders[9].setPosition(805, 4025);
-    down_borders[10].setPosition(-975, 4025);
+    down_borders[7].setPosition(-875, 4225);
+    down_borders[8].setPosition(700, 4225);
+    down_borders[9].setPosition(825, 4025);
+    down_borders[10].setPosition(-1000, 4025);
+    down_borders[11].setPosition(-1275, 2600);
+    down_borders[12].setPosition(150, 2600);
+    down_borders[13].setPosition(-1525, 2500);
+    down_borders[14].setPosition(1250, 2500);
+    down_borders[15].setPosition(-1020, 1325);
+    down_borders[16].setPosition(150, 1325);
+    down_borders[17].setPosition(-1100, 900);
+    down_borders[18].setPosition(720, 900);
+    down_borders[19].setPosition(150, -1020);
+    down_borders[20].setPosition(-850, -1020);
+    down_borders[21].setPosition(-60, 5900);
+    down_borders[22].setPosition(-60, 5150);
+    down_borders[23].setPosition(-60, 2050);
+    down_borders[24].setPosition(-850, 2100);
+    down_borders[25].setPosition(730, 2100);
    
-
-
     // monsters
     SetMonsters();
 
@@ -288,7 +434,7 @@ void setTextures()
         RunAnimation[i].loadFromFile("Run/run" + to_string(i) + ".png");
     }
     for (int i = 0; i < 7; i++) {
-        Zmove[i].loadFromFile("Z move/Zmove" + to_string(i) + ".png");
+        Vmove[i].loadFromFile("V move/Vmove" + to_string(i) + ".png");
     }
     for (int i = 0; i < 7; i++) {
         Xmove[i].loadFromFile("X move/Xmove" + to_string(i) + ".png");
@@ -311,16 +457,24 @@ void setTextures()
     }
 }
 
+
 void Draw()
 {
     window.clear();
     window.draw(Map1);
     if (!ispassing)
         window.draw(Player);
-    for (int i = 0; i < doors; i++) {
+
+    for (int i = 0; i < BODnumber; i++)
+        if (BODalive[i]) {
+           window.draw(BODmonsters[i].BOD);
+            if (showBODSpell[i])
+                window.draw(BODmonsters[i].spell);
+        }
+    /*for (int i = 0; i < doors; i++) {
         window.draw(gates[i]);
-    }   
-    for(int i = 0; i < left_walls;i++){
+    } */ 
+    /*for(int i = 0; i < left_walls;i++){
         window.draw(left_borders[i]);
     }
     for(int i = 0; i < up_walls;i++){
@@ -330,13 +484,8 @@ void Draw()
       window.draw(right_borders[i]);
 
      for(int i = 0; i < down_walls;i++)
-      window.draw(down_borders[i]);
+      window.draw(down_borders[i]);*/
 
-    if (BODalive) {
-        window.draw(BODmonsters[0].BOD);
-        if (showBODSpell)
-            window.draw(BODmonsters[0].spell);
-    }
 
     window.display();
 }
@@ -350,12 +499,12 @@ void playerMovement()
     }
     else if (Keyboard::isKeyPressed(Keyboard::S) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
-
         velocity.y = run_speed * playerdeltatime;
     }
     else {
         velocity.y = 0;
     }
+
     if (Keyboard::isKeyPressed(Keyboard::A) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
         Player.setScale(-0.2, 0.2);
@@ -372,6 +521,7 @@ void playerMovement()
 
     checkCollisions();
     Player.move(velocity);
+
     if (Keyboard::isKeyPressed(Keyboard::W))
     {
         velocity.y = -walk_speed * playerdeltatime;
@@ -383,6 +533,7 @@ void playerMovement()
     else {
         velocity.y = 0;
     }
+
     if (Keyboard::isKeyPressed(Keyboard::A))
     {
         Player.setScale(-0.2, 0.2);
@@ -396,6 +547,7 @@ void playerMovement()
     else {
         velocity.x = 0;
     }
+
     checkCollisions();
     Player.move(velocity);
 
@@ -412,6 +564,12 @@ void trackView()
 
 void Switch_States()
 {
+
+    for (int i = 0; i < 4; i++) {
+        cooldown[i] -= playerdeltatime;
+        if (cooldown[i] <= 0)
+            cooldown[i] = 0;
+    }
     if (!sha8al) {
 
         if ((Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W)) && Keyboard::isKeyPressed(Keyboard::LShift))
@@ -429,19 +587,35 @@ void Switch_States()
 
         if (Keyboard::isKeyPressed(Keyboard::Space) || Mouse::isButtonPressed(Mouse::Left))
         {
-            curr_state = state::base;
+            if (cooldown[0] == 0) {
+                curr_state = state::base;
+                cooldown[0] = 1.5;
+            }
         }
-        if (Keyboard::isKeyPressed(Keyboard::Z))
-        {
-            curr_state = state::zmove;
-        }
+     
         if (Keyboard::isKeyPressed(Keyboard::X))
         {
-            curr_state = state::xmove;
+            if (cooldown[1] == 0) {
+
+                curr_state = state::xmove;
+                cooldown[1] = 3;
+            }
+
         }
         if (Keyboard::isKeyPressed(Keyboard::C))
         {
-            curr_state = state::cmove;
+            if (cooldown[2] == 0) {
+                curr_state = state::cmove;
+                cooldown[2] = 6;
+            }
+        }
+        if (Keyboard::isKeyPressed(Keyboard::V))
+        {
+            if (cooldown[3] == 0) {
+
+                curr_state = state::vmove;
+                cooldown[3] = 9;
+            }
         }
         if (ishit)
         {
@@ -460,7 +634,7 @@ void Switch_States()
             maximagecounter = 8;
             ImageCounter = 0; sha8al = true;
             break;
-        case state::zmove:
+        case state::vmove:
             maximagecounter = 7;
             ImageCounter = 0; sha8al = true;
             break;
@@ -488,7 +662,7 @@ void Switch_States()
     case state::walk: maximagecounter = 8; Player.setTexture(walkAnimation[ImageCounter]); UpdateAnimationCounter(0.2); break;
     case state::idle: Player.setTexture(Idle); UpdateAnimationCounter(0.1); break;
     case state::base: Player.setTexture(BaseAttack[ImageCounter]); UpdateAnimationCounter(0.08); break;//0.12
-    case state::zmove: Player.setTexture(Zmove[ImageCounter]); UpdateAnimationCounter(0.11); break;
+    case state::vmove: Player.setTexture(Vmove[ImageCounter]); UpdateAnimationCounter(0.11); break;
     case state::xmove: Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
     case state::cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
     case state::dead: Player.setTexture(DeathAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
@@ -581,7 +755,7 @@ void Game_play(RenderWindow& window)
         }
         update();
         Draw();
-        cout << Player.getPosition().x << " " << Player.getPosition().y << endl;
+        //cout << Player.getPosition().x << " " << Player.getPosition().y << endl;
         //cout << Player_Health << endl;
     }
 }
@@ -596,6 +770,12 @@ void Instructions_Draw() {
 
 void Instructions_Menu(RenderWindow& window) {
     while (window.isOpen()) {
+        Event instructionsMenu;
+        while (window.pollEvent(instructionsMenu)) {
+            if (instructionsMenu.type == Event::Closed) {
+                window.close();
+            }
+        }
         Instructions_Draw();
         if (Keyboard::isKeyPressed(Keyboard::Key::Escape)) {
             pagenum = 69;
@@ -671,12 +851,12 @@ void PauseMenuHandler(RenderWindow& window)
 
 void game_reset() {
     Player_Health = 100;
+    for (int i = 0; i < 4; i++) cooldown[i] = 0;
     Player.setPosition(initial_position);
     float AnimationCounter = 0;
     int maximagecounter = 0;
     int ImageCounter = 0;
     int globalInt = 0;
-    int number_of_BODmonsters = 1;
     float playerdeltatime = 0;
     SetMonsters();
 }

@@ -5,7 +5,7 @@ PauseMenu::PauseMenu(float width, float height)
 {
     Pfont.loadFromFile("Ungai.ttf");
     pausemenu[0].setFont(Pfont);
-    pausemenu[0].setFillColor(Color::Red);
+    pausemenu[0].setFillColor(Color { 255,215,0 });
     pausemenu[0].setString("Resume");
     pausemenu[0].setCharacterSize(90);
     pausemenu[0].setPosition(Vector2f(width /2.5- 10, height / 4));
@@ -27,7 +27,7 @@ PauseMenu::PauseMenu(float width, float height)
     pausemenu[3].setFillColor(Color::White);
     pausemenu[3].setString("Main Menu");
     pausemenu[3].setCharacterSize(90);
-    pausemenu[3].setPosition(Vector2f(width / 2.5 - 60, height / 4 + 600));
+    pausemenu[3].setPosition(Vector2f(width / 2.5 - 80, height / 4 + 600));
     selectedp = 0;
 }
 
@@ -55,7 +55,7 @@ void PauseMenu::movedown() {
         if (selectedp == 4)
             selectedp = 0;
 
-        pausemenu[selectedp].setFillColor(Color::Red);
+        pausemenu[selectedp].setFillColor(Color{ 255,215,0 });
 
 
     }
@@ -75,7 +75,7 @@ void PauseMenu::moveup()
 
         }
 
-        pausemenu[selectedp].setFillColor(Color::Red);
+        pausemenu[selectedp].setFillColor(Color{ 255,215,0 });
 
 
 

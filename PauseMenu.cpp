@@ -27,7 +27,7 @@ PauseMenu::PauseMenu(float width, float height)
     pausemenu[3].setFillColor(Color::White);
     pausemenu[3].setString("Main Menu");
     pausemenu[3].setCharacterSize(90);
-    pausemenu[3].setPosition(Vector2f(width / 2.5 - 80, height / 4 + 600));
+    pausemenu[3].setPosition(Vector2f(width / 2.5 - 70, height / 4 + 600));
     selectedp = 0;
 }
 

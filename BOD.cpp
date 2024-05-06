@@ -197,7 +197,7 @@ void SetMonsters() {
         MonsterCounter[i] = 0;
         BODstate[i] = BOD::BODspawn;
         BODmonsters[i] = BODoriginal;
-        BODmonsters[i].BOD.setPosition(100 + rand() % 100, 400 + rand() % 1000);
+        BODmonsters[i].BOD.setPosition(100 + rand() % 100, 5000 + rand() % 1000);
     }
 }
 

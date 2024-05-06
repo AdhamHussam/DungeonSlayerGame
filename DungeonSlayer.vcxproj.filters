@@ -36,7 +36,7 @@
     <ClCompile Include="BOD.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ArcanArcher.cpp">
+    <ClCompile Include="GameOver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -59,7 +59,7 @@
     <ClInclude Include="BOD.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ArcanArcher.h">
+    <ClInclude Include="GameOver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

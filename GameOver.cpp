@@ -5,7 +5,7 @@ GameOver::GameOver(float width, float height, float x, float y)
 {
     Pfont.loadFromFile("Ungai.ttf");
     gameover[0].setFont(Pfont);
-    gameover[0].setFillColor(Color{ 255,215,0 });
+    gameover[0].setFillColor(Color{ 139,0,0 });
     gameover[0].setString("Restart");
     gameover[0].setCharacterSize(70);
     gameover[0].setPosition(x-175, y+125) ;
@@ -44,7 +44,7 @@ void GameOver::movedown() {
         if (selectedp == 2)
             selectedp = 0;
 
-        gameover[selectedp].setFillColor(Color{ 255,215,0 });
+        gameover[selectedp].setFillColor(Color{ 139,0,0 });
 
 
     }
@@ -64,7 +64,7 @@ void GameOver::moveup()
 
         }
 
-        gameover[selectedp].setFillColor(Color{ 255,215,0 });
+        gameover[selectedp].setFillColor(Color{ 139,0,0 });
 
 
 

@@ -117,18 +117,19 @@ void NBmove(float time, Sprite p, int attct, int& PlayerHealth, bool& IsHit) {
             NBstate[i] = NBenum::NB_die;
         }
 
+        double x = p.getPosition().x - NBmonsters[i].NB.getPosition().x, y = NBmonsters[i].NB.getPosition().y - p.getPosition().y;
+
         // check if NB is dying
         if (NBstate[i] == NBenum::NB_die) {
             int initial = NBmovmentCounter[i];
             NBdie(i);
-            if (NBmovmentCounter[i] == 13 && NBmovmentCounter[i] > initial){
+            if (NBmovmentCounter[i] == 13 && NBmovmentCounter[i] > initial && abs(x) < 100 && abs(y) < 100){
                 IsHit = true;
                 PlayerHealth -= 30;
             }
             continue;
         }
 
-        double x = p.getPosition().x - NBmonsters[i].NB.getPosition().x, y = NBmonsters[i].NB.getPosition().y - p.getPosition().y;
         if (x < 0)
             NBmonsters[i].NB.setScale(Vector2f(-3, 3));
         else

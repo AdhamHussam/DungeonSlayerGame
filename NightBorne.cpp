@@ -73,7 +73,7 @@ void NBspawn(int i) {
     NBupdateMonsterAnimationCounter(i);
     if (NBmovmentCounter[i] == 9) {
         NBmovmentCounter[i] = 0;
-        NBmonsters[i].AttackSpeed = 0.1;
+        NBmonsters[i].AttackSpeed = 0.05;
         NBmonsters[i].speed = 200;
         NBstate[i] = NBenum::NB_walk;
         NBmonsters[i].cooldown = 10;
@@ -119,7 +119,12 @@ void NBmove(float time, Sprite p, int attct, int& PlayerHealth, bool& IsHit) {
 
         // check if NB is dying
         if (NBstate[i] == NBenum::NB_die) {
+            int initial = NBmovmentCounter[i];
             NBdie(i);
+            if (NBmovmentCounter[i] == 13 && NBmovmentCounter[i] > initial){
+                IsHit = true;
+                PlayerHealth -= 30;
+            }
             continue;
         }
 
@@ -164,7 +169,7 @@ void NBmove(float time, Sprite p, int attct, int& PlayerHealth, bool& IsHit) {
             NBspawn(i);
             NBstate[i] = NBenum::NB_spawn;
         }
-        else if (abs(x) < 300 && abs(y) < 30) {
+        else if (abs(x) < 100 && abs(y) < 30) {
             NBstate[i] = NBenum::NB_attack;
             NBattack(x, y, i);
         }

@@ -47,6 +47,7 @@ PauseMenu pause(1920, 1080);
 
 Clock pausetimer;
 Clock attacktimer;
+Clock dashtimer;
 
 
 Vector2f initial_position(-500, 7000);
@@ -657,34 +658,12 @@ void Switch_States()
             }
         }
         if (Keyboard::isKeyPressed(Keyboard::Q) && cooldown[4] == 0) {
-            if (Keyboard::isKeyPressed(Keyboard::W))
-            {         
-                Player.move(0, -35000 * playerdeltatime);
-                Player.setTexture(RunAnimation[2]);      
-                cooldown[4] = 3;
-            }
-            else if (Keyboard::isKeyPressed(Keyboard::S))
-            {
-                Player.move(0,35000*playerdeltatime);
-                Player.setTexture(RunAnimation[2]);
-                cooldown[4] = 3;
-
-            }
-            else if (Keyboard::isKeyPressed(Keyboard::A))
-            {
-                Player.move(-35000*playerdeltatime, 0);
-                Player.setTexture(RunAnimation[2]);
-                cooldown[4] = 3;
-
-            }
-            else if (Keyboard::isKeyPressed(Keyboard::D))
-            {
-                Player.move(35000*playerdeltatime, 0);
-                Player.setTexture(RunAnimation[2]);
-                cooldown[4] = 3;
-
-            }  
-
+            
+            velocity.x *= 1550;
+            velocity.y *= 1550;
+            Player.setTexture(RunAnimation[2]);
+            Player.move(velocity);
+            cooldown[4] = 3;
         }
         
         if (ishit)

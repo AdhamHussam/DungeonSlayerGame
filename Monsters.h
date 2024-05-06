@@ -1,6 +1,7 @@
 #pragma once
 #include "BOD.h"
 #include "ArcanArcher.h"
+#include "NightBorne.h"
 
 struct Coordinates
 {

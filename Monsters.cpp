@@ -5,16 +5,19 @@
 void SetMonstersSprites() {
 	CreateMonsters();
     AACreate();
+    NBcreate();
 }
 
 void SetMonstersWave() {
 	SetMonsters();
     AASet();
+    NBset();
 }
 
 void MoveMonsters() {
 	MonstersMovment();
     AAMove(playerdeltatime,Player);
+    NBmove(playerdeltatime, Player);
 }
 
 void ShowMonsters() {
@@ -25,4 +28,5 @@ void ShowMonsters() {
                 window.draw(BODmonsters[i].spell);
         }
     AADraw(window);
+    NBdraw(window);
 }

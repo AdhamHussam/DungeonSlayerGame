@@ -3,7 +3,7 @@
 
 struct ArcanArcher {
 	Sprite AA,arow;
-	int health,speed = 300;
+	int health,speed = 200;
 };
 
 void AACreate();

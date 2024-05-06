@@ -16,6 +16,12 @@ enum BOD {
 int MovmentCounter[];
 float MonsterCounter[];
 
+extern int BODnumber;
+extern BringerOfDeath BODmonsters[];
+extern BringerOfDeath BODoriginal;
+extern Texture BODtexture;
+extern bool showBODSpell[], BODalive[];
+
 IntRect getRect(int pos);
 void UpdateMonsterAnimationCounter(int i, float st);
 void Bringerwalk(int x, int y, int i);

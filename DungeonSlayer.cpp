@@ -927,6 +927,7 @@ void game_reset()
     map_opener_trigger = false;
     death_trigger = false;
     room_cleared = true;
+    current_room = 0;
     float AnimationCounter = 0;
     int maximagecounter = 0;
     int ImageCounter = 0;

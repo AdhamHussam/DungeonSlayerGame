@@ -140,6 +140,7 @@
     <ClCompile Include="ArcanArcher.cpp" />
     <ClCompile Include="BOD.cpp" />
     <ClCompile Include="DungeonSlayer.cpp" />
+    <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Monsters.cpp" />
     <ClCompile Include="globals.cpp" />
@@ -149,6 +150,7 @@
   <ItemGroup>
     <ClInclude Include="ArcanArcher.h" />
     <ClInclude Include="BOD.h" />
+    <ClInclude Include="GameOver.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="includes.h" />
     <ClInclude Include="Menu.h" />

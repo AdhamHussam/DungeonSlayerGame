@@ -112,6 +112,7 @@ void MonstersMovment() {
             spawn(i);
             continue;
         }
+
         // check distance between BOD and Player and make BOD look forward Player
         double x = Player.getPosition().x - BODmonsters[i].BOD.getPosition().x, y = BODmonsters[i].BOD.getPosition().y - Player.getPosition().y;
         if (x > 0)
@@ -196,7 +197,7 @@ void SetMonsters() {
         MonsterCounter[i] = 0;
         BODstate[i] = BOD::BODspawn;
         BODmonsters[i] = BODoriginal;
-        BODmonsters[i].BOD.setPosition(100 + rand() % 100, 400 + rand() % 1000);
+        BODmonsters[i].BOD.setPosition(100 + rand() % 100, 5000 + rand() % 1000);
     }
 }
 

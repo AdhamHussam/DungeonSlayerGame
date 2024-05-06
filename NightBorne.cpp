@@ -39,9 +39,9 @@ void NBwalk(int i) {
 void NBattack(int x, int y, int i) {
     NBmonsters[i].NB.setTextureRect(NBgetRect(46 + NBmovmentCounter[i]));
     int initial = NBmovmentCounter[i];
-    NBupdateMonsterAnimationCounter(i);
+    NBupdateMonsterAnimationCounter(i,NBmonsters[i].AttackSpeed);
     if (NBmovmentCounter[i] == 9 && NBmovmentCounter[i] > initial) {
-        if (abs(x) < 200 && abs(y) < 30) {
+        if (abs(x) < 100 && abs(y) < 30) {
             Player_Health -= NBmonsters[i].damage;
             ishit = true;
         }
@@ -70,11 +70,11 @@ void NBdie(int i) {
 
 void NBspawn(int i) {
     NBmonsters[i].NB.setTextureRect(NBgetRect(NBmovmentCounter[i]));
-    NBupdateMonsterAnimationCounter(i, 0.3);
+    NBupdateMonsterAnimationCounter(i);
     if (NBmovmentCounter[i] == 9) {
         NBmovmentCounter[i] = 0;
-        NBmonsters[i].power *= 2;
-        NBmonsters[i].health += 5;
+        NBmonsters[i].AttackSpeed = 0.1;
+        NBmonsters[i].speed = 200;
         NBstate[i] = NBenum::NB_walk;
         NBmonsters[i].cooldown = 10;
     }
@@ -85,8 +85,8 @@ void NBcreate() {
     NBoriginal.health = 7;
     NBoriginal.NB.setTexture(NBtexture);
     NBoriginal.NB.setTextureRect(NBgetRect(0));
-    NBoriginal.NB.setOrigin(32, 32);
-    NBoriginal.NB.setScale(2, 2);
+    NBoriginal.NB.setOrigin(40, 40);
+    NBoriginal.NB.setScale(3, 3);
 
     NBoriginal.NB.setPosition(300, 6700);
 }
@@ -97,7 +97,7 @@ void NBset(int NBn) {
         NBmonsters[i] = NBoriginal;
         NBmonsterCounter[i] = 0;
         NBmovmentCounter[i] = 0;
-        NBmonsters[i].NB.setPosition(400 + rand() % 100, 6200 + rand() % 1000);
+        NBmonsters[i].NB.setPosition(300 + rand() % 100, 6900 + rand() % 1000);
         NBmonsters[i].alive = true;
         NBstate[i] = NBenum::NB_spawn;
     }
@@ -123,18 +123,24 @@ void NBmove(float time, Sprite p, int attct, int& PlayerHealth, bool& IsHit) {
             continue;
         }
 
+        double x = p.getPosition().x - NBmonsters[i].NB.getPosition().x, y = NBmonsters[i].NB.getPosition().y - p.getPosition().y;
+        if (x < 0)
+            NBmonsters[i].NB.setScale(Vector2f(-3, 3));
+        else
+            NBmonsters[i].NB.setScale(Vector2f(3, 3));
+
+        NBmonsters[i].cooldown -= NBdeltatime;
+
+        if (NBmonsters[i].cooldown < 7) {
+            NBmonsters[i].AttackSpeed = 0.15;
+            NBmonsters[i].speed = 100;
+        }
+        
         // check if NB is spawning
         if (NBstate[i] == NBenum::NB_spawn) {
             NBspawn(i);
             continue;
         }
-
-        double x = p.getPosition().x - NBmonsters[i].NB.getPosition().x, y = NBmonsters[i].NB.getPosition().y - p.getPosition().y;
-        if (x < 0)
-            NBmonsters[i].NB.setScale(Vector2f(-2.5, 2.5));
-        else
-            NBmonsters[i].NB.setScale(Vector2f(2.5, 2.5));
-        NBmonsters[i].cooldown -= NBdeltatime;
 
         // check if NB is being attacked
         if (NBstate[i] != NBenum::NB_hurt && abs(x) < 100 && abs(y) < 100 && attct) {

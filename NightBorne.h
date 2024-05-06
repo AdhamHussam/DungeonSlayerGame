@@ -3,7 +3,8 @@
 
 struct NightBrone {
 	Sprite NB;
-	int health, speed = 100, power = 3, cooldown = 5, damage = 5;
+	int health, speed = 100, power = 3, damage = 10;
+	float cooldown = 10, AttackSpeed = 0.15;
 	bool alive;
 };
 

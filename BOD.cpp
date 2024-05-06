@@ -191,7 +191,6 @@ void MonstersMovment() {
 
 // set monsters at the begining of the wave
 void SetMonsters() {
-    BODnumber = rand() % 10 + 1;
     for (int i = 0; i < BODnumber; i++) {
         BODalive[i] = true;
         MonsterCounter[i] = 0;

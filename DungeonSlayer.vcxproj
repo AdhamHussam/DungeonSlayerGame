@@ -139,6 +139,7 @@
   <ItemGroup>
     <ClCompile Include="ArcanArcher.cpp" />
     <ClCompile Include="BOD.cpp" />
+    <ClCompile Include="BrainMole.cpp" />
     <ClCompile Include="DungeonSlayer.cpp" />
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="Goblin.cpp" />
@@ -147,10 +148,14 @@
     <ClCompile Include="globals.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="NightBorne.cpp" />
+    <ClCompile Include="Rogue.cpp" />
+    <ClCompile Include="ShardSoul.cpp" />
+    <ClCompile Include="Skeleton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArcanArcher.h" />
     <ClInclude Include="BOD.h" />
+    <ClInclude Include="BrainMole.h" />
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="Goblin.h" />
@@ -159,6 +164,9 @@
     <ClInclude Include="Monsters.h" />
     <ClInclude Include="NightBorne.h" />
     <ClInclude Include="PauseMenu.h" />
+    <ClInclude Include="Rogue.h" />
+    <ClInclude Include="ShardSoul.h" />
+    <ClInclude Include="Skeleton.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

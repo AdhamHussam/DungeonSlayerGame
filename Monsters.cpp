@@ -1,20 +1,33 @@
 #include "includes.h"
 #include "Monsters.h"
 #include "globals.h"
+#include "Skeleton.h"
+#include "ShardSoul.h"
+#include "BrainMole.h"
+#include "Rogue.h"
 
 void SetMonstersSprites() {
 	CreateMonsters();
     AACreate();
     NBcreate();
     GBLNcreate();
+    Screate();
+    SScreate();
+    BMcreate();
+    Rcreate();
 }
 
 void SetMonstersWave() {
-    int AAnumber = 3, NBnumber = 3;
+    BODnumber = 0;
+    int AAnumber = 0, NBnumber = 0, Snumber = 0, SSnumber = 0, BMnumber = 0, Rnumber = 1;
 	SetMonsters();
     NBset(NBnumber);
     AASet(AAnumber);
     GBLNset(3);
+    Sset(Snumber);
+    SSset(SSnumber);
+    BMset(BMnumber);
+    Rset(Rnumber);
 }
 
 void MoveMonsters() {
@@ -31,6 +44,10 @@ void MoveMonsters() {
     NBmove(playerdeltatime, Player, attct, Player_Health, ishit);
     AAMove(playerdeltatime,Player,attct,Player_Health,ishit);
     GoblinDynamics(3);
+    Smove(playerdeltatime, Player, attct, Player_Health, ishit);
+    SSmove(playerdeltatime, Player, attct, Player_Health);
+    BMmove(playerdeltatime, Player, attct, Player_Health);
+    Rmove(playerdeltatime, Player, attct, Player_Health);
 }
 
 void ShowMonsters() {
@@ -43,4 +60,8 @@ void ShowMonsters() {
     AADraw(window);
     NBdraw(window);
     GBLNdraw(3);
+    Sdraw(window);
+    SSdraw(window);
+    BMdraw(window);
+    Rdraw(window);
 }

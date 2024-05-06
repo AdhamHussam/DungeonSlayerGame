@@ -42,7 +42,20 @@
     <ClCompile Include="ArcanArcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Goblin.cpp">
+=======
+    <ClCompile Include="Skeleton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShardSoul.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BrainMole.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rogue.cpp">
+>>>>>>> d012da4ae510be07bf9d73a9ceb00359c8f6c108
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -74,7 +87,20 @@
     <ClInclude Include="NightBorne.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Goblin.h">
+=======
+    <ClInclude Include="Skeleton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShardSoul.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BrainMole.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rogue.h">
+>>>>>>> d012da4ae510be07bf9d73a9ceb00359c8f6c108
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

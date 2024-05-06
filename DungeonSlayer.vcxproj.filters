@@ -48,6 +48,9 @@
     <ClCompile Include="ShardSoul.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BrainMole.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Menu.h">
@@ -81,6 +84,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ShardSoul.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BrainMole.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

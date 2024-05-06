@@ -3,6 +3,7 @@
 #include "globals.h"
 #include "Skeleton.h"
 #include "ShardSoul.h"
+#include "BrainMole.h"
 
 void SetMonstersSprites() {
 	CreateMonsters();
@@ -10,16 +11,18 @@ void SetMonstersSprites() {
     NBcreate();
     Screate();
     SScreate();
+    BMcreate();
 }
 
 void SetMonstersWave() {
     BODnumber = 0;
-    int AAnumber = 0, NBnumber = 0,Snumber = 0,SSnumber = 1;
+    int AAnumber = 0, NBnumber = 0,Snumber = 0,SSnumber = 0,BMnumber = 30;
 	SetMonsters();
     NBset(NBnumber);
     AASet(AAnumber);
     Sset(Snumber);
     SSset(SSnumber);
+    BMset(BMnumber);
 }
 
 void MoveMonsters() {
@@ -37,6 +40,7 @@ void MoveMonsters() {
     AAMove(playerdeltatime,Player,attct,Player_Health,ishit);
     Smove(playerdeltatime, Player, attct, Player_Health, ishit);
     SSmove(playerdeltatime, Player, attct, Player_Health);
+    BMmove(playerdeltatime, Player, attct, Player_Health);
 }
 
 void ShowMonsters() {
@@ -50,4 +54,5 @@ void ShowMonsters() {
     NBdraw(window);
     Sdraw(window);
     SSdraw(window);
+    BMdraw(window);
 }

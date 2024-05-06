@@ -635,6 +635,7 @@ void Switch_States()
      
         if (Keyboard::isKeyPressed(Keyboard::X))
         {
+
             if (cooldown[1] == 0) {
 
                 curr_state = state::xmove;

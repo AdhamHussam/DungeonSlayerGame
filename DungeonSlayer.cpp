@@ -1,5 +1,6 @@
 ﻿#include "includes.h"
 #include "Menu.h"
+#include "GameOver.h"
 #include "Monsters.h"
 #include "globals.h"
 #include "PauseMenu.h"
@@ -22,7 +23,7 @@ int pagenum = 69;
 
 
 // player attributes
-
+float lastX= 0 , lastY= 0;
 int walk_speed = 100;
 int run_speed = 200;
 Vector2f velocity = { 0, 0 };
@@ -42,6 +43,7 @@ float cooldown[4];
 //RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer" ,Style::Fullscreen);
 Menu menu(1920, 1080);
 PauseMenu pause(1920, 1080);
+
 Clock pausetimer;
 Clock attacktimer;
 
@@ -63,6 +65,8 @@ Texture walkAnimation[8];
 Texture map1;
 Texture mainmenubg;
 Texture instructs;
+Texture death_screen;
+Sprite DeathScreen;
 Sprite Instructions;
 Sprite bg;
 Sprite Room;
@@ -223,6 +227,7 @@ void PauseMenuHandler(RenderWindow& window);
 void Instructions_Menu(RenderWindow& window);
 void Instructions_Draw();
 void update();
+void death_handler();
 void trackView();
 void playerMovement();
 void setTextures();
@@ -242,21 +247,15 @@ int main()
 // Definitions;
 void update()
 {
+    lastX = Player.getPosition().x;
+    lastY = Player.getPosition().y;
     if (!isDead) {
         Switch_States();
         playerMovement();
         MoveMonsters();
     }
     else {
-        Player.setTexture(DeathAnimation[2]);
-        GameMusic.stop();
-        if (DeathSound.getStatus() != Sound::Playing && !death_trigger) {
-            DeathSound.setBuffer(death_sound);
-            DeathSound.setVolume(80);
-            DeathSound.play();
-            death_trigger = true;
-        }
-      
+        death_handler();
     }
     trackView();
     checkCollisions();
@@ -277,7 +276,7 @@ void checkCollisions()
             ispassing = true;
             Player.move(0, -500 * playerdeltatime);
             wave_cleared = false;
-            GameMusic.setVolume(80);
+            GameMusic.setVolume(50);
             break;
         }
         else ispassing = false;
@@ -319,14 +318,19 @@ void setTextures()
     mainmenubg.loadFromFile("Main Menu.jpg");
     instructs.loadFromFile("instructions.png");
     pausebg.loadFromFile("pausebg.png");
+    death_screen.loadFromFile("death_screen.png");
 
     bg.setTexture(mainmenubg);
     Instructions.setTexture(instructs);
     pausemenu.setTexture(pausebg);
+    DeathScreen.setTexture(death_screen);
+    
+    
 
     bg.setScale(0.5, 0.5);
     Instructions.setScale(0.5, 0.5);
     pausemenu.setScale(0.5, 0.5);
+    DeathScreen.setScale(0.7, 0.7);
     
     // Room
 
@@ -901,12 +905,14 @@ void PauseMenuHandler(RenderWindow& window)
 void game_reset() {
     Player_Health = 100;
     curr_state = state::idle;
+    DeathSound.stop();
     isDead = false;
     for (int i = 0; i < 4; i++) cooldown[i] = 0;
     Player.setPosition(initial_position);
     Player.setScale(0.2, 0.2);
     openertrigger = false;
     map_opener_trigger = false;
+    death_trigger = false;
     wave_cleared = true;
     float AnimationCounter = 0;
     int maximagecounter = 0;
@@ -923,9 +929,76 @@ void music_handler()
         if (wave_cleared)
             GameMusic.setVolume(5);
         else
-            GameMusic.setVolume(80);
+            GameMusic.setVolume(50);
         GameMusic.setBuffer(game_music);
         GameMusic.play();
         map_opener_trigger = true;
+    }
+}
+
+void death_handler()
+{
+    GameOver game_over(1920, 1080, lastX, lastY);
+    while (window.isOpen()) {
+        Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == Event::Closed) {
+                window.close();
+            }
+        }
+        DeathScreen.setPosition(lastX -675,lastY - 700 );
+        Player.setTexture(DeathAnimation[2]);
+        GameMusic.stop();
+
+
+        if (DeathSound.getStatus() != Sound::Playing && !death_trigger) {
+            DeathSound.setBuffer(death_sound);
+            DeathSound.setVolume(50);
+            DeathSound.play();
+            death_trigger = true;
+        }
+
+        if (Keyboard::isKeyPressed(Keyboard::Up)) {
+            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                game_over.moveup();
+                GameClock.restart();
+            }
+        }
+
+        if (Keyboard::isKeyPressed(Keyboard::Down)) {
+            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                game_over.movedown();
+                GameClock.restart();
+            }
+        }
+
+        if (Keyboard::isKeyPressed(Keyboard::Enter) && game_over.selectedp == 0) {
+            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                GameClock.restart();
+                game_reset();
+                break;
+            }
+        }
+        if (Keyboard::isKeyPressed(Keyboard::Enter) && game_over.selectedp == 1) {
+            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                GameClock.restart();
+                pagenum = 69;
+                game_reset();
+                view.setCenter(960, 540); //update
+                window.setView(view);
+
+                menu_handler();
+            }
+        }
+
+        window.clear();
+        window.draw(Map1);
+        if (!ispassing)
+            window.draw(Player);
+
+        ShowMonsters();
+        window.draw(DeathScreen);
+        game_over.draw(window);
+        window.display();
     }
 }

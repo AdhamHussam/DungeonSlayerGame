@@ -15,8 +15,8 @@ void SetMonstersSprites() {
 }
 
 void SetMonstersWave() {
-    BODnumber = 0;
-    int AAnumber = 0, NBnumber = 0,Snumber = 0,SSnumber = 0,BMnumber = 30;
+    BODnumber = 1;
+    int AAnumber = 1, NBnumber = 1,Snumber = 1,SSnumber = 1,BMnumber = 2;
 	SetMonsters();
     NBset(NBnumber);
     AASet(AAnumber);

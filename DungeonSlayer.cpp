@@ -234,6 +234,7 @@ void PauseMenuHandler(RenderWindow& window);
 void Instructions_Menu(RenderWindow& window);
 void Instructions_Draw();
 void update();
+void checkpause();
 void check_room();
 void fell();
 void death_handler();
@@ -257,9 +258,6 @@ int main()
 // Definitions;
 void update()
 {
-    lastX = Player.getPosition().x;
-    lastY = Player.getPosition().y;
-    
     if (!isDead) {
         fell();
         Switch_States();
@@ -268,18 +266,11 @@ void update()
         check_room();
         trackView();
         checkCollisions();
+        checkpause();
     }
     else {
         death_handler();
-    }
-
-    
-    if (Keyboard::isKeyPressed(Keyboard::Escape) && !isDead) {
-        if (pausetimer.getElapsedTime().asSeconds() > 0.2) {
-            PauseMenuHandler(window);
-            pausetimer.restart();
-        }
-    }
+    } 
 }
 
 void checkCollisions() 
@@ -949,6 +940,8 @@ void music_handler()
 
 void death_handler()
 {
+    lastX = Player.getPosition().x;
+    lastY = Player.getPosition().y;
     GameOver game_over(1920, 1080, lastX, lastY);
     while (window.isOpen()) {
         Event event;
@@ -1036,5 +1029,16 @@ void check_room()
             room_cleared = false;
         }
 
+    }
+}
+
+
+void checkpause()
+{
+    if (Keyboard::isKeyPressed(Keyboard::Escape) && !isDead) {
+        if (pausetimer.getElapsedTime().asSeconds() > 0.2) {
+            PauseMenuHandler(window);
+            pausetimer.restart();
+        }
     }
 }

@@ -2,21 +2,24 @@
 #include "Monsters.h"
 #include "globals.h"
 #include "Skeleton.h"
+#include "ShardSoul.h"
 
 void SetMonstersSprites() {
 	CreateMonsters();
     AACreate();
     NBcreate();
     Screate();
+    SScreate();
 }
 
 void SetMonstersWave() {
     BODnumber = 0;
-    int AAnumber = 0, NBnumber = 0,Snumber = 1;
+    int AAnumber = 0, NBnumber = 0,Snumber = 0,SSnumber = 1;
 	SetMonsters();
     NBset(NBnumber);
     AASet(AAnumber);
     Sset(Snumber);
+    SSset(SSnumber);
 }
 
 void MoveMonsters() {
@@ -33,6 +36,7 @@ void MoveMonsters() {
     NBmove(playerdeltatime, Player, attct, Player_Health, ishit);
     AAMove(playerdeltatime,Player,attct,Player_Health,ishit);
     Smove(playerdeltatime, Player, attct, Player_Health, ishit);
+    SSmove(playerdeltatime, Player, attct, Player_Health);
 }
 
 void ShowMonsters() {
@@ -45,4 +49,5 @@ void ShowMonsters() {
     AADraw(window);
     NBdraw(window);
     Sdraw(window);
+    SSdraw(window);
 }

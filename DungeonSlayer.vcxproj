@@ -146,6 +146,7 @@
     <ClCompile Include="globals.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="NightBorne.cpp" />
+    <ClCompile Include="ShardSoul.cpp" />
     <ClCompile Include="Skeleton.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -158,6 +159,7 @@
     <ClInclude Include="Monsters.h" />
     <ClInclude Include="NightBorne.h" />
     <ClInclude Include="PauseMenu.h" />
+    <ClInclude Include="ShardSoul.h" />
     <ClInclude Include="Skeleton.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

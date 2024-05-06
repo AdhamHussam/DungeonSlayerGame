@@ -2,13 +2,12 @@
 #include "includes.h"
 
 struct Skeleton {
-	Sprite NB;
-	int health, speed = 100, power = 3, damage = 10;
-	float cooldown = 10, AttackSpeed = 0.15;
+	Sprite S;
+	int health, speed = 100;
 	bool alive;
 };
 
-void NBcreate();
-void NBset(int);
-void NBmove(float, Sprite, int, int&, bool&);
-void NBdraw(RenderWindow&);
+void Screate();
+void Sset(int);
+void Smove(float, Sprite, int, int&, bool&);
+void Sdraw(RenderWindow&);

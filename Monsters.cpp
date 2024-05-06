@@ -1,19 +1,22 @@
 #include "includes.h"
 #include "Monsters.h"
 #include "globals.h"
+#include "Skeleton.h"
 
 void SetMonstersSprites() {
 	CreateMonsters();
     AACreate();
     NBcreate();
+    Screate();
 }
 
 void SetMonstersWave() {
     BODnumber = 0;
-    int AAnumber = 0, NBnumber = 1;
+    int AAnumber = 0, NBnumber = 0,Snumber = 1;
 	SetMonsters();
     NBset(NBnumber);
     AASet(AAnumber);
+    Sset(Snumber);
 }
 
 void MoveMonsters() {
@@ -29,6 +32,7 @@ void MoveMonsters() {
 	MonstersMovment();
     NBmove(playerdeltatime, Player, attct, Player_Health, ishit);
     AAMove(playerdeltatime,Player,attct,Player_Health,ishit);
+    Smove(playerdeltatime, Player, attct, Player_Health, ishit);
 }
 
 void ShowMonsters() {
@@ -40,4 +44,5 @@ void ShowMonsters() {
         }
     AADraw(window);
     NBdraw(window);
+    Sdraw(window);
 }

@@ -230,6 +230,7 @@ void PauseMenuHandler(RenderWindow& window);
 void Instructions_Menu(RenderWindow& window);
 void Instructions_Draw();
 void update();
+void fell();
 void death_handler();
 void trackView();
 void playerMovement();
@@ -256,9 +257,9 @@ void update()
     lastY = Player.getPosition().y;
     
     if (!isDead) {
+        fell();
         Switch_States();
-        if(!isdashing)
-            playerMovement();
+        playerMovement();
         MoveMonsters();
     }
     else {
@@ -625,43 +626,32 @@ void Switch_States()
             curr_state = state::idle;
         }
 
-        if (Keyboard::isKeyPressed(Keyboard::Space) || Mouse::isButtonPressed(Mouse::Left))
+        if ((Keyboard::isKeyPressed(Keyboard::Space) || Mouse::isButtonPressed(Mouse::Left)) && cooldown[0] == 0)
         {
-            if (cooldown[0] == 0) {
-                curr_state = state::base;
-                cooldown[0] = 1.5;
-            }
+            curr_state = state::base;
+            cooldown[0] = 1.5;
+          
         }
      
-        if (Keyboard::isKeyPressed(Keyboard::X))
+        if (Keyboard::isKeyPressed(Keyboard::X) && cooldown[1] == 0)
         {
-
-            if (cooldown[1] == 0) {
-
-                curr_state = state::xmove;
-                cooldown[1] = 3;
-            }
-
+            curr_state = state::xmove;
+            cooldown[1] = 3;
         }
-        if (Keyboard::isKeyPressed(Keyboard::C))
+        if (Keyboard::isKeyPressed(Keyboard::C)&& cooldown[2] == 0)
         {
-            if (cooldown[2] == 0) {
-                curr_state = state::cmove;
-                cooldown[2] = 6;
-            }
+            curr_state = state::cmove;
+            cooldown[2] = 6;
         }
-        if (Keyboard::isKeyPressed(Keyboard::V))
-        {
-            if (cooldown[3] == 0) {
-
-                curr_state = state::vmove;
-                cooldown[3] = 9;
-            }
+        if (Keyboard::isKeyPressed(Keyboard::V)&& cooldown[3] == 0)
+        {  
+            curr_state = state::vmove;
+            cooldown[3] = 9;
         }
         if (Keyboard::isKeyPressed(Keyboard::Q) && cooldown[4] == 0) {
             
-            velocity.x *= 1550;
-            velocity.y *= 1550;
+            velocity.x *= 1350;
+            velocity.y *= 1350;
             Player.setTexture(RunAnimation[2]);
             Player.move(velocity);
             cooldown[4] = 3;
@@ -823,7 +813,7 @@ void Game_play(RenderWindow& window)
         update();
         Draw();
         //cout << Player.getPosition().x << " " << Player.getPosition().y << endl;
-        cout << cooldown[4]<< endl;
+        //cout << cooldown[4]<< endl;
     }
 }
 
@@ -1019,10 +1009,15 @@ void death_handler()
     }
 }
 
-void dashing()
+void fell()
 {
-   
-    Player.move(velocity);
-
+    for(int i = 0; i <5; i++)
+    if (Player.getGlobalBounds().intersects(left_borders[20+i].getGlobalBounds())
+        && Player.getGlobalBounds().intersects(right_borders[20+i].getGlobalBounds()) 
+        && Player.getGlobalBounds().intersects(up_borders[19+i].getGlobalBounds()) 
+        && Player.getGlobalBounds().intersects(down_borders[21+i].getGlobalBounds())) 
+        {
+            Player_Health -= 200;
+        }
 
 }

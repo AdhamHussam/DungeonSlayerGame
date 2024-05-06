@@ -141,6 +141,7 @@
     <ClCompile Include="BOD.cpp" />
     <ClCompile Include="DungeonSlayer.cpp" />
     <ClCompile Include="GameOver.cpp" />
+    <ClCompile Include="Goblin.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Monsters.cpp" />
     <ClCompile Include="globals.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="BOD.h" />
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="globals.h" />
+    <ClInclude Include="Goblin.h" />
     <ClInclude Include="includes.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Monsters.h" />

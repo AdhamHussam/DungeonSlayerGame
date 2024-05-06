@@ -6,6 +6,7 @@ void SetMonstersSprites() {
 	CreateMonsters();
     AACreate();
     NBcreate();
+    GBLNcreate();
 }
 
 void SetMonstersWave() {
@@ -13,6 +14,7 @@ void SetMonstersWave() {
 	SetMonsters();
     NBset(NBnumber);
     AASet(AAnumber);
+    GBLNset(3);
 }
 
 void MoveMonsters() {
@@ -28,6 +30,7 @@ void MoveMonsters() {
 	MonstersMovment();
     NBmove(playerdeltatime, Player, attct, Player_Health, ishit);
     AAMove(playerdeltatime,Player,attct,Player_Health,ishit);
+    GoblinDynamics(3);
 }
 
 void ShowMonsters() {
@@ -39,4 +42,5 @@ void ShowMonsters() {
         }
     AADraw(window);
     NBdraw(window);
+    GBLNdraw(3);
 }

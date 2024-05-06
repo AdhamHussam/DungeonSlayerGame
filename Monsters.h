@@ -2,6 +2,7 @@
 #include "BOD.h"
 #include "ArcanArcher.h"
 #include "NightBorne.h"
+#include "Goblin.h"
 
 struct Coordinates
 {

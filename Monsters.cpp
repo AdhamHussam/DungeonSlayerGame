@@ -4,6 +4,7 @@
 #include "Skeleton.h"
 #include "ShardSoul.h"
 #include "BrainMole.h"
+#include "Rogue.h"
 
 void SetMonstersSprites() {
 	CreateMonsters();
@@ -12,17 +13,19 @@ void SetMonstersSprites() {
     Screate();
     SScreate();
     BMcreate();
+    Rcreate();
 }
 
 void SetMonstersWave() {
     BODnumber = 0;
-    int AAnumber = 0, NBnumber = 0,Snumber = 0,SSnumber = 0,BMnumber = 30;
+    int AAnumber = 0, NBnumber = 0, Snumber = 0, SSnumber = 0, BMnumber = 0, Rnumber = 1;
 	SetMonsters();
     NBset(NBnumber);
     AASet(AAnumber);
     Sset(Snumber);
     SSset(SSnumber);
     BMset(BMnumber);
+    Rset(Rnumber);
 }
 
 void MoveMonsters() {
@@ -41,6 +44,7 @@ void MoveMonsters() {
     Smove(playerdeltatime, Player, attct, Player_Health, ishit);
     SSmove(playerdeltatime, Player, attct, Player_Health);
     BMmove(playerdeltatime, Player, attct, Player_Health);
+    Rmove(playerdeltatime, Player, attct, Player_Health);
 }
 
 void ShowMonsters() {
@@ -55,4 +59,5 @@ void ShowMonsters() {
     Sdraw(window);
     SSdraw(window);
     BMdraw(window);
+    Rdraw(window);
 }

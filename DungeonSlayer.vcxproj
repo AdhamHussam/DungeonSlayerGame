@@ -147,6 +147,7 @@
     <ClCompile Include="globals.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="NightBorne.cpp" />
+    <ClCompile Include="Rogue.cpp" />
     <ClCompile Include="ShardSoul.cpp" />
     <ClCompile Include="Skeleton.cpp" />
   </ItemGroup>
@@ -161,6 +162,7 @@
     <ClInclude Include="Monsters.h" />
     <ClInclude Include="NightBorne.h" />
     <ClInclude Include="PauseMenu.h" />
+    <ClInclude Include="Rogue.h" />
     <ClInclude Include="ShardSoul.h" />
     <ClInclude Include="Skeleton.h" />
   </ItemGroup>

@@ -51,6 +51,9 @@
     <ClCompile Include="BrainMole.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Rogue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Menu.h">
@@ -87,6 +90,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BrainMole.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rogue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

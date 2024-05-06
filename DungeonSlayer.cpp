@@ -37,8 +37,9 @@ bool map_opener_trigger = false;
 bool death_trigger = false;
 bool ispassing = false;
 bool wave_cleared = true;
+bool isdashing = false;
 bool finishedanimationonce = false;
-float cooldown[4];
+float cooldown[5];
 
 //RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer" ,Style::Fullscreen);
 Menu menu(1920, 1080);
@@ -219,6 +220,7 @@ Sound GameMusic;
 
 
 // Game functions
+
 void menu_handler();
 void music_handler();
 void Switch_States();
@@ -232,9 +234,11 @@ void trackView();
 void playerMovement();
 void setTextures();
 void checkCollisions();
+void dashing();
 void Draw();
 void UpdateAnimationCounter(float st = 0.1);
 void game_reset();
+
 // Main 
 int main()
 {
@@ -249,9 +253,11 @@ void update()
 {
     lastX = Player.getPosition().x;
     lastY = Player.getPosition().y;
+    
     if (!isDead) {
         Switch_States();
-        playerMovement();
+        if(!isdashing)
+            playerMovement();
         MoveMonsters();
     }
     else {
@@ -276,7 +282,6 @@ void checkCollisions()
             ispassing = true;
             Player.move(0, -500 * playerdeltatime);
             wave_cleared = false;
-            GameMusic.setVolume(50);
             break;
         }
         else ispassing = false;
@@ -596,14 +601,16 @@ void trackView()
 
 void Switch_States()
 {
-
-    for (int i = 0; i < 4; i++) {
+    // cooldown timer
+    for (int i = 0; i < 5; i++) {
         cooldown[i] -= playerdeltatime;
         if (cooldown[i] <= 0)
             cooldown[i] = 0;
     }
+    // state switch logic 
+   
     if (!sha8al) {
-
+        
         if ((Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W)) && Keyboard::isKeyPressed(Keyboard::LShift))
         {
             curr_state = state::run;
@@ -650,6 +657,37 @@ void Switch_States()
                 cooldown[3] = 9;
             }
         }
+        if (Keyboard::isKeyPressed(Keyboard::Q) && cooldown[4] == 0) {
+            if (Keyboard::isKeyPressed(Keyboard::W))
+            {         
+                Player.move(0, -35000 * playerdeltatime);
+                Player.setTexture(RunAnimation[2]);      
+                cooldown[4] = 3;
+            }
+            else if (Keyboard::isKeyPressed(Keyboard::S))
+            {
+                Player.move(0,35000*playerdeltatime);
+                Player.setTexture(RunAnimation[2]);
+                cooldown[4] = 3;
+
+            }
+            else if (Keyboard::isKeyPressed(Keyboard::A))
+            {
+                Player.move(-35000*playerdeltatime, 0);
+                Player.setTexture(RunAnimation[2]);
+                cooldown[4] = 3;
+
+            }
+            else if (Keyboard::isKeyPressed(Keyboard::D))
+            {
+                Player.move(35000*playerdeltatime, 0);
+                Player.setTexture(RunAnimation[2]);
+                cooldown[4] = 3;
+
+            }  
+
+        }
+        
         if (ishit)
         {
             curr_state = state::hit;
@@ -658,8 +696,8 @@ void Switch_States()
         {
             curr_state = state::dead;
         }
-      
-
+        
+        // Animate based on state 
 
         switch (curr_state)
         {
@@ -689,7 +727,7 @@ void Switch_States()
             break;
         }
     }
-
+    
     switch (curr_state) {
     case state::run:maximagecounter = 8; Player.setTexture(RunAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
     case state::walk: maximagecounter = 8; Player.setTexture(walkAnimation[ImageCounter]); UpdateAnimationCounter(0.2); break;
@@ -806,7 +844,7 @@ void Game_play(RenderWindow& window)
         update();
         Draw();
         //cout << Player.getPosition().x << " " << Player.getPosition().y << endl;
-        //cout << Player_Health << endl;
+        cout << cooldown[4]<< endl;
     }
 }
 
@@ -903,7 +941,8 @@ void PauseMenuHandler(RenderWindow& window)
 
 }
 
-void game_reset() {
+void game_reset() 
+{
     Player_Health = 100;
     curr_state = state::idle;
     DeathSound.stop();
@@ -927,10 +966,7 @@ void music_handler()
 {
     if (MenuOpener.getStatus() == Sound::Playing) MenuOpener.stop();
     if (GameMusic.getStatus() != Sound::Playing && !map_opener_trigger) {
-        if (wave_cleared)
-            GameMusic.setVolume(5);
-        else
-            GameMusic.setVolume(50);
+        GameMusic.setVolume(5);
         GameMusic.setBuffer(game_music);
         GameMusic.play();
         map_opener_trigger = true;
@@ -1002,4 +1038,12 @@ void death_handler()
         game_over.draw(window);
         window.display();
     }
+}
+
+void dashing()
+{
+   
+    Player.move(velocity);
+
+
 }

@@ -116,9 +116,9 @@ void MonstersMovment() {
         // check distance between BOD and Player and make BOD look forward Player
         double x = Player.getPosition().x - BODmonsters[i].BOD.getPosition().x, y = BODmonsters[i].BOD.getPosition().y - Player.getPosition().y;
         if (x > 0)
-            BODmonsters[i].BOD.setScale(Vector2f(-2, 2));
+            BODmonsters[i].BOD.setScale(Vector2f(-1.7, 1.7));
         else
-            BODmonsters[i].BOD.setScale(Vector2f(2, 2));
+            BODmonsters[i].BOD.setScale(Vector2f(1.7, 1.7));
 
 
         // passing time for cooldown
@@ -208,9 +208,9 @@ void CreateMonsters() {
     BODoriginal.health = 10;
     BODoriginal.spell.setTexture(BODtexture);
     BODoriginal.spell.setTextureRect(getRect(48));
-    BODoriginal.spell.setScale(2, 2);
+    BODoriginal.spell.setScale(1.7, 1.7);
     BODoriginal.BOD.setTexture(BODtexture);
     BODoriginal.BOD.setTextureRect(getRect(0));
     BODoriginal.BOD.setOrigin(105, 62);
-    BODoriginal.BOD.setScale(2, 2);
+    BODoriginal.BOD.setScale(1.7, 1.7);
 }

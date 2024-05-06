@@ -95,7 +95,7 @@ void AACreate() {
     AAoriginal.power = 1;
     AAoriginal.cooldown = 10;
     AAoriginal.arrow.setTexture(AAArow);
-    AAoriginal.arrow.setScale(2, 2);
+    AAoriginal.arrow.setScale(2.5, 2.5);
     AAoriginal.arrow.setPosition(100000, 100000);
     AAoriginal.ArrowSpeed = 1000;
     AAoriginal.target = { 100000,100000 };
@@ -103,7 +103,7 @@ void AACreate() {
     AAoriginal.AA.setTexture(AAtexture);
     AAoriginal.AA.setTextureRect(AAgetRect(0));
     AAoriginal.AA.setOrigin(32, 32);
-    AAoriginal.AA.setScale(2, 2);
+    AAoriginal.AA.setScale(2.5, 2.5);
     AAoriginal.alive = true;
 }
 
@@ -156,9 +156,9 @@ void AAMove(float time,Sprite p,int attct, int& PlayerHealth, bool& IsHit) {
 
         double x = player.getPosition().x - AAmonsters[i].AA.getPosition().x, y = AAmonsters[i].AA.getPosition().y - player.getPosition().y;
         if (x < 0)
-            AAmonsters[i].AA.setScale(Vector2f(-2, 2));
+            AAmonsters[i].AA.setScale(Vector2f(-2.5, 2.5));
         else
-            AAmonsters[i].AA.setScale(Vector2f(2, 2));
+            AAmonsters[i].AA.setScale(Vector2f(2.5, 2.5));
         AAmonsters[i].cooldown -= AAdeltatime;
 
         // check if BOD is being attacked

@@ -8,14 +8,14 @@ GameOver::GameOver(float width, float height, float x, float y)
     gameover[0].setFillColor(Color{ 139,0,0 });
     gameover[0].setString("Restart");
     gameover[0].setCharacterSize(70);
-    gameover[0].setPosition(x-175, y+125) ;
+    gameover[0].setPosition(x-185, y+125) ;
 
 
     gameover[1].setFont(Pfont);
     gameover[1].setFillColor(Color::White);
     gameover[1].setString("Main Menu");
     gameover[1].setCharacterSize(70);
-    gameover[1].setPosition(x-200, y + 250);
+    gameover[1].setPosition(x-215, y + 250);
 
     selectedp = 0;
 }

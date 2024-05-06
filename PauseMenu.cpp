@@ -8,26 +8,26 @@ PauseMenu::PauseMenu(float width, float height)
     pausemenu[0].setFillColor(Color { 255,215,0 });
     pausemenu[0].setString("Resume");
     pausemenu[0].setCharacterSize(90);
-    pausemenu[0].setPosition(Vector2f(width /2.5- 10, height / 4));
+    pausemenu[0].setPosition(Vector2f(width /2.5- 27, height / 4));
 
 
     pausemenu[1].setFont(Pfont);
     pausemenu[1].setFillColor(Color::White);
     pausemenu[1].setString("Options");
     pausemenu[1].setCharacterSize(90);
-    pausemenu[1].setPosition(Vector2f(width / 2.5 - 20, height / 4 + 200));
+    pausemenu[1].setPosition(Vector2f(width / 2.5 - 40, height / 4 + 200));
 
     pausemenu[2].setFont(Pfont);
     pausemenu[2].setFillColor(Color::White);
     pausemenu[2].setString("Restart");
     pausemenu[2].setCharacterSize(90);
-    pausemenu[2].setPosition(Vector2f(width / 2.5 - 35, height / 4 + 400));
+    pausemenu[2].setPosition(Vector2f(width / 2.5 - 49, height / 4 + 400));
 
     pausemenu[3].setFont(Pfont);
     pausemenu[3].setFillColor(Color::White);
     pausemenu[3].setString("Main Menu");
     pausemenu[3].setCharacterSize(90);
-    pausemenu[3].setPosition(Vector2f(width / 2.5 - 70, height / 4 + 600));
+    pausemenu[3].setPosition(Vector2f(width / 2.5 - 84, height / 4 + 600));
     selectedp = 0;
 }
 

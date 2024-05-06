@@ -9,9 +9,9 @@ void SetMonstersSprites() {
 }
 
 void SetMonstersWave() {
-    int AAnumber = 3;
+    int AAnumber = 3, NBnumber = 3;
 	SetMonsters();
-    NBset();
+    NBset(NBnumber);
     AASet(AAnumber);
 }
 
@@ -26,7 +26,7 @@ void MoveMonsters() {
     else if (curr_state == player_vmove)
         attct = 10;
 	MonstersMovment();
-    NBmove(playerdeltatime, Player);
+    NBmove(playerdeltatime, Player, attct, Player_Health, ishit);
     AAMove(playerdeltatime,Player,attct,Player_Health,ishit);
 }
 

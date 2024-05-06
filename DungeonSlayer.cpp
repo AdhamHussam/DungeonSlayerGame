@@ -30,9 +30,10 @@ float AnimationCounter = 0;
 int maximagecounter = 0;
 int ImageCounter = 0;
 bool sha8al = false;
-bool isAttack = false;
+bool isDead = false;
 bool openertrigger = false;
 bool map_opener_trigger = false;
+bool death_trigger = false;
 bool ispassing = false;
 bool wave_cleared = true;
 bool finishedanimationonce = false;
@@ -206,8 +207,8 @@ RectangleShape down_borders[] = { borderD1,borderD2, borderD3 , borderD4, border
 SoundBuffer menu_opener;
 Sound MenuOpener;
 
-SoundBuffer map_opener;
-Sound MapOpener;
+SoundBuffer death_sound;
+Sound DeathSound;
 
 SoundBuffer game_music;
 Sound GameMusic;
@@ -241,12 +242,26 @@ int main()
 // Definitions;
 void update()
 {
-    Switch_States();
+    if (!isDead) {
+        Switch_States();
+        playerMovement();
+        MoveMonsters();
+    }
+    else {
+        Player.setTexture(DeathAnimation[2]);
+        GameMusic.stop();
+        if (DeathSound.getStatus() != Sound::Playing && !death_trigger) {
+            DeathSound.setBuffer(death_sound);
+            DeathSound.setVolume(80);
+            DeathSound.play();
+            death_trigger = true;
+        }
+      
+    }
     trackView();
     checkCollisions();
-    playerMovement();
-    MoveMonsters();
-    if (Keyboard::isKeyPressed(Keyboard::Escape)) {
+    
+    if (Keyboard::isKeyPressed(Keyboard::Escape) && !isDead) {
         if (pausetimer.getElapsedTime().asSeconds() > 0.2) {
             PauseMenuHandler(window);
             pausetimer.restart();
@@ -471,7 +486,7 @@ void setTextures()
     }
 
     menu_opener.loadFromFile("Title card.mp3");
-    map_opener.loadFromFile("Map opener.mp3");
+    death_sound.loadFromFile("Death Sound.mp3");
     game_music.loadFromFile("Game music.mp3");
 }
 
@@ -499,7 +514,6 @@ void Draw()
 
      for(int i = 0; i < down_walls;i++)
       window.draw(down_borders[i]);*/
-
 
     window.display();
 }
@@ -679,8 +693,8 @@ void Switch_States()
     case state::vmove: Player.setTexture(Vmove[ImageCounter]); UpdateAnimationCounter(0.11); break;
     case state::xmove: Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
     case state::cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
-    case state::dead: Player.setTexture(DeathAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
     case state::hit:Player.setTexture(HitAnimation[ImageCounter]); UpdateAnimationCounter(0.15); break;    
+    case state::dead: Player.setTexture(DeathAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
     }
 
 }
@@ -695,8 +709,16 @@ void UpdateAnimationCounter(float st)
         if (ImageCounter >= maximagecounter)
         {
             ishit = false;
-            if (sha8al) sha8al = false;
-            ImageCounter = 0;
+            if (curr_state != state::dead) {
+                if (sha8al) sha8al = false;
+                ImageCounter = 0;
+            }
+            else 
+            {
+                Player.setTexture(DeathAnimation[2]);
+                isDead = true;
+
+            }
 
         }
     }
@@ -878,6 +900,8 @@ void PauseMenuHandler(RenderWindow& window)
 
 void game_reset() {
     Player_Health = 100;
+    curr_state = state::idle;
+    isDead = false;
     for (int i = 0; i < 4; i++) cooldown[i] = 0;
     Player.setPosition(initial_position);
     Player.setScale(0.2, 0.2);

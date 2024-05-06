@@ -11,5 +11,5 @@ struct ArcanArcher {
 
 void AACreate();
 void AASet(int);
-void AAMove(float,Sprite,int,int&);
+void AAMove(float,Sprite,int,int&,bool&);
 void AADraw(RenderWindow&);

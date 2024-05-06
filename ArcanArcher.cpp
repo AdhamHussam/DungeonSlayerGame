@@ -93,6 +93,7 @@ void AACreate() {
     AAArow.loadFromFile("enemies/Arcane archer/projectile.png");
     AAoriginal.health = 5;
     AAoriginal.power = 1;
+    AAoriginal.cooldown = 10;
     AAoriginal.arrow.setTexture(AAArow);
     AAoriginal.arrow.setScale(2, 2);
     AAoriginal.arrow.setPosition(100000, 100000);
@@ -110,12 +111,15 @@ void AASet(int AAn) {
     AAnumber = AAn;
     for (int i = 0; i < AAnumber; i++) {
         AAmonsters[i] = AAoriginal;
+        AAMonsterCounter[i] = 0;
+        AAMovmentCounter[i] = 0;
         AAmonsters[i].AA.setPosition(400 + rand()%100, 6200 + rand() % 1000);
+        AAmonsters[i].alive = true;
         AAstate[i] = AAenum::AA_spawn;
     }
 }
 
-void AAMove(float time,Sprite p,int attct, int& PlayerHealth) {
+void AAMove(float time,Sprite p,int attct, int& PlayerHealth, bool& IsHit) {
     player = p;
     AAdeltatime = time;
     for (int i = 0; i < AAnumber; i++) {
@@ -129,7 +133,7 @@ void AAMove(float time,Sprite p,int attct, int& PlayerHealth) {
         }
         if (!AAmonsters[i].hitted && abs(AAmonsters[i].arrow.getPosition().x - player.getPosition().x) < 20 && abs(AAmonsters[i].arrow.getPosition().y - player.getPosition().y) < 20) {
             PlayerHealth -= AAmonsters[i].power;
-            AAmonsters[i].hitted = true;
+            AAmonsters[i].hitted = IsHit = true;
         }
 
         // check if AA will die

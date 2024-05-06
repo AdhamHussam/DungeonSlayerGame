@@ -27,7 +27,7 @@ void MoveMonsters() {
         attct = 10;
 	MonstersMovment();
     NBmove(playerdeltatime, Player);
-    AAMove(playerdeltatime,Player,attct,Player_Health);
+    AAMove(playerdeltatime,Player,attct,Player_Health,ishit);
 }
 
 void ShowMonsters() {

@@ -27,6 +27,7 @@ void SSupdateMonSSterAnimationCounter(int i, float SSt = 0.15) {
 }
 
 void SSwalk(int i) {
+    SSmovmentCounter[i] %= 8;
     SSmonsters[i].SS.setTextureRect(SSgetRect(8 + SSmovmentCounter[i]));
     Vector2f Direction = Player.getPosition() - SSmonsters[i].SS.getPosition();
     float magnitude = sqrt(Direction.x * Direction.x + Direction.y * Direction.y);
@@ -39,7 +40,7 @@ void SSwalk(int i) {
 void SSattack(int x, int y, int i) {
     SSmonsters[i].SS.setTextureRect(SSgetRect(16 + SSmovmentCounter[i]));
     int initial = SSmovmentCounter[i];
-    SSupdateMonSSterAnimationCounter(i,0.2);
+    SSupdateMonSSterAnimationCounter(i);
     if (SSmovmentCounter[i] == 3 && SSmovmentCounter[i] > initial) {
         if (abs(x) < 50 && abs(y) < 30) {
             Player_Health-=2;
@@ -92,7 +93,6 @@ void SSset(int SSn) {
 void SSmove(float time, Sprite p, int attct, int& PlayerHealth) {
     SSdeltatime = time;
     for (int i = 0; i < SSnumber; i++) {
-
         // check if alive
         if (!SSmonsters[i].alive)
             continue;
@@ -135,6 +135,7 @@ void SSmove(float time, Sprite p, int attct, int& PlayerHealth) {
 
         // make deciSSion
         if (abs(x) < 50 && abs(y) < 30) {
+            SSmovmentCounter[i] = 0;
             SState[i] = SSenum::SS_attack;
             SSattack(x, y, i);
         }

@@ -661,27 +661,27 @@ void Switch_States()
             {         
                 Player.move(0, -35000 * playerdeltatime);
                 Player.setTexture(RunAnimation[2]);      
-                cooldown[4] = 1;
+                cooldown[4] = 3;
             }
             else if (Keyboard::isKeyPressed(Keyboard::S))
             {
                 Player.move(0,35000*playerdeltatime);
                 Player.setTexture(RunAnimation[2]);
-                cooldown[4] = 1;
+                cooldown[4] = 3;
 
             }
             else if (Keyboard::isKeyPressed(Keyboard::A))
             {
                 Player.move(-35000*playerdeltatime, 0);
                 Player.setTexture(RunAnimation[2]);
-                cooldown[4] = 1;
+                cooldown[4] = 3;
 
             }
             else if (Keyboard::isKeyPressed(Keyboard::D))
             {
                 Player.move(35000*playerdeltatime, 0);
                 Player.setTexture(RunAnimation[2]);
-                cooldown[4] = 1;
+                cooldown[4] = 3;
 
             }  
 

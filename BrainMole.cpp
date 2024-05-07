@@ -4,7 +4,7 @@
 
 Texture BMtexture;
 BrainMole BMoriginal, BMmonsters[30];
-int BMmovmentCounter[30], BMnumber;
+int BMmovmentCounter[30];
 float BMmonBMterCounter[30], BMdeltatime;
 
 enum BMenum {
@@ -83,8 +83,7 @@ void BMcreate() {
 }
 
 void BMset(int BMn) {
-    BMnumber = BMn;
-    for (int i = 0; i < BMnumber; i++) {
+    for (int i = 0; i < BrainMoleNumber; i++) {
         BMmonsters[i] = BMoriginal;
         BMmonBMterCounter[i] = 0;
         BMmovmentCounter[i] = 0;
@@ -98,7 +97,7 @@ void BMset(int BMn) {
 
 void BMmove(float time, Sprite p, int attct, int& PlayerHealth) {
     BMdeltatime = time;
-    for (int i = 0; i < BMnumber; i++) {
+    for (int i = 0; i < BrainMoleNumber; i++) {
         // check if alive
         if (!BMmonsters[i].alive)
             continue;
@@ -146,7 +145,7 @@ void BMmove(float time, Sprite p, int attct, int& PlayerHealth) {
 }
 
 void BMdraw(RenderWindow& window) {
-    for (int i = 0; i < BMnumber; i++)
+    for (int i = 0; i < BrainMoleNumber; i++)
         if (BMmonsters[i].alive)
             window.draw(BMmonsters[i].BM);
 }

@@ -4,7 +4,7 @@
 
 Texture NBtexture;
 NightBrone NBoriginal, NBmonsters[30];
-int NBmovmentCounter[30], NBnumber;
+int NBmovmentCounter[30];
 float NBmonsterCounter[30], NBdeltatime;
 
 enum NBenum {
@@ -91,8 +91,7 @@ void NBcreate() {
 }
 
 void NBset(int NBn) {
-    NBnumber = NBn;
-    for (int i = 0; i < NBnumber; i++) {
+    for (int i = 0; i < NightBroneNumber; i++) {
         NBmonsters[i] = NBoriginal;
         NBmonsterCounter[i] = 0;
         NBmovmentCounter[i] = 0;
@@ -106,7 +105,7 @@ void NBset(int NBn) {
 
 void NBmove(float time, Sprite p, int attct, int& PlayerHealth, bool& IsHit) {
     NBdeltatime = time;
-    for (int i = 0; i < NBnumber; i++) {
+    for (int i = 0; i < NightBroneNumber; i++) {
 
         // check if alive
         if (!NBmonsters[i].alive)
@@ -182,7 +181,7 @@ void NBmove(float time, Sprite p, int attct, int& PlayerHealth, bool& IsHit) {
 }
 
 void NBdraw(RenderWindow& window) {
-    for (int i = 0; i < NBnumber; i++) {
+    for (int i = 0; i < NightBroneNumber; i++) {
         if (NBmonsters[i].alive) {
             window.draw(NBmonsters[i].NB);
         }

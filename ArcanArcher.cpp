@@ -1,9 +1,10 @@
 #include "ArcanArcher.h"
 #include "RandomizePlaces.h"
+#include "globals.h"
 
 Texture AAtexture,AAArow;
 ArcanArcher AAoriginal,AAmonsters[30];
-int AAMovmentCounter[30],AAnumber;
+int AAMovmentCounter[30];
 float AAMonsterCounter[30],AAdeltatime;
 Sprite player;
 
@@ -109,8 +110,7 @@ void AACreate() {
 }
 
 void AASet(int AAn) {
-    AAnumber = AAn;
-    for (int i = 0; i < AAnumber; i++) {
+    for (int i = 0; i < ArcaneArcherNumber; i++) {
         AAmonsters[i] = AAoriginal;
         AAMonsterCounter[i] = 0;
         AAMovmentCounter[i] = 0;
@@ -125,7 +125,7 @@ void AASet(int AAn) {
 void AAMove(float time,Sprite p,int attct, int& PlayerHealth, bool& IsHit) {
     player = p;
     AAdeltatime = time;
-    for (int i = 0; i < AAnumber; i++) {
+    for (int i = 0; i < ArcaneArcherNumber; i++) {
 
         // check if alive
         if (!AAmonsters[i].alive)
@@ -197,7 +197,7 @@ void AAMove(float time,Sprite p,int attct, int& PlayerHealth, bool& IsHit) {
 }
 
 void AADraw(RenderWindow &window) {
-    for (int i = 0; i < AAnumber; i++) {
+    for (int i = 0; i < ArcaneArcherNumber; i++) {
         if(AAmonsters[i].alive) {
             window.draw(AAmonsters[i].AA);
             window.draw(AAmonsters[i].arrow);

@@ -4,7 +4,7 @@
 
 Texture SStexture;
 ShardSoul SSoriginal, SSmonsters[30];
-int SSmovmentCounter[30], SSnumber;
+int SSmovmentCounter[30];
 float SSmonSSterCounter[30], SSdeltatime;
 
 enum SSenum {
@@ -80,8 +80,7 @@ void SScreate() {
 }
 
 void SSset(int SSn) {
-    SSnumber = SSn;
-    for (int i = 0; i < SSnumber; i++) {
+    for (int i = 0; i < ShardSoulNumber; i++) {
         SSmonsters[i] = SSoriginal;
         SSmonSSterCounter[i] = 0;
         SSmovmentCounter[i] = 0;
@@ -95,7 +94,7 @@ void SSset(int SSn) {
 
 void SSmove(float time, Sprite p, int attct, int& PlayerHealth) {
     SSdeltatime = time;
-    for (int i = 0; i < SSnumber; i++) {
+    for (int i = 0; i < ShardSoulNumber; i++) {
         // check if alive
         if (!SSmonsters[i].alive)
             continue;
@@ -149,7 +148,7 @@ void SSmove(float time, Sprite p, int attct, int& PlayerHealth) {
 }
 
 void SSdraw(RenderWindow& window) {
-    for (int i = 0; i < SSnumber; i++)
+    for (int i = 0; i < ShardSoulNumber; i++)
         if (SSmonsters[i].alive)
             window.draw(SSmonsters[i].SS);
 }

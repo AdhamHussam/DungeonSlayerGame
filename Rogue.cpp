@@ -5,7 +5,7 @@
 
 Texture Rtexture,Dtexture;
 Rogue Roriginal, Rmonsters[30];
-int RmovmentCounter[30], Rnumber;
+int RmovmentCounter[30];
 float RmonsterCounter[30], Rdeltatime;
 
 enum Renum {
@@ -115,8 +115,7 @@ void Rcreate() {
 }
 
 void Rset(int Rn) {
-    Rnumber = Rn;
-    for (int i = 0; i < Rnumber; i++) {
+    for (int i = 0; i < RogueNumber; i++) {
         Rmonsters[i] = Roriginal;
         RmonsterCounter[i] = 0;
         RmovmentCounter[i] = 0;
@@ -130,7 +129,7 @@ void Rset(int Rn) {
 
 void Rmove(float time, Sprite p, int attct, int& PlayerHealth) {
     Rdeltatime = time;
-    for (int i = 0; i < Rnumber; i++) {
+    for (int i = 0; i < RogueNumber; i++) {
 
         // check if alive
         if (!Rmonsters[i].alive)
@@ -212,7 +211,7 @@ void Rmove(float time, Sprite p, int attct, int& PlayerHealth) {
 }
 
 void Rdraw(RenderWindow& window) {
-    for (int i = 0; i < Rnumber; i++) {
+    for (int i = 0; i < RogueNumber; i++) {
         if (Rmonsters[i].alive) {
             window.draw(Rmonsters[i].R);
         }

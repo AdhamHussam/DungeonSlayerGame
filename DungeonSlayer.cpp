@@ -4,6 +4,7 @@
 #include "Monsters.h"
 #include "globals.h"
 #include "PauseMenu.h"
+#include "GUI.h"
 
 
 // Game properties
@@ -21,6 +22,9 @@ int down_walls = 26;
 
 // menu number
 int pagenum = 69;
+
+// gui struct
+GUI gui;
 
 
 // player attributes
@@ -41,7 +45,7 @@ bool passed_door = false;
 bool room_cleared = true;
 bool isdashing = false;
 bool finishedanimationonce = false;
-float cooldown[5];
+
 
 //RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer" ,Style::Fullscreen);
 Menu menu(1920, 1080);
@@ -77,6 +81,7 @@ Sprite Room;
 Texture pausebg;
 Sprite pausemenu;
 Sprite Map1;
+
 
 // Room 0 Borders
 RectangleShape gate1(Vector2f({ 1, 1 }));
@@ -349,6 +354,9 @@ void setTextures()
     Player.setOrigin(Idle.getSize().x / 2, Idle.getSize().y / 2);
     Player.setPosition(initial_position);
 
+    // GUI
+    gui.setSkillsTexture();
+
     // walls
 
     gates[0].setPosition(-60, 6500);
@@ -498,7 +506,7 @@ void Draw()
     window.draw(Map1);
     if (!ispassing)
         window.draw(Player);
-
+    gui.drawGUI(window);
     ShowMonsters();
     
     /*for (int i = 0; i < doors; i++) {

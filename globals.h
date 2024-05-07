@@ -20,4 +20,5 @@ enum BOD;
 extern BOD BODstate[], BODattacks;
 extern int Player_Health;
 extern bool ishit;
+extern float cooldown[5];
 #endif // GLOBALS_H

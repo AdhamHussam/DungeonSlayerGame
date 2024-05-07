@@ -19,6 +19,7 @@ Sprite Player;
 float playerdeltatime = 0;
 int Player_Health = 100;
 bool ishit = false;
+float cooldown[5];
 enum state
 {
     idle, run, hit, base,  xmove, cmove, vmove, dead, walk

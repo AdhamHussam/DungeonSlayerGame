@@ -16,6 +16,7 @@
     <ClCompile Include="ShardSoul.cpp" />
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="RandomizePlaces.cpp" />
+    <ClCompile Include="GUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArcanArcher.h" />
@@ -33,5 +34,6 @@
     <ClInclude Include="ShardSoul.h" />
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="RandomizePlaces.h" />
+    <ClInclude Include="GUI.h" />
   </ItemGroup>
 </Project>

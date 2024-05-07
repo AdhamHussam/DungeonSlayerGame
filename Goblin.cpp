@@ -3,7 +3,7 @@
 
 Texture goblinTexture, bombTexture, attackTexture, hitTexture;
 Goblin Base, goblins[30];
-int animation_speed = 0.15;
+int animation_speed = 0.05;
 Vector2f scale = { 1.7, 1.7 };
 Vector2f oppos = { -1.7, 1.7 };
 
@@ -17,10 +17,10 @@ void GBLNcreate() {
     bombTexture.loadFromFile("enemies/Goblin/Bomb_sprite.png");
     Base.G_Bomb.setTexture(bombTexture);
     Base.current = Base.GBLN_run;
-    Base.current.setPosition(400, 6700);
+    Base.current.setPosition(300, 1700);
 
     Base.position = Vector2f(0, 0);
-    Base.speed = 200;
+    Base.speed = 100;
     Base.power = 10;
     Base.cooldown = 5;
     Base.health = 10;
@@ -116,7 +116,7 @@ void GBLattack(int x, int y, Goblin& goblin) {
     GBLNupdateRunAttack(goblin);
 
     if (goblin.currentFrame == 7 && (abs(x) < 200 && abs(y) < 30)) {
-        Player_Health -= 5;
+        Player_Health -= 1;
         ishit = true;
     }
 
@@ -176,7 +176,75 @@ void GoblinSwitchState(Goblin& goblin, GoblinState state) {
 
 void GoblinDynamics(int gbln_num, int attct) {
     for (int i = 0; i < gbln_num; i++) {
+        if (!goblins[i].isAlive)
+            continue;
+
+        // Check if goblin health is depleted
+        if (goblins[i].health <= 0 && goblins[i].state != GoblinState::Death) {
+            GoblinSwitchState(goblins[i], GoblinState::Death);
+            continue;
+        }
+
+        // Handle death state
+        if (goblins[i].state == GoblinState::Death) {
+            GBLNdie(goblins[i]);
+            continue;
+        }
+
+        // Handle spawn state
+        if (goblins[i].state == GoblinState::Spawn) {
+            GBLNspawn(goblins[i]);
+            continue;
+        }
+
+        // Calculate distance between goblin and player
+        double x = Player.getPosition().x - goblins[i].current.getPosition().x;
+        double y = Player.getPosition().y - goblins[i].current.getPosition().y;
+
+        // Set goblin scale based on player position
+        if (x < 0)
+            goblins[i].current.setScale(oppos);
+        else
+            goblins[i].current.setScale(scale);
+
+        // Handle goblin attack cooldown
+        goblins[i].cooldown -= playerdeltatime;
+
+        // Check if goblin is hit by player's attack
+        if (goblins[i].state != GoblinState::Hit && abs(x) < 100 && abs(y) < 100 && attct > 0) {
+            goblins[i].health -= attct;
+            GoblinSwitchState(goblins[i], GoblinState::Hit);
+            ishit = true;
+            continue;
+        }
+
+        // Handle goblin hit state
+        if (goblins[i].state == GoblinState::Hit) {
+            GBLhit(goblins[i]);
+            continue;
+        }
+
+        // Handle goblin attack state
+        if (goblins[i].state == GoblinState::Attack) {
+            GBLattack(x, y, goblins[i]);
+            continue;
+        }
+
+        // Make decision for goblin movement or attack
+        if (goblins[i].cooldown <= 0 && abs(x) < 100 && abs(y) < 30 && goblins[i].state != GoblinState::Attack) {
+            GoblinSwitchState(goblins[i], GoblinState::Attack);
+            GBLattack(x, y, goblins[i]);
+        }
+        else {
+            GBLNmove(goblins[i]);
+        }
+    }
+}
+/*
+void GoblinDynamics(int gbln_num, int attct) {
+    for (int i = 0; i < gbln_num; i++) {
         if (!goblins[i].isAlive) continue;
+        /*
 
         if (goblins[i].health == 0 && goblins[i].state != GoblinState::Death) {
             GoblinSwitchState(goblins[i], GoblinState::Death);
@@ -191,19 +259,18 @@ void GoblinDynamics(int gbln_num, int attct) {
             GBLNspawn(goblins[i]);
             continue;
         }
-
+        
         double x = Player.getPosition().x - goblins[i].current.getPosition().x; 
         double y = Player.getPosition().y - goblins[i].current.getPosition().y;
+        
+        // Smoothly transition the scale when turning left or right
+        float scaleSpeed = 0.1; // Adjust this value for the transition speed
+        Vector2f targetScale = (x < 0) ? oppos : scale;
+        goblins[i].current.setScale(goblins[i].current.getScale() + scaleSpeed * (targetScale - goblins[i].current.getScale()));
 
-        if (x < 0) {
-            goblins[i].current.setScale(oppos);
-        }
-        else {
-            goblins[i].current.setScale(scale);
-        }
 
         goblins[i].cooldown -= playerdeltatime;
-
+        /*
         if (goblins[i].state != GoblinState::Hit && abs(x) < 100 && abs(y) < 100 && attct) {
             goblins[i].health -= attct;
             GoblinSwitchState(goblins[i], GoblinState::Hit);
@@ -228,19 +295,6 @@ void GoblinDynamics(int gbln_num, int attct) {
             GBLattack(x, y, goblins[i]);
         }
 
-        else GBLNmove(goblins[i]);
-
-        /*
-
-        /*if (abs(x) < 200 && abs(y) < 30) {
-            goblins[i].state = GoblinState::Attack;
-        }
-        else goblins[i].state = GoblinState::Run;
-
-        /*if (goblins[i].state == GoblinState::Attack) {
-            GBLattack(x, y, goblins[i]);
-        }
-        else GBLNmove(goblins[i]);
-        */
+        else  GBLNmove(goblins[i]);
     }
-}
+}*/

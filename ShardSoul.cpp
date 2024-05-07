@@ -1,5 +1,6 @@
 #include "ShardSoul.h"
 #include "globals.h"
+#include "RandomizePlaces.h"
 
 Texture SStexture;
 ShardSoul SSoriginal, SSmonsters[30];
@@ -84,7 +85,9 @@ void SSset(int SSn) {
         SSmonsters[i] = SSoriginal;
         SSmonSSterCounter[i] = 0;
         SSmovmentCounter[i] = 0;
-        SSmonsters[i].SS.setPosition(300 + rand() % 100, 6900 + rand() % 1000);
+        int x, y;
+        RandPosition(x, y);
+        SSmonsters[i].SS.setPosition(x,y);
         SSmonsters[i].alive = true;
         SState[i] = SSenum::SS_hurt;
     }

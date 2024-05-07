@@ -11,7 +11,7 @@ extern RenderWindow window;
 /*
 
 */
-extern int current_room;
+extern int current_room,current_wave,BODnumber;
 extern Sprite Player;
 extern float playerdeltatime;
 enum state;

@@ -16,7 +16,6 @@ enum BOD {
 int MovmentCounter[];
 float MonsterCounter[];
 
-extern int BODnumber;
 extern BringerOfDeath BODmonsters[];
 extern BringerOfDeath BODoriginal;
 extern Texture BODtexture;

@@ -802,7 +802,6 @@ void Game_play(RenderWindow& window)
         music_handler();
         update();
         Draw();
-        cout << Player.getPosition().x << ' ' << Player.getPosition().y << '\n';
     }
 }
 
@@ -916,6 +915,7 @@ void game_reset()
     death_trigger = false;
     room_cleared = true;
     current_room = 0;
+    current_wave = 0;
     float AnimationCounter = 0;
     int maximagecounter = 0;
     int ImageCounter = 0;
@@ -1025,7 +1025,7 @@ void check_room()
     int initial = current_room;
     for (int i = 0; i < doors; i++) {
         if (Player.getPosition().y < gates[i].getPosition().y - 200) {
-            current_room = i + 1;
+            current_room = max(current_room,i + 1);
             room_cleared = false;
         }
     }

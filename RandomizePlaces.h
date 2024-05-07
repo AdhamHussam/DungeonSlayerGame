@@ -3,3 +3,4 @@
 #include "globals.h"
 
 void RandPosition(int&, int&);
+void MonsterNumber();

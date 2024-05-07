@@ -23,3 +23,26 @@ void RandPosition(int& x, int& y) {
 		y = rand() % 700 - 1900;
 	}
 }
+
+void MonsterNumber() {
+	ifstream file("NumberOfMonsters.csv");
+	string row;
+	for (int i = 0; i <= current_room; i++)
+		getline(file, row);
+	stringstream ss(row);
+	string cell;
+	getline(ss, cell, ',');
+	SkeletonNumber = stoi(cell);
+	getline(ss, cell, ',');
+	BrainMoleNumber = stoi(cell);
+	getline(ss, cell, ',');
+	ShardSoulNumber = stoi(cell);
+	getline(ss, cell, ',');
+	BODnumber = stoi(cell);
+	getline(ss, cell, ',');
+	NightBroneNumber = stoi(cell);
+	getline(ss, cell, ',');
+	ArcaneArcherNumber = stoi(cell);
+	getline(ss, cell, ',');
+	RogueNumber = stoi(cell);
+}

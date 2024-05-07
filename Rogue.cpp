@@ -1,6 +1,7 @@
 #include "Rogue.h"
 #include "globals.h"
 #include "Skeleton.h"
+#include "RandomizePlaces.h"
 
 Texture Rtexture,Dtexture;
 Rogue Roriginal, Rmonsters[30];
@@ -119,7 +120,9 @@ void Rset(int Rn) {
         Rmonsters[i] = Roriginal;
         RmonsterCounter[i] = 0;
         RmovmentCounter[i] = 0;
-        Rmonsters[i].R.setPosition(300 + rand() % 100, 6900 + rand() % 1000);
+        int x, y;
+        RandPosition(x, y);
+        Rmonsters[i].R.setPosition(x,y);
         Rmonsters[i].alive = true;
         Rstate[i] = Renum::R_spawn;
     }

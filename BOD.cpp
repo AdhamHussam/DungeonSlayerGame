@@ -1,6 +1,7 @@
 #include "includes.h"
 #include "BOD.h"
 #include "globals.h"
+#include "RandomizePlaces.h"
 
 int MovmentCounter[30];
 float MonsterCounter[30];
@@ -197,7 +198,9 @@ void SetMonsters() {
         MovmentCounter[i] = 0;
         BODstate[i] = BOD::BODspawn;
         BODmonsters[i] = BODoriginal;
-        BODmonsters[i].BOD.setPosition(100 + rand() % 100, 6000 + rand() % 1000);
+        int x, y;
+        RandPosition(x, y);
+        BODmonsters[i].BOD.setPosition(x,y);
     }
 }
 

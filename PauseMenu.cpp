@@ -10,7 +10,6 @@ PauseMenu::PauseMenu(float width, float height)
     pausemenu[0].setCharacterSize(90);
     pausemenu[0].setPosition(Vector2f(width /2.5- 27, height / 4));
 
-
     pausemenu[1].setFont(Pfont);
     pausemenu[1].setFillColor(Color::White);
     pausemenu[1].setString("Options");
@@ -65,8 +64,6 @@ void PauseMenu::movedown() {
 void PauseMenu::moveup()
 {
     if (selectedp - 1 >= -1) {
-
-
         pausemenu[selectedp].setFillColor(Color::White);
         selectedp--;
         if (selectedp == -1)
@@ -76,8 +73,5 @@ void PauseMenu::moveup()
         }
 
         pausemenu[selectedp].setFillColor(Color{ 255,215,0 });
-
-
-
     }
 }

@@ -10,7 +10,6 @@ GameOver::GameOver(float width, float height, float x, float y)
     gameover[0].setCharacterSize(70);
     gameover[0].setPosition(x-185, y+125) ;
 
-
     gameover[1].setFont(Pfont);
     gameover[1].setFillColor(Color::White);
     gameover[1].setString("Main Menu");
@@ -45,8 +44,6 @@ void GameOver::movedown() {
             selectedp = 0;
 
         gameover[selectedp].setFillColor(Color{ 139,0,0 });
-
-
     }
 }
 
@@ -54,8 +51,6 @@ void GameOver::movedown() {
 void GameOver::moveup()
 {
     if (selectedp - 1 >= -1) {
-
-
         gameover[selectedp].setFillColor(Color::White);
         selectedp--;
         if (selectedp == -1)
@@ -65,8 +60,5 @@ void GameOver::moveup()
         }
 
         gameover[selectedp].setFillColor(Color{ 139,0,0 });
-
-
-
     }
 }

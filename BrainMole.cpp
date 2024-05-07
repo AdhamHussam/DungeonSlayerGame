@@ -1,5 +1,6 @@
 #include "BrainMole.h"
 #include "globals.h"
+#include "RandomizePlaces.h"
 
 Texture BMtexture;
 BrainMole BMoriginal, BMmonsters[30];
@@ -87,7 +88,9 @@ void BMset(int BMn) {
         BMmonsters[i] = BMoriginal;
         BMmonBMterCounter[i] = 0;
         BMmovmentCounter[i] = 0;
-        BMmonsters[i].BM.setPosition(300 + rand() % 100, 6900 + rand() % 1000);
+        int x, y;
+        RandPosition(x, y);
+        BMmonsters[i].BM.setPosition(x,y);
         BMmonsters[i].alive = true;
         BMtate[i] = BMenum::BM_hurt;
     }

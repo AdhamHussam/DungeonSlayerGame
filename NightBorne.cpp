@@ -1,5 +1,6 @@
 #include "NightBorne.h"
 #include "globals.h"
+#include "RandomizePlaces.h"
 
 Texture NBtexture;
 NightBrone NBoriginal, NBmonsters[30];
@@ -87,8 +88,6 @@ void NBcreate() {
     NBoriginal.NB.setTextureRect(NBgetRect(0));
     NBoriginal.NB.setOrigin(40, 40);
     NBoriginal.NB.setScale(3, 3);
-
-    NBoriginal.NB.setPosition(300, 6700);
 }
 
 void NBset(int NBn) {
@@ -97,7 +96,9 @@ void NBset(int NBn) {
         NBmonsters[i] = NBoriginal;
         NBmonsterCounter[i] = 0;
         NBmovmentCounter[i] = 0;
-        NBmonsters[i].NB.setPosition(300 + rand() % 100, 6900 + rand() % 1000);
+        int x, y;
+        RandPosition(x, y);
+        NBmonsters[i].NB.setPosition(x,y);
         NBmonsters[i].alive = true;
         NBstate[i] = NBenum::NB_spawn;
     }

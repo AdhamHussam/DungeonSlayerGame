@@ -5,6 +5,7 @@
 #include "ShardSoul.h"
 #include "BrainMole.h"
 #include "Rogue.h"
+#include "RandomizePlaces.h"
 
 void SetMonstersSprites() {
 	CreateMonsters();
@@ -18,8 +19,8 @@ void SetMonstersSprites() {
 }
 
 void SetMonstersWave() {
-    BODnumber = 0;
-    ArcaneArcherNumber = 0, NightBroneNumber = 0, SkeletonNumber = 0, ShardSoulNumber = 0, BrainMoleNumber = 0, RogueNumber = 1;
+    BODnumber = 0,ArcaneArcherNumber = 0, NightBroneNumber = 0, SkeletonNumber = 0, ShardSoulNumber = 0, BrainMoleNumber = 0, RogueNumber = 0;
+    MonsterNumber();
 	SetMonsters();
     NBset(NightBroneNumber);
     AASet(ArcaneArcherNumber);

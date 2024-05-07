@@ -1,6 +1,7 @@
 #include "Rogue.h"
 #include "globals.h"
 #include "Skeleton.h"
+#include "RandomizePlaces.h"
 
 Texture Rtexture,Dtexture;
 Rogue Roriginal, Rmonsters[30];
@@ -40,7 +41,7 @@ void Rwalk(int i) {
 void Rattack(int x, int y, int i) {
     Rmonsters[i].R.setTextureRect(RgetRect(40 + RmovmentCounter[i]));
     int initial = RmovmentCounter[i];
-    RupdateMonsterAnimationCounter(i);
+    RupdateMonsterAnimationCounter(i,0.1);
     if ((RmovmentCounter[i] == 3 || RmovmentCounter[i] == 7 || RmovmentCounter[i] == 12) && RmovmentCounter[i] > initial) {
         if (abs(x) < 100 && abs(y) < 30) {
             Player_Health -= Rmonsters[i].damage;
@@ -119,7 +120,9 @@ void Rset(int Rn) {
         Rmonsters[i] = Roriginal;
         RmonsterCounter[i] = 0;
         RmovmentCounter[i] = 0;
-        Rmonsters[i].R.setPosition(300 + rand() % 100, 6900 + rand() % 1000);
+        int x, y;
+        RandPosition(x, y);
+        Rmonsters[i].R.setPosition(x,y);
         Rmonsters[i].alive = true;
         Rstate[i] = Renum::R_spawn;
     }

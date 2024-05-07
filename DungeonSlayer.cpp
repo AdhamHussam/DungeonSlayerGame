@@ -234,6 +234,7 @@ void PauseMenuHandler(RenderWindow& window);
 void Instructions_Menu(RenderWindow& window);
 void Instructions_Draw();
 void update();
+void checkpause();
 void check_room();
 void fell();
 void death_handler();
@@ -257,9 +258,6 @@ int main()
 // Definitions;
 void update()
 {
-    lastX = Player.getPosition().x;
-    lastY = Player.getPosition().y;
-    
     if (!isDead) {
         fell();
         Switch_States();
@@ -268,18 +266,11 @@ void update()
         check_room();
         trackView();
         checkCollisions();
+        checkpause();
     }
     else {
         death_handler();
-    }
-
-    
-    if (Keyboard::isKeyPressed(Keyboard::Escape) && !isDead) {
-        if (pausetimer.getElapsedTime().asSeconds() > 0.2) {
-            PauseMenuHandler(window);
-            pausetimer.restart();
-        }
-    }
+    } 
 }
 
 void checkCollisions() 
@@ -490,7 +481,6 @@ void setTextures()
     for (int i = 0; i < 8; i++) {
         walkAnimation[i].loadFromFile("walk/Walk" + to_string(i) + ".png");
     }
-
     for (int i = 0; i < 8; i++) {
         BaseAttack[i].loadFromFile("base/Base" + to_string(i) + ".png");
     }
@@ -635,9 +625,7 @@ void Switch_States()
         {
             curr_state = state::base;
             cooldown[0] = 1.5;
-          
-        }
-     
+        } 
         if (Keyboard::isKeyPressed(Keyboard::X) && cooldown[1] == 0)
         {
             curr_state = state::xmove;
@@ -671,7 +659,7 @@ void Switch_States()
             curr_state = state::dead;
         }
         
-        // Animate based on state 
+        // set Animation variables based on state 
 
         switch (curr_state)
         {
@@ -702,6 +690,8 @@ void Switch_States()
         }
     }
     
+    // Animate 
+
     switch (curr_state) {
     case state::run:maximagecounter = 8; Player.setTexture(RunAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
     case state::walk: maximagecounter = 8; Player.setTexture(walkAnimation[ImageCounter]); UpdateAnimationCounter(0.2); break;
@@ -849,7 +839,9 @@ void Instructions_Menu(RenderWindow& window) {
 
 void PauseMenuHandler(RenderWindow& window)
 {
-    if (GameMusic.getStatus() == Sound::Playing) GameMusic.pause();
+    if (GameMusic.getStatus() == Sound::Playing) 
+        GameMusic.pause();
+
     while (window.isOpen()) {
         Event event;
 
@@ -920,7 +912,8 @@ void game_reset()
     curr_state = state::idle;
     DeathSound.stop();
     isDead = false;
-    for (int i = 0; i < 4; i++) cooldown[i] = 0;
+    for (int i = 0; i < 4; i++) 
+        cooldown[i] = 0;
     Player.setPosition(initial_position);
     Player.setScale(0.2, 0.2);
     openertrigger = false;
@@ -949,6 +942,8 @@ void music_handler()
 
 void death_handler()
 {
+    lastX = Player.getPosition().x;
+    lastY = Player.getPosition().y;
     GameOver game_over(1920, 1080, lastX, lastY);
     while (window.isOpen()) {
         Event event;
@@ -983,6 +978,8 @@ void death_handler()
             }
         }
 
+        // Restart
+       
         if (Keyboard::isKeyPressed(Keyboard::Enter) && game_over.selectedp == 0) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 GameClock.restart();
@@ -990,6 +987,9 @@ void death_handler()
                 break;
             }
         }
+
+        // retrun to Main menu
+
         if (Keyboard::isKeyPressed(Keyboard::Enter) && game_over.selectedp == 1) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 GameClock.restart();
@@ -997,7 +997,6 @@ void death_handler()
                 game_reset();
                 view.setCenter(960, 540); //update
                 window.setView(view);
-
                 menu_handler();
             }
         }
@@ -1035,6 +1034,16 @@ void check_room()
             current_room = i + 1;
             room_cleared = false;
         }
+    }
+}
 
+
+void checkpause()
+{
+    if (Keyboard::isKeyPressed(Keyboard::Escape) && !isDead) {
+        if (pausetimer.getElapsedTime().asSeconds() > 0.2) {
+            PauseMenuHandler(window);
+            pausetimer.restart();
+        }
     }
 }

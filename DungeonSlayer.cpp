@@ -285,7 +285,10 @@ void checkCollisions()
     for (int i = 0; i < doors; i++) {
         if (Player.getGlobalBounds().intersects(gates[i].getGlobalBounds())) {
             ispassing = true;
-            Player.move(0, -500 * playerdeltatime);
+            if (room_cleared)
+                Player.move(0, -500 * playerdeltatime);
+            else
+                Player.move(0, 500 * playerdeltatime);
             break;
         }
         else ispassing = false;
@@ -337,7 +340,7 @@ void setTextures()
     
 
     bg.setScale(0.5, 0.5);
-    Instructions.setScale(0.75, 0.75);
+    Instructions.setScale(0.75, 0.8);
     pausemenu.setScale(0.5, 0.5);
     DeathScreen.setScale(0.7, 0.7);
     

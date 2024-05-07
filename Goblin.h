@@ -11,7 +11,7 @@ enum GoblinState {
 
 struct Goblin {
 	Sprite GBLN_run, G_Attack, G_Hit, G_Bomb, current;
-	int speed, power, cooldown, health, animationSpeed, currentFrame;
+	int speed, power, cooldown, health, animationSpeed, currentFrame, cooldownMax;
 	int runAttackFrameHeight, runAttackFrameWidth, runAttackTotalFrames;
 	int deathFrameHeight, deathFrameWidth, deathTotalFrames;
 	int bombFrameHeight, bombFrameWidth, bomTotalFrames;

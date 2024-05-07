@@ -96,6 +96,8 @@ void GUI::setPlayerInfoTexture() {
 	healthBar.setTexture(healthBarTexture);
 	staminaBarTexture.loadFromFile(R"(GUI\stamina_bar.png)");
 	staminaBar.setTexture(staminaBarTexture);
+	armorBarTexture.loadFromFile(R"(GUI\armor.png)");
+	armorBar.setTexture(armorBarTexture);
 
 }
 
@@ -103,11 +105,17 @@ void GUI::updatePlayerInfo(RenderWindow& window) {
 	Vector2f infoPosition = { Player.getPosition().x - window.getSize().x/2-20,
 								Player.getPosition().y - window.getSize().y / 2 -20};
 	int helath_start = healthBarTexture.getSize().x/3;
+	int health = (Player_Health > 100 ? 100 : Player_Health);
+	int armor = Player_Health - health;
 	PlayerInfo.setPosition(infoPosition);
 	healthBar.setPosition(infoPosition.x + helath_start, infoPosition.y);
+	armorBar.setPosition(infoPosition.x + helath_start, infoPosition.y);
 	staminaBar.setPosition(infoPosition);
-	healthBar.setTextureRect(IntRect(helath_start - 5, 0,
-		 (float)Player_Health * 1.45 *helath_start / 100, PlayerInfoTexture.getSize().y));
+	healthBar.setTextureRect(IntRect(helath_start - 7, 0,
+		 (float)health * 1.45 * helath_start / 100, PlayerInfoTexture.getSize().y));
+
+	armorBar.setTextureRect(IntRect(helath_start - 7, 0,
+		 (float)armor * 1.45 * helath_start / 60, PlayerInfoTexture.getSize().y));
 
 }
 // player_health
@@ -116,6 +124,7 @@ void GUI::drawGUI(RenderWindow& window) {
 	updatePlayerInfo(window);
 	window.draw(PlayerInfo);
 	window.draw(healthBar);
+	window.draw(armorBar);
 	window.draw(staminaBar);
 	for (int i = 0; i < 4; i++)
 	{

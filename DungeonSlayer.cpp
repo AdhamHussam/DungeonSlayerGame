@@ -647,13 +647,22 @@ void menu_handler()
                             menu.MoveDown();
                         if (event.key.code == Keyboard::Return) {
                             if (menu.pressed() == 0) {
-                                pagenum = 0;
+                                if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                                    GameClock.restart();
+                                    pagenum = 0;
+                                }
                             }
                             if (menu.pressed() == 1) {
-                                pagenum = 1;
+                                if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                                    GameClock.restart();
+                                    pagenum = 1;
+                                }
                             }
                             if (menu.pressed() == 2) {
-                                pagenum = -1;
+                                if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                                    GameClock.restart();
+                                    pagenum = -1;
+                                }
                             }
                         }
                     }
@@ -925,7 +934,7 @@ void check_room()
     if (current_room > initial){
         SetMonstersWave();
         room_cleared = false;
-        Player_Health = 100 + 5 * (current_room - 1);
+        Player_Health += 20 * (current_room - 1);
     }
 }
 

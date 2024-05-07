@@ -38,6 +38,7 @@ int walk_speed = 100;
 int run_speed = 200;
 Vector2f velocity = { 0, 0 };
 float AnimationCounter = 0;
+float dash_duration = 0.075;
 int maximagecounter = 0;
 int ImageCounter = 0;
 bool animation_running = false;
@@ -146,6 +147,7 @@ void update()
         trackView();
         checkCollisions();
         checkpause();
+        dash();
     }
     else {
         death_handler();
@@ -531,12 +533,8 @@ void Switch_States()
             cooldown[3] = 9;
         }
         if (Keyboard::isKeyPressed(Keyboard::Q) && cooldown[4] == 0) {
-            
-     /*       velocity.x *= 350;
-            velocity.y *= 350;
-            Player.setTexture(RunAnimation[2]);
-            Player.move(velocity);
-            cooldown[4] = 3;*/
+
+            cooldown[4] = 3;
             isdashing = true;
         }
         
@@ -946,9 +944,17 @@ void checkpause()
 void dash()
 {
     if (isdashing) {
-        if (cooldown[4] >= 2.5) {
-            run_speed = 500;
-            walk_speed = 500;
+        if (dash_duration > 0) {
+            run_speed = 1000;
+            walk_speed = 1000;
+            dash_duration -= playerdeltatime;
+        }
+        else {
+            isdashing = false;
+            dash_duration = 0.075;
+            run_speed = 200;
+            walk_speed = 100;
         }
     }
+   
 }

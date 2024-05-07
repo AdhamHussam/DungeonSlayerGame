@@ -20,10 +20,12 @@ struct GUI {
     Texture loadingframe;
     Texture PlayerInfoTexture;
     Texture healthBarTexture;
+    Texture armorBarTexture;
     Texture staminaBarTexture;
     GUIskill skills[4];
     Sprite PlayerInfo;
     Sprite healthBar;
+    Sprite armorBar;
     Sprite staminaBar;
     int framenum = 1;
 

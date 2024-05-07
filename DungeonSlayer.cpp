@@ -914,7 +914,7 @@ void PauseMenuHandler(RenderWindow& window)
 void game_reset() 
 {
     Player_Health = 100;
-    curr_state = state::idle;
+    curr_state = idle;
     DeathSound.stop();
     isDead = false;
     for (int i = 0; i < 5; i++) 

@@ -512,8 +512,8 @@ void Draw()
     window.draw(Map1);
     if (!ispassing)
         window.draw(Player);
-    gui.drawGUI(window);
     ShowMonsters();
+    gui.drawGUI(window);
     
     /*for (int i = 0; i < doors; i++) {
         window.draw(gates[i]);

@@ -17,7 +17,7 @@ void GBLNcreate() {
     bombTexture.loadFromFile("enemies/Goblin/Bomb_sprite.png");
     Base.G_Bomb.setTexture(bombTexture);
     Base.current = Base.GBLN_run;
-    Base.current.setPosition(400, 6700);
+    Base.current.setPosition(400, 6000);
 
     Base.position = Vector2f(0, 0);
     Base.speed = 200;

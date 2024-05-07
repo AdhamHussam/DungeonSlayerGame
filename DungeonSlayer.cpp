@@ -112,6 +112,7 @@ void PauseMenuHandler(RenderWindow& window);
 void Instructions_Menu(RenderWindow& window);
 void Instructions_Draw();
 void update();
+void dash();
 void checkpause();
 void check_room();
 void fell();
@@ -162,9 +163,13 @@ void checkCollisions()
                 ispassing = true;
                 Player.move(0, -500 * playerdeltatime);
             }
-            else
-                if(Keyboard::isKeyPressed(Keyboard::S))
+            else {
+                if (Keyboard::isKeyPressed(Keyboard::S) && i == current_room - 1)
+                    velocity.y = 0; 
+                if (Keyboard::isKeyPressed(Keyboard::W) && i == current_room)
                     velocity.y = 0;
+            }
+          
             break;
         }
         else ispassing = false;
@@ -213,8 +218,6 @@ void setTextures()
     pausemenu.setTexture(pausebg);
     DeathScreen.setTexture(death_screen);
     
-    
-
     bg.setScale(0.5, 0.5);
     Instructions.setScale(0.75, 0.8);
     pausemenu.setScale(0.5, 0.5);
@@ -529,11 +532,12 @@ void Switch_States()
         }
         if (Keyboard::isKeyPressed(Keyboard::Q) && cooldown[4] == 0) {
             
-            velocity.x *= 350;
+     /*       velocity.x *= 350;
             velocity.y *= 350;
             Player.setTexture(RunAnimation[2]);
             Player.move(velocity);
-            cooldown[4] = 3;
+            cooldown[4] = 3;*/
+            isdashing = true;
         }
         
         if (ishit)
@@ -934,6 +938,17 @@ void checkpause()
         if (pausetimer.getElapsedTime().asSeconds() > 0.2) {
             PauseMenuHandler(window);
             pausetimer.restart();
+        }
+    }
+}
+
+
+void dash()
+{
+    if (isdashing) {
+        if (cooldown[4] >= 2.5) {
+            run_speed = 500;
+            walk_speed = 500;
         }
     }
 }

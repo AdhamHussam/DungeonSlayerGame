@@ -156,11 +156,15 @@ void checkCollisions()
     //doors
     for (int i = 0; i < doors; i++) {
         if (Player.getGlobalBounds().intersects(gates[i].getGlobalBounds())) {
-            ispassing = true;
+            
             if (room_cleared)
+            {
+                ispassing = true;
                 Player.move(0, -500 * playerdeltatime);
+            }
             else
-                Player.move(0, 500 * playerdeltatime);
+                if(Keyboard::isKeyPressed(Keyboard::S))
+                    velocity.y = 0;
             break;
         }
         else ispassing = false;
@@ -912,12 +916,13 @@ void check_room()
     int initial = current_room;
     for (int i = 0; i < doors; i++) {
         if (Player.getPosition().y < gates[i].getPosition().y - 200) {
-            current_room = max(current_room,i + 1);
+            current_room = max(current_room,i + 1);          
         }
     }
     if (current_room > initial){
         SetMonstersWave();
         room_cleared = false;
+        Player_Health = 100 + 5 * (current_room);
     }
 }
 

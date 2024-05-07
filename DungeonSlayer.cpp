@@ -912,7 +912,7 @@ void game_reset()
     curr_state = state::idle;
     DeathSound.stop();
     isDead = false;
-    for (int i = 0; i < 4; i++) 
+    for (int i = 0; i < 5; i++) 
         cooldown[i] = 0;
     Player.setPosition(initial_position);
     Player.setScale(0.2, 0.2);

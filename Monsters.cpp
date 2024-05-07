@@ -19,11 +19,11 @@ void SetMonstersSprites() {
 
 void SetMonstersWave() {
     BODnumber = 0;
-    int AAnumber = 0, NBnumber = 0, Snumber = 0, SSnumber = 0, BMnumber = 0, Rnumber = 1;
+    int AAnumber = 0, NBnumber = 0, Snumber = 0, SSnumber = 0, BMnumber = 0, Rnumber = 0;
 	SetMonsters();
     NBset(NBnumber);
     AASet(AAnumber);
-    GBLNset(3);
+    GBLNset(1);
     Sset(Snumber);
     SSset(SSnumber);
     BMset(BMnumber);
@@ -43,7 +43,7 @@ void MoveMonsters() {
 	MonstersMovment();
     NBmove(playerdeltatime, Player, attct, Player_Health, ishit);
     AAMove(playerdeltatime,Player,attct,Player_Health,ishit);
-    GoblinDynamics(3);
+    GoblinDynamics(1);
     Smove(playerdeltatime, Player, attct, Player_Health, ishit);
     SSmove(playerdeltatime, Player, attct, Player_Health);
     BMmove(playerdeltatime, Player, attct, Player_Health);
@@ -59,7 +59,7 @@ void ShowMonsters() {
         }
     AADraw(window);
     NBdraw(window);
-    GBLNdraw(3);
+    GBLNdraw(1);
     Sdraw(window);
     SSdraw(window);
     BMdraw(window);

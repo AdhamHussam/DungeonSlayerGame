@@ -6,15 +6,16 @@ Goblin Base, goblins[30];
 int animation_speed = 0.15;
 
 void GBLNcreate() {
-    goblinTexture.loadFromFile("D:/Ali/Dungeon Slayer Final/DungeonSlayerGame/enemies/Goblin/Run.png");
+    goblinTexture.loadFromFile("enemies/Goblin/Run.png");
     Base.GBLN_run.setTexture(goblinTexture);
-    attackTexture.loadFromFile("D:/Ali/Dungeon Slayer Final/DungeonSlayerGame/enemies/Goblin/Attack2.png");
+    attackTexture.loadFromFile("enemies/Goblin/Attack2.png");
     Base.G_Attack.setTexture(attackTexture);
-    hitTexture.loadFromFile("D:/Ali/Dungeon Slayer Final/DungeonSlayerGame/enemies/Goblin/Take Hit.png");
+    hitTexture.loadFromFile("enemies/Goblin/Take Hit.png");
     Base.G_Hit.setTexture(hitTexture);
-    bombTexture.loadFromFile("D:/Ali/Dungeon Slayer Final/DungeonSlayerGame/enemies/Goblin/Bomb_sprite.png");
+    bombTexture.loadFromFile("enemies/Goblin/Bomb_sprite.png");
     Base.G_Bomb.setTexture(bombTexture);
     Base.current = Base.GBLN_run;
+    Base.current.setPosition(400, 6700);
 
     Base.position = Vector2f(0, 0);
     Base.speed = 200;
@@ -33,6 +34,7 @@ void GBLNcreate() {
     Base.deathFrameHeight = 150 / 1;
     Base.deathFrameWidth = 600 / 4;
     Base.animationSpeed = animation_speed;
+    Base.current.setOrigin(32, 32);
 }
 
 void GBLNset(int gbln_num) {
@@ -42,8 +44,9 @@ void GBLNset(int gbln_num) {
 }
 
 void GBLNupdateRunAttack(Goblin& goblin) {
-    if (goblin.clock.getElapsedTime().asMilliseconds() > goblin.animationSpeed) {
-        goblin.clock.restart();
+    goblin.MonsterCounter += playerdeltatime;
+    if (goblin.MonsterCounter > goblin.animationSpeed) {
+        goblin.MonsterCounter = 0;
         goblin.currentFrame = (goblin.currentFrame + 1) % goblin.runAttackTotalFrames;
         goblin.textureRect.left = goblin.currentFrame * goblin.runAttackFrameWidth;
         goblin.textureRect.top = 0; // each png has one row only
@@ -54,8 +57,7 @@ void GBLNupdateRunAttack(Goblin& goblin) {
 }
 
 void GBLNupdateDeath(Goblin& goblin) {
-    if (goblin.clock.getElapsedTime().asMilliseconds() > goblin.animationSpeed) {
-        goblin.clock.restart();
+    if (playerdeltatime > goblin.animationSpeed) {
         goblin.currentFrame = (goblin.currentFrame + 1) % goblin.deathTotalFrames;
         goblin.textureRect.left = goblin.currentFrame * goblin.deathFrameWidth;
         goblin.textureRect.top = 0; // each png has one row only
@@ -67,8 +69,7 @@ void GBLNupdateDeath(Goblin& goblin) {
 
 void GBLNupdateBomb(Goblin& goblin) {
     // for animation
-    if (goblin.clock.getElapsedTime().asMilliseconds() > goblin.animationSpeed) {
-        goblin.clock.restart();
+    if (playerdeltatime > goblin.animationSpeed) {
         goblin.currentFrame = (goblin.currentFrame + 1) % goblin.bomTotalFrames;
         goblin.textureRect.left = goblin.currentFrame * goblin.bombFrameWidth;
         goblin.textureRect.top = 0; // each png has one row only
@@ -89,9 +90,7 @@ void GBLNmove(Goblin& goblin) {
 
 void GBLNdraw(int gbln_num) {
     for (int i = 0; i < gbln_num; i++) {
-        goblins[i].current.setPosition(400 + rand() % 100, 6200 + rand() % 1000);
-        goblins[i].current.setOrigin(32, 32);
-        goblins[i].current.setScale(2.5, 2.5);
+       // goblins[i].current.setScale(2.5, 2.5);
         window.draw(goblins[i].current);
     }
 }
@@ -122,15 +121,15 @@ void GoblinDynamics(int gbln_num) {
         int x = Player.getPosition().x - goblins[i].current.getPosition().x; 
         int y = Player.getPosition().y - goblins[i].current.getPosition().y;
 
-        if (abs(x) < 200 && abs(y) < 30) {
+        /*if (abs(x) < 200 && abs(y) < 30) {
             goblins[i].state = GoblinState::Attack;
         }
-        else goblins[i].state = GoblinState::Run;
+        else*/ goblins[i].state = GoblinState::Run;
 
-        if (goblins[i].state == GoblinState::Attack) {
+        /*if (goblins[i].state == GoblinState::Attack) {
             GBLattack(x, y, goblins[i]);
         }
-        else GBLNmove(goblins[i]);
+        else*/ GBLNmove(goblins[i]);
     }
 }
 

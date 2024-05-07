@@ -14,10 +14,10 @@ struct Goblin {
 	int runAttackFrameHeight, runAttackFrameWidth, runAttackTotalFrames;
 	int deathFrameHeight, deathFrameWidth, deathTotalFrames;
 	int bombFrameHeight, bombFrameWidth, bomTotalFrames;
+	float MonsterCounter = 0;
 	Vector2f position;
 	//bool isAttacking, isWalking, isHit, isDead;
 	IntRect textureRect;
-	Clock clock;
 	GoblinState state;
 };
 

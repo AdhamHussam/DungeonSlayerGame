@@ -34,6 +34,7 @@ void AAwalk(int i) {
     float magnitude = sqrt(Direction.x * Direction.x + Direction.y * Direction.y);
     Vector2f norm_direction = Direction / magnitude;
     AAmonsters[i].AA.move(Vector2f(norm_direction.x * AAmonsters[i].speed * AAdeltatime, norm_direction.y * AAmonsters[i].speed * AAdeltatime));
+    CheckMonsterCollisions(AAmonsters[i].AA, norm_direction.x * AAmonsters[i].speed * AAdeltatime, norm_direction.y * AAmonsters[i].speed * AAdeltatime);
     AAUpdateMonsterAnimationCounter(i);
     AAMovmentCounter[i] %= 8;
 }

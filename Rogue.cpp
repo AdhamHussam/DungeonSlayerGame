@@ -34,6 +34,7 @@ void Rwalk(int i) {
     float magnitude = sqrt(Direction.x * Direction.x + Direction.y * Direction.y);
     Vector2f norm_direction = Direction / magnitude;
     Rmonsters[i].R.move(Vector2f(norm_direction.x * Rmonsters[i].speed * Rdeltatime, norm_direction.y * Rmonsters[i].speed * Rdeltatime));
+    CheckMonsterCollisions(Rmonsters[i].R, norm_direction.x * Rmonsters[i].speed * Rdeltatime, norm_direction.y * Rmonsters[i].speed * Rdeltatime);
     RupdateMonsterAnimationCounter(i);
     RmovmentCounter[i] %= 6;
 }
@@ -98,6 +99,7 @@ void dash(int i) {
     }
     Vector2f norm_direction = Direction / magnitude;
     Rmonsters[i].R.move(Vector2f(norm_direction.x * 1000 * Rdeltatime, norm_direction.y * 1000 * Rdeltatime));
+    CheckMonsterCollisions(Rmonsters[i].R, norm_direction.x * 1000 * Rdeltatime, norm_direction.y * 1000 * Rdeltatime);
     RupdateMonsterAnimationCounter(i);
     RmovmentCounter[i] %= 5;
 }

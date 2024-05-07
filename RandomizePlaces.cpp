@@ -46,3 +46,39 @@ void MonsterNumber() {
 	getline(ss, cell, ',');
 	RogueNumber = stoi(cell);
 }
+
+void CheckMonsterCollisions(Sprite& Monster, float x, float y) {
+	// right
+	if(x > 0){
+		for (int i = 0; i < 25; i++)
+			if (Monster.getGlobalBounds().intersects(right_borders[i].getGlobalBounds())) {
+				Monster.move(Vector2f(-x, 0));
+				return;
+			}
+	}
+	else{
+		//left
+		for (int i = 0; i < 25; i++)
+			if (Monster.getGlobalBounds().intersects(left_borders[i].getGlobalBounds())) {
+				Monster.move(Vector2f(-x, 0));
+				return;
+			}
+	}
+
+	if (y < 0) {
+		// up
+		for (int i = 0; i < 24; i++)
+			if (Monster.getGlobalBounds().intersects(up_borders[i].getGlobalBounds())) {
+				Monster.move(Vector2f(0, -y));
+				return;
+			}
+	}
+	else {
+		//down
+		for (int i = 0; i < 26; i++)
+			if (Monster.getGlobalBounds().intersects(down_borders[i].getGlobalBounds())) {
+				Monster.move(Vector2f(0, -y));
+				return;
+			}
+	}
+}

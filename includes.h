@@ -7,6 +7,10 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
+#include <stdlib.h>
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 using namespace sf;

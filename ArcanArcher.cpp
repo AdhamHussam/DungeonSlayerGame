@@ -1,4 +1,5 @@
 #include "ArcanArcher.h"
+#include "RandomizePlaces.h"
 
 Texture AAtexture,AAArow;
 ArcanArcher AAoriginal,AAmonsters[30];
@@ -113,7 +114,9 @@ void AASet(int AAn) {
         AAmonsters[i] = AAoriginal;
         AAMonsterCounter[i] = 0;
         AAMovmentCounter[i] = 0;
-        AAmonsters[i].AA.setPosition(400 + rand()%100, 6200 + rand() % 1000);
+        int x, y;
+        RandPosition(x, y);
+        AAmonsters[i].AA.setPosition(x,y);
         AAmonsters[i].alive = true;
         AAstate[i] = AAenum::AA_spawn;
     }

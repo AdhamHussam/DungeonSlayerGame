@@ -143,11 +143,13 @@
     <ClCompile Include="DungeonSlayer.cpp" />
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="Goblin.cpp" />
+    <ClCompile Include="GUI.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Monsters.cpp" />
     <ClCompile Include="globals.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="NightBorne.cpp" />
+    <ClCompile Include="RandomizePlaces.cpp" />
     <ClCompile Include="Rogue.cpp" />
     <ClCompile Include="ShardSoul.cpp" />
     <ClCompile Include="Skeleton.cpp" />
@@ -159,11 +161,13 @@
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="Goblin.h" />
+    <ClInclude Include="GUI.h" />
     <ClInclude Include="includes.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Monsters.h" />
     <ClInclude Include="NightBorne.h" />
     <ClInclude Include="PauseMenu.h" />
+    <ClInclude Include="RandomizePlaces.h" />
     <ClInclude Include="Rogue.h" />
     <ClInclude Include="ShardSoul.h" />
     <ClInclude Include="Skeleton.h" />

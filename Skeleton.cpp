@@ -1,5 +1,6 @@
 #include "Skeleton.h"
 #include "globals.h"
+#include "RandomizePlaces.h"
 
 Texture Stexture;
 Skeleton Soriginal, Smonsters[100];
@@ -83,7 +84,9 @@ void Sset(int Sn) {
         Smonsters[i] = Soriginal;
         SmonsterCounter[i] = 0;
         SmovmentCounter[i] = 0;
-        Smonsters[i].S.setPosition(300 + rand() % 100, 6900 + rand() % 1000);
+        int x, y;
+        RandPosition(x, y);
+        Smonsters[i].S.setPosition(x,y);
         Smonsters[i].alive = true;
         Sstate[i] = Senum::S_hurt;
     }

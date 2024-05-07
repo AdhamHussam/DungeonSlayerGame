@@ -7,6 +7,7 @@ int globalInt = 0;  // Definition
 Clock GameClock;
 View view(Vector2f(0, 0), Vector2f(1920, 1080));
 
+int current_room = 0,current_wave = 0;
 int ArcaneArcherNumber, NightBroneNumber, SkeletonNumber, ShardSoulNumber, BrainMoleNumber, RogueNumber;
 RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer");
 int BODnumber;
@@ -18,6 +19,7 @@ Sprite Player;
 float playerdeltatime = 0;
 int Player_Health = 100;
 bool ishit = false;
+float cooldown[5];
 enum state
 {
     idle, run, hit, base,  xmove, cmove, vmove, dead, walk

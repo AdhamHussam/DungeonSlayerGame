@@ -1,107 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <ClCompile Include="ArcanArcher.cpp" />
+    <ClCompile Include="BOD.cpp" />
+    <ClCompile Include="BrainMole.cpp" />
+    <ClCompile Include="DungeonSlayer.cpp" />
+    <ClCompile Include="GameOver.cpp" />
+    <ClCompile Include="Goblin.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Monsters.cpp" />
+    <ClCompile Include="globals.cpp" />
+    <ClCompile Include="PauseMenu.cpp" />
+    <ClCompile Include="NightBorne.cpp" />
+    <ClCompile Include="Rogue.cpp" />
+    <ClCompile Include="ShardSoul.cpp" />
+    <ClCompile Include="Skeleton.cpp" />
+    <ClCompile Include="RandomizePlaces.cpp" />
+    <ClCompile Include="GUI.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Menu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Monsters.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="globals.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PauseMenu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DungeonSlayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NightBorne.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BOD.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameOver.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ArcanArcher.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="Goblin.cpp">
-=======
-    <ClCompile Include="Skeleton.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ShardSoul.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BrainMole.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Rogue.cpp">
->>>>>>> d012da4ae510be07bf9d73a9ceb00359c8f6c108
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Menu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Monsters.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="globals.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PauseMenu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BOD.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameOver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ArcanArcher.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NightBorne.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="Goblin.h">
-=======
-    <ClInclude Include="Skeleton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ShardSoul.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BrainMole.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rogue.h">
->>>>>>> d012da4ae510be07bf9d73a9ceb00359c8f6c108
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="ArcanArcher.h" />
+    <ClInclude Include="BOD.h" />
+    <ClInclude Include="BrainMole.h" />
+    <ClInclude Include="GameOver.h" />
+    <ClInclude Include="globals.h" />
+    <ClInclude Include="Goblin.h" />
+    <ClInclude Include="includes.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="Monsters.h" />
+    <ClInclude Include="NightBorne.h" />
+    <ClInclude Include="PauseMenu.h" />
+    <ClInclude Include="Rogue.h" />
+    <ClInclude Include="ShardSoul.h" />
+    <ClInclude Include="Skeleton.h" />
+    <ClInclude Include="RandomizePlaces.h" />
+    <ClInclude Include="GUI.h" />
   </ItemGroup>
 </Project>

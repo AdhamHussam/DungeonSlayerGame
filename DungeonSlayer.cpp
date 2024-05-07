@@ -356,6 +356,7 @@ void setTextures()
 
     // GUI
     gui.setSkillsTexture();
+    gui.setPlayerInfoTexture();
 
     // walls
 

@@ -136,6 +136,7 @@ void Rmove(float time, Sprite p, int attct, int& PlayerHealth) {
         if (!Rmonsters[i].alive)
             continue;
 
+        room_cleared = false;
         // check if R will die
         if (Rmonsters[i].health <= 0 && Rstate[i] != Renum::R_die) {
             Rmonsters[i].R.setTexture(Dtexture);

@@ -109,6 +109,7 @@ void MonstersMovment() {
             continue;
         }
 
+        room_cleared = false;
         if (BODstate[i] == BOD::BODspawn) {
             spawn(i);
             continue;

@@ -46,7 +46,6 @@ bool isDead = false;
 
 bool ispassing = false;
 bool passed_door = false;
-bool room_cleared = true;
 bool isdashing = false;
 bool finishedanimationonce = false;
 
@@ -1040,11 +1039,12 @@ void check_room()
     for (int i = 0; i < doors; i++) {
         if (Player.getPosition().y < gates[i].getPosition().y - 200) {
             current_room = max(current_room,i + 1);
-            room_cleared = false;
         }
     }
-    if (current_room > initial)
+    if (current_room > initial){
         SetMonstersWave();
+        room_cleared = false;
+    }
 }
 
 

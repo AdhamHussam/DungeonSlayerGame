@@ -6,6 +6,7 @@ extern int globalInt;  // Declaration
 extern Clock GameClock;
 extern View view;
 
+extern bool room_cleared;
 extern int ArcaneArcherNumber, NightBroneNumber, SkeletonNumber, ShardSoulNumber, BrainMoleNumber, RogueNumber;
 extern RenderWindow window;
 /*

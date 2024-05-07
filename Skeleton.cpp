@@ -2,14 +2,14 @@
 #include "globals.h"
 
 Texture Stexture;
-Skeleton Soriginal, Smonsters[30];
-int SmovmentCounter[30], Snumber;
-float SmonsterCounter[30], Sdeltatime;
+Skeleton Soriginal, Smonsters[100];
+int SmovmentCounter[100], Snumber;
+float SmonsterCounter[100], Sdeltatime;
 
 enum Senum {
     S_walk, S_attack, S_hurt, S_die
 };
-Senum Sstate[30];
+Senum Sstate[100];
 
 IntRect SgetRect(int pos) {
     int x = pos % 13;
@@ -149,3 +149,14 @@ void Sdraw(RenderWindow& window) {
             window.draw(Smonsters[i].S);
 }
 
+void NewSkeleton(Vector2f x) {
+    if (Snumber >= 100) return;
+    int i = Snumber;
+    Smonsters[i] = Soriginal;
+    SmonsterCounter[i] = 0;
+    SmovmentCounter[i] = 0;
+    Smonsters[i].S.setPosition(x);
+    Smonsters[i].alive = true;
+    Sstate[i] = Senum::S_hurt;
+    Snumber++;
+}

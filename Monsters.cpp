@@ -19,15 +19,15 @@ void SetMonstersSprites() {
 
 void SetMonstersWave() {
     BODnumber = 0;
-    int AAnumber = 0, NBnumber = 0, Snumber = 0, SSnumber = 0, BMnumber = 0, Rnumber = 1;
+    ArcaneArcherNumber = 0, NightBroneNumber = 0, SkeletonNumber = 0, ShardSoulNumber = 0, BrainMoleNumber = 0, RogueNumber = 1;
 	SetMonsters();
-    NBset(NBnumber);
-    AASet(AAnumber);
+    NBset(NightBroneNumber);
+    AASet(ArcaneArcherNumber);
     GBLNset(0);
-    Sset(Snumber);
-    SSset(SSnumber);
-    BMset(BMnumber);
-    Rset(Rnumber);
+    Sset(SkeletonNumber);
+    SSset(ShardSoulNumber);
+    BMset(BrainMoleNumber);
+    Rset(RogueNumber);
 }
 
 void MoveMonsters() {

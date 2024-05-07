@@ -6,8 +6,8 @@ extern int globalInt;  // Declaration
 extern Clock GameClock;
 extern View view;
 
+extern int ArcaneArcherNumber, NightBroneNumber, SkeletonNumber, ShardSoulNumber, BrainMoleNumber, RogueNumber;
 extern RenderWindow window;
-
 /*
 
 */

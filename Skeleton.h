@@ -7,6 +7,7 @@ struct Skeleton {
 	bool alive;
 };
 
+void NewSkeleton(Vector2f);
 void Screate();
 void Sset(int);
 void Smove(float, Sprite, int, int&, bool&);

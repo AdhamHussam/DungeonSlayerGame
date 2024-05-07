@@ -1,5 +1,6 @@
 #include "Rogue.h"
 #include "globals.h"
+#include "Skeleton.h"
 
 Texture Rtexture,Dtexture;
 Rogue Roriginal, Rmonsters[30];
@@ -73,6 +74,7 @@ void Rspawn(int i) {
     RupdateMonsterAnimationCounter(i,0.3);
     if (RmovmentCounter[i] == 9) {
         RmovmentCounter[i] = 0;
+        NewSkeleton(Rmonsters[i].R.getPosition());
         Rstate[i] = Renum::R_walk;
         Rmonsters[i].cooldown = 15;
     }

@@ -647,13 +647,22 @@ void menu_handler()
                             menu.MoveDown();
                         if (event.key.code == Keyboard::Return) {
                             if (menu.pressed() == 0) {
-                                pagenum = 0;
+                                if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                                    GameClock.restart();
+                                    pagenum = 0;
+                                }
                             }
                             if (menu.pressed() == 1) {
-                                pagenum = 1;
+                                if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                                    GameClock.restart();
+                                    pagenum = 1;
+                                }
                             }
                             if (menu.pressed() == 2) {
-                                pagenum = -1;
+                                if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                                    GameClock.restart();
+                                    pagenum = -1;
+                                }
                             }
                         }
                     }

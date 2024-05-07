@@ -8,7 +8,7 @@ int RmovmentCounter[30], Rnumber;
 float RmonsterCounter[30], Rdeltatime;
 
 enum Renum {
-    R_walk, R_attack, R_hurt, R_die, R_spawn
+    R_walk, R_attack, R_hurt, R_die, R_spawn, R_dash
 };
 Renum Rstate[30];
 
@@ -71,13 +71,34 @@ void Rdie(int i) {
 
 void Rspawn(int i) {
     Rmonsters[i].R.setTextureRect(RgetRect(30 + RmovmentCounter[i]));
+    int initial = RmovmentCounter[i];
     RupdateMonsterAnimationCounter(i,0.3);
+    if(RmovmentCounter[i] > initial)
+        NewSkeleton(Rmonsters[i].R.getPosition());
     if (RmovmentCounter[i] == 9) {
         RmovmentCounter[i] = 0;
-        NewSkeleton(Rmonsters[i].R.getPosition());
         Rstate[i] = Renum::R_walk;
         Rmonsters[i].cooldown = 15;
     }
+}
+
+void dash(int i) {
+    Rmonsters[i].R.setTextureRect(RgetRect(80 + RmovmentCounter[i]));
+    Vector2f target = toskel(Rmonsters[i].R.getPosition());
+    Vector2f Direction = target - Rmonsters[i].R.getPosition();
+    float magnitude = sqrt(Direction.x * Direction.x + Direction.y * Direction.y);
+    if (magnitude < 30) {
+        if (target == Player.getPosition()){
+            Rstate[i] = Renum::R_walk;
+            Rmonsters[i].stamina = 10;
+        }
+        else
+            Rmonsters[i].health++;
+    }
+    Vector2f norm_direction = Direction / magnitude;
+    Rmonsters[i].R.move(Vector2f(norm_direction.x * 1000 * Rdeltatime, norm_direction.y * 1000 * Rdeltatime));
+    RupdateMonsterAnimationCounter(i);
+    RmovmentCounter[i] %= 5;
 }
 
 void Rcreate() {
@@ -138,6 +159,7 @@ void Rmove(float time, Sprite p, int attct, int& PlayerHealth) {
             Rmonsters[i].R.setScale(Vector2f(3, 3));
 
         Rmonsters[i].cooldown -= Rdeltatime;
+        Rmonsters[i].stamina -= Rdeltatime;
 
         if (Rmonsters[i].cooldown < 7) {
             Rmonsters[i].AttackSpeed = 0.15;
@@ -169,8 +191,12 @@ void Rmove(float time, Sprite p, int attct, int& PlayerHealth) {
 
         // make decision
         if (Rmonsters[i].cooldown <= 0) {
-            Rspawn(i);
             Rstate[i] = Renum::R_spawn;
+            Rspawn(i);
+        }
+        if (Rmonsters[i].stamina <= 0) {
+            Rstate[i] = Renum::R_dash;
+            dash(i);
         }
         else if (abs(x) < 100 && abs(y) < 30) {
             Rstate[i] = Renum::R_attack;

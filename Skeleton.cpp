@@ -3,7 +3,7 @@
 
 Texture Stexture;
 Skeleton Soriginal, Smonsters[100];
-int SmovmentCounter[100], Snumber;
+int SmovmentCounter[100];
 float SmonsterCounter[100], Sdeltatime;
 
 enum Senum {
@@ -65,7 +65,7 @@ void Sdie(int i) {
     Smonsters[i].S.setTextureRect(SgetRect(13 + SmovmentCounter[i]));
     SupdateMonsterAnimationCounter(i);
     if (SmovmentCounter[i] == 13)
-        Smonsters[i].alive = false;
+        Smonsters[i].sleep = false;
 }
 
 void Screate() {
@@ -74,12 +74,12 @@ void Screate() {
     Soriginal.S.setTexture(Stexture);
     Soriginal.S.setTextureRect(SgetRect(26));
     Soriginal.S.setOrigin(32, 32);
-    Soriginal.S.setScale(2.5, 2.5);
+    Soriginal.S.setScale(1.5, 1.5);
+    Soriginal.sleep = true;
 }
 
 void Sset(int Sn) {
-    Snumber = Sn;
-    for (int i = 0; i < Snumber; i++) {
+    for (int i = 0; i < SkeletonNumber; i++) {
         Smonsters[i] = Soriginal;
         SmonsterCounter[i] = 0;
         SmovmentCounter[i] = 0;
@@ -91,10 +91,10 @@ void Sset(int Sn) {
 
 void Smove(float time, Sprite p, int attct, int& PlayerHealth, bool& IsHit) {
     Sdeltatime = time;
-    for (int i = 0; i < Snumber; i++) {
+    for (int i = 0; i < SkeletonNumber; i++) {
 
         // check if alive
-        if (!Smonsters[i].alive)
+        if (!Smonsters[i].alive || !Smonsters[i].sleep)
             continue;
 
         // check if S will die
@@ -112,9 +112,9 @@ void Smove(float time, Sprite p, int attct, int& PlayerHealth, bool& IsHit) {
         }
 
         if (x < 0)
-            Smonsters[i].S.setScale(Vector2f(-3, 3));
+            Smonsters[i].S.setScale(Vector2f(-1.5, 1.5));
         else
-            Smonsters[i].S.setScale(Vector2f(3, 3));
+            Smonsters[i].S.setScale(Vector2f(1.5, 1.5));
 
         // check if S is being attacked
         if (Sstate[i] != Senum::S_hurt && abs(x) < 100 && abs(y) < 100 && attct) {
@@ -144,19 +144,49 @@ void Smove(float time, Sprite p, int attct, int& PlayerHealth, bool& IsHit) {
 }
 
 void Sdraw(RenderWindow& window) {
-    for (int i = 0; i < Snumber; i++)
+    for (int i = 0; i < SkeletonNumber; i++)
         if (Smonsters[i].alive)
             window.draw(Smonsters[i].S);
 }
 
 void NewSkeleton(Vector2f x) {
-    if (Snumber >= 100) return;
-    int i = Snumber;
+    for (int i = 0; i < SkeletonNumber; i++)
+        if (!Smonsters[i].alive) {
+            Smonsters[i] = Soriginal;
+            SmonsterCounter[i] = 0;
+            SmovmentCounter[i] = 0;
+            Smonsters[i].S.setPosition(x);
+            Smonsters[i].alive = true;
+            Sstate[i] = Senum::S_hurt;
+            return;
+        }
+    if (SkeletonNumber >= 100) return;
+    int i = SkeletonNumber;
     Smonsters[i] = Soriginal;
     SmonsterCounter[i] = 0;
     SmovmentCounter[i] = 0;
     Smonsters[i].S.setPosition(x);
     Smonsters[i].alive = true;
     Sstate[i] = Senum::S_hurt;
-    Snumber++;
+    SkeletonNumber++;
+}
+
+float dis(const sf::Vector2f& p1, const sf::Vector2f& p2) {
+    float dx = p2.x - p1.x;
+    float dy = p2.y - p1.y;
+    return std::sqrt(dx * dx + dy * dy);
+}
+
+Vector2f toskel(Vector2f R) {
+    for (int i = 0; i < SkeletonNumber; i++) {
+        if (!Smonsters[i].sleep) {
+            if (dis(R, Smonsters[i].S.getPosition()) < 30) {
+                Smonsters[i].sleep = true;
+                Smonsters[i].alive = false;
+            }
+            else
+                return Smonsters[i].S.getPosition();
+        }
+    }
+    return Player.getPosition();
 }

@@ -4,9 +4,10 @@
 struct Skeleton {
 	Sprite S;
 	int health, speed = 100;
-	bool alive;
+	bool alive, sleep;
 };
 
+Vector2f toskel(Vector2f);
 void NewSkeleton(Vector2f);
 void Screate();
 void Sset(int);

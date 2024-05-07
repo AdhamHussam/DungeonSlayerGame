@@ -5,7 +5,8 @@ enum GoblinState {
 	Hit,
 	Attack,
 	Run,
-	Death
+	Death,
+	Spawn
 };
 
 struct Goblin {
@@ -16,14 +17,21 @@ struct Goblin {
 	int bombFrameHeight, bombFrameWidth, bomTotalFrames;
 	float MonsterCounter = 0;
 	Vector2f position;
-	//bool isAttacking, isWalking, isHit, isDead;
+	bool isAlive, throwBomb;
 	IntRect textureRect;
 	GoblinState state;
 };
 
 void GBLNcreate();
 void GBLNset(int);
+void GoblinSwitchState(Goblin&, GoblinState);
+void GBLNupdateBomb(Goblin&);
+void GBLNupdateDeath(Goblin&);
+void GBLNupdateRunAttack(Goblin&);
+void GBLNdie(Goblin&);
+void GBLNhit(Goblin&);
+void GBLNspawn(Goblin&);
 void GBLNmove(Goblin&);
 void GBLNdraw(int);
 void GBLattack(int, int, Goblin&);
-void GoblinDynamics(int);
+void GoblinDynamics(int, int);

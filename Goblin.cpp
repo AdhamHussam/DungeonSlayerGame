@@ -4,6 +4,8 @@
 Texture goblinTexture, bombTexture, attackTexture, hitTexture;
 Goblin Base, goblins[30];
 int animation_speed = 0.15;
+Vector2f scale = { 1.7, 1.7 };
+Vector2f oppos = { -1.7, 1.7 };
 
 void GBLNcreate() {
     goblinTexture.loadFromFile("enemies/Goblin/Run.png");
@@ -35,11 +37,21 @@ void GBLNcreate() {
     Base.deathFrameWidth = 600 / 4;
     Base.animationSpeed = animation_speed;
     Base.current.setOrigin(32, 32);
+    Base.current.setScale(scale);
+    Base.isAlive = true;
+    Base.throwBomb = false;
 }
 
 void GBLNset(int gbln_num) {
     for (int i = 0; i < gbln_num; i++) {
         goblins[i] = Base;
+    }
+}
+
+void GBLNdraw(int gbln_num) {
+    for (int i = 0; i < gbln_num; i++) {
+        // goblins[i].current.setScale(2.5, 2.5);
+        window.draw(goblins[i].current);
     }
 }
 
@@ -57,7 +69,9 @@ void GBLNupdateRunAttack(Goblin& goblin) {
 }
 
 void GBLNupdateDeath(Goblin& goblin) {
-    if (playerdeltatime > goblin.animationSpeed) {
+    goblin.MonsterCounter += playerdeltatime;
+    if (goblin.MonsterCounter > goblin.animationSpeed) {
+        goblin.MonsterCounter = 0;
         goblin.currentFrame = (goblin.currentFrame + 1) % goblin.deathTotalFrames;
         goblin.textureRect.left = goblin.currentFrame * goblin.deathFrameWidth;
         goblin.textureRect.top = 0; // each png has one row only
@@ -69,7 +83,9 @@ void GBLNupdateDeath(Goblin& goblin) {
 
 void GBLNupdateBomb(Goblin& goblin) {
     // for animation
-    if (playerdeltatime > goblin.animationSpeed) {
+    goblin.MonsterCounter += playerdeltatime;
+    if (goblin.MonsterCounter > goblin.animationSpeed) {
+        goblin.MonsterCounter = 0;
         goblin.currentFrame = (goblin.currentFrame + 1) % goblin.bomTotalFrames;
         goblin.textureRect.left = goblin.currentFrame * goblin.bombFrameWidth;
         goblin.textureRect.top = 0; // each png has one row only
@@ -86,13 +102,6 @@ void GBLNmove(Goblin& goblin) {
     Vector2f norm_direction = Direction / magnitude;
     goblin.current.move(Vector2f(norm_direction.x * goblin.speed * playerdeltatime, norm_direction.y * goblin.speed * playerdeltatime));
     GBLNupdateRunAttack(goblin);
-}
-
-void GBLNdraw(int gbln_num) {
-    for (int i = 0; i < gbln_num; i++) {
-       // goblins[i].current.setScale(2.5, 2.5);
-        window.draw(goblins[i].current);
-    }
 }
 
 void GBLattack(int x, int y, Goblin& goblin) {
@@ -113,28 +122,125 @@ void GBLattack(int x, int y, Goblin& goblin) {
 
     if (goblin.currentFrame % 8 == 0) {
         goblin.currentFrame = 0;
+        GoblinSwitchState(goblin, GoblinState::Run);
     }
 }
 
-void GoblinDynamics(int gbln_num) {
+void GBLNdie(Goblin& goblin) {
+    GBLNupdateDeath(goblin);
+    if (goblin.MonsterCounter == 4) {
+        goblin.isAlive = false;
+    }
+}
+
+void GBLNspawn(Goblin& goblin) {
+    goblin.speed = 200;
+    goblin.power = 10;
+    goblin.cooldown = 5;
+    goblin.health = 10;
+    GoblinSwitchState(goblin, GoblinState::Run);
+    goblin.MonsterCounter = 0;
+}
+
+void GBLhit(Goblin& goblin) {
+    GBLNupdateDeath(goblin);
+    if (goblin.MonsterCounter == 4) {
+        goblin.MonsterCounter = 0;
+        GoblinSwitchState(goblin, GoblinState::Run);
+    }
+}
+
+void GoblinSwitchState(Goblin& goblin, GoblinState state) {
+    Vector2f position = goblin.current.getPosition();
+    switch (state) {
+    case GoblinState::Attack:
+        goblin.G_Attack.setPosition(position);
+        goblin.current = goblin.G_Attack;
+        break;
+    case GoblinState::Run:
+    case GoblinState::Spawn:
+        goblin.GBLN_run.setPosition(position);
+        goblin.current = goblin.GBLN_run;
+        break;
+    case GoblinState::Hit:
+        goblin.G_Hit.setPosition(position);
+        goblin.current = goblin.G_Hit;
+        break;
+    default:
+        break;
+    }
+
+    goblin.state = state;
+    goblin.MonsterCounter = 0;
+}
+
+void GoblinDynamics(int gbln_num, int attct) {
     for (int i = 0; i < gbln_num; i++) {
-        int x = Player.getPosition().x - goblins[i].current.getPosition().x; 
-        int y = Player.getPosition().y - goblins[i].current.getPosition().y;
+        if (!goblins[i].isAlive) continue;
+
+        if (goblins[i].health == 0 && goblins[i].state != GoblinState::Death) {
+            GoblinSwitchState(goblins[i], GoblinState::Death);
+        }
+
+        if (goblins[i].state == GoblinState::Death) {
+            GBLNdie(goblins[i]);
+            continue;
+        }
+
+        if (goblins[i].state == GoblinState::Spawn) {
+            GBLNspawn(goblins[i]);
+            continue;
+        }
+
+        double x = Player.getPosition().x - goblins[i].current.getPosition().x; 
+        double y = Player.getPosition().y - goblins[i].current.getPosition().y;
+
+        if (x < 0) {
+            goblins[i].current.setScale(oppos);
+        }
+        else {
+            goblins[i].current.setScale(scale);
+        }
+
+        goblins[i].cooldown -= playerdeltatime;
+
+        if (goblins[i].state != GoblinState::Hit && abs(x) < 100 && abs(y) < 100 && attct) {
+            goblins[i].health -= attct;
+            GoblinSwitchState(goblins[i], GoblinState::Hit);
+        }
+
+        // check if doing something
+        if (goblins[i].state == GoblinState::Hit) {
+            GBLhit(goblins[i]);
+            continue;
+        }
+        else if (goblins[i].state == GoblinState::Attack) {
+            GBLattack(x, y, goblins[i]);
+            continue;
+        }
+
+        // make decision
+        if (goblins[i].cooldown <= 0) {
+            goblins[i].cooldown = 0;
+        }
+        else if (abs(x) < 100 && abs(y) < 30 && goblins[i].state != GoblinState::Attack) {
+            GoblinSwitchState(goblins[i], GoblinState::Attack);
+            GBLattack(x, y, goblins[i]);
+        }
+
+        else GBLNmove(goblins[i]);
+
+        /*
 
         /*if (abs(x) < 200 && abs(y) < 30) {
             goblins[i].state = GoblinState::Attack;
         }
-        else*/ goblins[i].state = GoblinState::Run;
+        else goblins[i].state = GoblinState::Run;
 
         /*if (goblins[i].state == GoblinState::Attack) {
             GBLattack(x, y, goblins[i]);
         }
-        else*/ GBLNmove(goblins[i]);
+        else GBLNmove(goblins[i]);
+        */
     }
-}
-
-
-
-void GBLhit(Goblin& goblin) {
-
 }

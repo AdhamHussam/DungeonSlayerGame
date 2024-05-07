@@ -1,7 +1,7 @@
 #include "Rogue.h"
 #include "globals.h"
 
-Texture Rtexture;
+Texture Rtexture,Dtexture;
 Rogue Roriginal, Rmonsters[30];
 int RmovmentCounter[30], Rnumber;
 float RmonsterCounter[30], Rdeltatime;
@@ -53,35 +53,34 @@ void Rattack(int x, int y, int i) {
 }
 
 void Rhurt(int i) {
-    Rmonsters[i].R.setTextureRect(RgetRect(69 + RmovmentCounter[i]));
-    RupdateMonsterAnimationCounter(i);
-    if (RmovmentCounter[i] == 5) {
+    Rmonsters[i].R.setTextureRect(RgetRect(60 + RmovmentCounter[i]));
+    RupdateMonsterAnimationCounter(i,0.1);
+    if (RmovmentCounter[i] == 7) {
         RmovmentCounter[i] = 0;
         Rstate[i] = Renum::R_walk;
     }
 }
 
 void Rdie(int i) {
-    Rmonsters[i].R.setTextureRect(RgetRect(92 + RmovmentCounter[i]));
-    RupdateMonsterAnimationCounter(i);
-    if (RmovmentCounter[i] == 23)
+    Rmonsters[i].R.setTextureRect(RgetRect(90 + RmovmentCounter[i]));
+    RupdateMonsterAnimationCounter(i,0.5);
+    if (RmovmentCounter[i] == 5)
         Rmonsters[i].alive = false;
 }
 
 void Rspawn(int i) {
-    Rmonsters[i].R.setTextureRect(RgetRect(RmovmentCounter[i]));
-    RupdateMonsterAnimationCounter(i);
+    Rmonsters[i].R.setTextureRect(RgetRect(30 + RmovmentCounter[i]));
+    RupdateMonsterAnimationCounter(i,0.3);
     if (RmovmentCounter[i] == 9) {
         RmovmentCounter[i] = 0;
-        Rmonsters[i].AttackSpeed = 0.05;
-        Rmonsters[i].speed = 200;
         Rstate[i] = Renum::R_walk;
-        Rmonsters[i].cooldown = 10;
+        Rmonsters[i].cooldown = 15;
     }
 }
 
 void Rcreate() {
     Rtexture.loadFromFile("enemies/Rogue.png");
+    Dtexture.loadFromFile("enemies/Rogue2.png");
     Roriginal.health = 30;
     Roriginal.R.setTexture(Rtexture);
     Roriginal.R.setTextureRect(RgetRect(0));
@@ -99,7 +98,7 @@ void Rset(int Rn) {
         RmovmentCounter[i] = 0;
         Rmonsters[i].R.setPosition(300 + rand() % 100, 6900 + rand() % 1000);
         Rmonsters[i].alive = true;
-        Rstate[i] = Renum::R_walk;
+        Rstate[i] = Renum::R_spawn;
     }
 }
 
@@ -113,6 +112,7 @@ void Rmove(float time, Sprite p, int attct, int& PlayerHealth) {
 
         // check if R will die
         if (Rmonsters[i].health <= 0 && Rstate[i] != Renum::R_die) {
+            Rmonsters[i].R.setTexture(Dtexture);
             RmovmentCounter[i] = 0;
             Rstate[i] = Renum::R_die;
         }
@@ -166,11 +166,11 @@ void Rmove(float time, Sprite p, int attct, int& PlayerHealth) {
         }
 
         // make decision
-        /*if (Rmonsters[i].cooldown <= 0) {
+        if (Rmonsters[i].cooldown <= 0) {
             Rspawn(i);
             Rstate[i] = Renum::R_spawn;
         }
-        else*/ if (abs(x) < 100 && abs(y) < 30) {
+        else if (abs(x) < 100 && abs(y) < 30) {
             Rstate[i] = Renum::R_attack;
             Rattack(x, y, i);
         }

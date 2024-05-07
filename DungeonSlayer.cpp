@@ -20,34 +20,36 @@ int left_walls = 25;
 int up_walls = 24;
 int down_walls = 26;
 
+// music triggers
+
+bool openertrigger = false;
+bool map_opener_trigger = false;
+bool death_trigger = false;
+
 // menu number
-int pagenum = 69;
+int pagenum = 10;
 
 // gui struct
 GUI gui;
 
 
 // player attributes
-float lastX= 0 , lastY= 0;
+float lastX = 0 , lastY = 0;
 int walk_speed = 100;
 int run_speed = 200;
 Vector2f velocity = { 0, 0 };
 float AnimationCounter = 0;
 int maximagecounter = 0;
 int ImageCounter = 0;
-bool sha8al = false;
+bool animation_running = false;
 bool isDead = false;
-bool openertrigger = false;
-bool map_opener_trigger = false;
-bool death_trigger = false;
+
 bool ispassing = false;
 bool passed_door = false;
-bool room_cleared = true;
 bool isdashing = false;
 bool finishedanimationonce = false;
 
 
-//RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer" ,Style::Fullscreen);
 Menu menu(1920, 1080);
 PauseMenu pause(1920, 1080);
 
@@ -282,7 +284,10 @@ void checkCollisions()
     for (int i = 0; i < doors; i++) {
         if (Player.getGlobalBounds().intersects(gates[i].getGlobalBounds())) {
             ispassing = true;
-            Player.move(0, -500 * playerdeltatime);
+            if (room_cleared)
+                Player.move(0, -500 * playerdeltatime);
+            else
+                Player.move(0, 500 * playerdeltatime);
             break;
         }
         else ispassing = false;
@@ -334,7 +339,7 @@ void setTextures()
     
 
     bg.setScale(0.5, 0.5);
-    Instructions.setScale(0.5, 0.5);
+    Instructions.setScale(0.75, 0.8);
     pausemenu.setScale(0.5, 0.5);
     DeathScreen.setScale(0.7, 0.7);
     
@@ -610,45 +615,45 @@ void Switch_States()
     }
     // state switch logic 
    
-    if (!sha8al) {
+    if (!animation_running) {
         
         if ((Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W)) && Keyboard::isKeyPressed(Keyboard::LShift))
         {
-            curr_state = state::run;
+            curr_state = run;
         }
         else if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W))
         {
-            curr_state = state::walk;
+            curr_state = walk;
         }
         else
         {
-            curr_state = state::idle;
+            curr_state = idle;
         }
 
         if ((Keyboard::isKeyPressed(Keyboard::Space) || Mouse::isButtonPressed(Mouse::Left)) && cooldown[0] == 0)
         {
-            curr_state = state::base;
+            curr_state = base;
             cooldown[0] = 1.5;
         } 
         if (Keyboard::isKeyPressed(Keyboard::X) && cooldown[1] == 0)
         {
-            curr_state = state::xmove;
+            curr_state = xmove;
             cooldown[1] = 3;
         }
-        if (Keyboard::isKeyPressed(Keyboard::C)&& cooldown[2] == 0)
+        if (Keyboard::isKeyPressed(Keyboard::C) && cooldown[2] == 0)
         {
-            curr_state = state::cmove;
+            curr_state = cmove;
             cooldown[2] = 6;
         }
         if (Keyboard::isKeyPressed(Keyboard::V)&& cooldown[3] == 0)
         {  
-            curr_state = state::vmove;
+            curr_state = vmove;
             cooldown[3] = 9;
         }
         if (Keyboard::isKeyPressed(Keyboard::Q) && cooldown[4] == 0) {
             
-            velocity.x *= 1350;
-            velocity.y *= 1350;
+            velocity.x *= 350;
+            velocity.y *= 350;
             Player.setTexture(RunAnimation[2]);
             Player.move(velocity);
             cooldown[4] = 3;
@@ -656,40 +661,40 @@ void Switch_States()
         
         if (ishit)
         {
-            curr_state = state::hit;
+            curr_state = hit;
         }
         if (Player_Health <= 0)
         {
-            curr_state = state::dead;
+            curr_state = dead;
         }
         
         // set Animation variables based on state 
 
         switch (curr_state)
         {
-        case state::base:
+        case base:
             maximagecounter = 8;
-            ImageCounter = 0; sha8al = true;
+            ImageCounter = 0; animation_running = true;
             break;
-        case state::vmove:
+        case vmove:
             maximagecounter = 7;
-            ImageCounter = 0; sha8al = true;
+            ImageCounter = 0; animation_running = true;
             break;
-        case state::xmove:
+        case xmove:
             maximagecounter = 7;
-            ImageCounter = 0; sha8al = true;
+            ImageCounter = 0; animation_running = true;
             break;
-        case state::cmove:
+        case cmove:
             maximagecounter = 8;
-            ImageCounter = 0; sha8al = true;
+            ImageCounter = 0; animation_running = true;
             break;
-        case state::hit:
+        case hit:
             maximagecounter = 3;
-            ImageCounter = 0; sha8al = true;
+            ImageCounter = 0; animation_running = true;
             break;
-        case state::dead:
+        case dead:
             maximagecounter = 3;
-            ImageCounter = 0; sha8al = true;
+            ImageCounter = 0; animation_running = true;
             break;
         }
     }
@@ -697,15 +702,15 @@ void Switch_States()
     // Animate 
 
     switch (curr_state) {
-    case state::run:maximagecounter = 8; Player.setTexture(RunAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
-    case state::walk: maximagecounter = 8; Player.setTexture(walkAnimation[ImageCounter]); UpdateAnimationCounter(0.2); break;
-    case state::idle: Player.setTexture(Idle); UpdateAnimationCounter(0.1); break;
-    case state::base: Player.setTexture(BaseAttack[ImageCounter]); UpdateAnimationCounter(0.08); break;//0.12
-    case state::vmove: Player.setTexture(Vmove[ImageCounter]); UpdateAnimationCounter(0.11); break;
-    case state::xmove: Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
-    case state::cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
-    case state::hit:Player.setTexture(HitAnimation[ImageCounter]); UpdateAnimationCounter(0.15); break;    
-    case state::dead: Player.setTexture(DeathAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
+    case run:maximagecounter = 8; Player.setTexture(RunAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
+    case walk: maximagecounter = 8; Player.setTexture(walkAnimation[ImageCounter]); UpdateAnimationCounter(0.2); break;
+    case idle: Player.setTexture(Idle); UpdateAnimationCounter(0.1); break;
+    case base: Player.setTexture(BaseAttack[ImageCounter]); UpdateAnimationCounter(0.08); break;//0.12
+    case vmove: Player.setTexture(Vmove[ImageCounter]); UpdateAnimationCounter(0.11); break;
+    case xmove: Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
+    case cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
+    case hit:Player.setTexture(HitAnimation[ImageCounter]); UpdateAnimationCounter(0.15); break;    
+    case dead: Player.setTexture(DeathAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
     }
 
 }
@@ -721,7 +726,7 @@ void UpdateAnimationCounter(float st)
         {
             ishit = false;
             if (curr_state != state::dead) {
-                if (sha8al) sha8al = false;
+                if (animation_running) animation_running = false;
                 ImageCounter = 0;
             }
             else 
@@ -739,7 +744,7 @@ void UpdateAnimationCounter(float st)
 void menu_handler()
 {
     while (true) {
-        if (pagenum == 69)
+        if (pagenum == 10)
         {
             while (window.isOpen())
             {
@@ -775,7 +780,7 @@ void menu_handler()
                     }
                 }
                 window.clear();
-                if (pagenum != 69) {
+                if (pagenum != 10) {
                     break;
                 }
                 window.draw(bg);
@@ -832,7 +837,7 @@ void Instructions_Menu(RenderWindow& window) {
         }
         Instructions_Draw();
         if (Keyboard::isKeyPressed(Keyboard::Key::Escape)) {
-            pagenum = 69;
+            pagenum = 10;
             menu_handler();
         }
     }
@@ -895,7 +900,7 @@ void PauseMenuHandler(RenderWindow& window)
         if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 3) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 GameClock.restart();
-                pagenum = 69;
+                pagenum = 10;
                 game_reset();
                 menu_handler();
             }
@@ -912,10 +917,10 @@ void PauseMenuHandler(RenderWindow& window)
 void game_reset() 
 {
     Player_Health = 100;
-    curr_state = state::idle;
+    curr_state = idle;
     DeathSound.stop();
     isDead = false;
-    for (int i = 0; i < 4; i++) 
+    for (int i = 0; i < 5; i++) 
         cooldown[i] = 0;
     Player.setPosition(initial_position);
     Player.setScale(0.2, 0.2);
@@ -996,7 +1001,7 @@ void death_handler()
         if (Keyboard::isKeyPressed(Keyboard::Enter) && game_over.selectedp == 1) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 GameClock.restart();
-                pagenum = 69;
+                pagenum = 10;
                 game_reset();
                 view.setCenter(960, 540); //update
                 window.setView(view);
@@ -1035,11 +1040,12 @@ void check_room()
     for (int i = 0; i < doors; i++) {
         if (Player.getPosition().y < gates[i].getPosition().y - 200) {
             current_room = max(current_room,i + 1);
-            room_cleared = false;
         }
     }
-    if (current_room > initial)
+    if (current_room > initial){
         SetMonstersWave();
+        room_cleared = false;
+    }
 }
 
 

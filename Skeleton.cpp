@@ -100,6 +100,7 @@ void Smove(float time, Sprite p, int attct, int& PlayerHealth, bool& IsHit) {
         if (!Smonsters[i].alive || !Smonsters[i].sleep)
             continue;
 
+        room_cleared = false;
         // check if S will die
         if (Smonsters[i].health <= 0 && Sstate[i] != Senum::S_die) {
             SmovmentCounter[i] = 0;

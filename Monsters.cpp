@@ -41,14 +41,15 @@ void MoveMonsters() {
         attct = 5;
     else if (curr_state == player_vmove)
         attct = 10;
+    room_cleared = true;
 	MonstersMovment();
+    Rmove(playerdeltatime, Player, attct, Player_Health);
     NBmove(playerdeltatime, Player, attct, Player_Health, ishit);
     AAMove(playerdeltatime,Player,attct,Player_Health,ishit);
     GoblinDynamics(0);
     Smove(playerdeltatime, Player, attct, Player_Health, ishit);
     SSmove(playerdeltatime, Player, attct, Player_Health);
     BMmove(playerdeltatime, Player, attct, Player_Health);
-    Rmove(playerdeltatime, Player, attct, Player_Health);
 }
 
 void ShowMonsters() {

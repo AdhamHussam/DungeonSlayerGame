@@ -131,6 +131,7 @@ void AAMove(float time,Sprite p,int attct, int& PlayerHealth, bool& IsHit) {
         if (!AAmonsters[i].alive)
             continue;
 
+        room_cleared = false;
         if (abs(AAmonsters[i].arrow.getPosition().x - AAmonsters[i].target.x) > 2) {
             AAArowFire(i);
         }

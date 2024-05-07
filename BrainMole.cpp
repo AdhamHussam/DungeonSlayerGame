@@ -103,6 +103,7 @@ void BMmove(float time, Sprite p, int attct, int& PlayerHealth) {
         if (!BMmonsters[i].alive)
             continue;
 
+        room_cleared = false;
         double x = p.getPosition().x - BMmonsters[i].BM.getPosition().x, y = BMmonsters[i].BM.getPosition().y - p.getPosition().y;
 
         if (x < 0)

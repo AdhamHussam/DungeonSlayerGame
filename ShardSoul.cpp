@@ -100,6 +100,7 @@ void SSmove(float time, Sprite p, int attct, int& PlayerHealth) {
         if (!SSmonsters[i].alive)
             continue;
 
+        room_cleared = false;
         // check if SS will die
         if (SSmonsters[i].health <= 0 && SState[i] != SSenum::SS_die) {
             SSmovmentCounter[i] = 0;

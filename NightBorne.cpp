@@ -112,6 +112,7 @@ void NBmove(float time, Sprite p, int attct, int& PlayerHealth, bool& IsHit) {
         if (!NBmonsters[i].alive)
             continue;
 
+        room_cleared = false;
         // check if NB will die
         if (NBmonsters[i].health <= 0 && NBstate[i] != NBenum::NB_die) {
             NBmovmentCounter[i] = 0;

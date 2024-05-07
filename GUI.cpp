@@ -34,6 +34,7 @@ void GUIskill::drawSkill(sf::RenderWindow& window, int id) {
 	window.draw(avatar);
 }
 void GUI::setSkillsTexture() {
+
 	skills[0].photo.loadFromFile(R"(GUI\Base5.png)");
 
 	skills[1].photo.loadFromFile(R"(GUI\Xmove4.png)");
@@ -88,11 +89,34 @@ void GUI::updateSkill() {
 
 }
 
+void GUI::setPlayerInfoTexture() {
+	PlayerInfoTexture.loadFromFile(R"(GUI\playerInfo.png)");
+	PlayerInfo.setTexture(PlayerInfoTexture);
+	healthBarTexture.loadFromFile(R"(GUI\hp_bar.png)");
+	healthBar.setTexture(healthBarTexture);
+	staminaBarTexture.loadFromFile(R"(GUI\stamina_bar.png)");
+	staminaBar.setTexture(staminaBarTexture);
+
+}
+
+void GUI::updatePlayerInfo(RenderWindow& window) {
+	Vector2f infoPosition = { Player.getPosition().x - window.getSize().x/2-20,
+								Player.getPosition().y - window.getSize().y / 2 -20};
+	int helath_start = healthBarTexture.getSize().x/3;
+	PlayerInfo.setPosition(infoPosition);
+	healthBar.setPosition(infoPosition.x + helath_start, infoPosition.y);
+	staminaBar.setPosition(infoPosition);
+	healthBar.setTextureRect(IntRect(helath_start - 5, 0,
+		 (float)Player_Health * 1.45 *helath_start / 100, PlayerInfoTexture.getSize().y));
+
+}
+// player_health
 void GUI::drawGUI(RenderWindow& window) {
 	updateSkill();
-	/*skills_background.setSize(Vector2f(560, 90));
-	skills_background.setTexture(&back);
-	window.draw(skills_background);*/
+	updatePlayerInfo(window);
+	window.draw(PlayerInfo);
+	window.draw(healthBar);
+	window.draw(staminaBar);
 	for (int i = 0; i < 4; i++)
 	{
 		skills[i].drawSkill(window, i);

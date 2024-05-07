@@ -805,6 +805,7 @@ void game_reset()
     map_opener_trigger = false;
     death_trigger = false;
     room_cleared = true;
+    ResetMonsters();
     current_room = 0;
     current_wave = 0;
     float AnimationCounter = 0;
@@ -922,7 +923,7 @@ void check_room()
     if (current_room > initial){
         SetMonstersWave();
         room_cleared = false;
-        Player_Health = 100 + 5 * (current_room);
+        Player_Health = 100 + 5 * (current_room - 1);
     }
 }
 

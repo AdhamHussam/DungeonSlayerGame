@@ -12,8 +12,6 @@ enum state
     idle, run, hit, base,  xmove, cmove, vmove, dead, walk
 };
 
-int current_room = 0;
-
 
 int doors = 5;
 int right_walls = 25;
@@ -462,9 +460,6 @@ void setTextures()
     down_borders[23].setPosition(-60, 2050);
     down_borders[24].setPosition(-850, 2100);
     down_borders[25].setPosition(730, 2100);
-   
-    // monsters
-    SetMonstersWave();
 
     for (int i = 0; i < 8; i++) {
         RunAnimation[i].loadFromFile("Run/run" + to_string(i) + ".png");
@@ -807,7 +802,7 @@ void Game_play(RenderWindow& window)
         music_handler();
         update();
         Draw();
-        cout << current_room << "\n";
+        cout << Player.getPosition().x << ' ' << Player.getPosition().y << '\n';
     }
 }
 
@@ -926,7 +921,6 @@ void game_reset()
     int ImageCounter = 0;
     int globalInt = 0;
     float playerdeltatime = 0;
-    SetMonstersWave();
 }
 
 void music_handler()
@@ -1028,13 +1022,15 @@ void fell()
 
 void check_room()
 {
-    for (int i = 0; i < doors; i++)
-    {
+    int initial = current_room;
+    for (int i = 0; i < doors; i++) {
         if (Player.getPosition().y < gates[i].getPosition().y - 200) {
             current_room = i + 1;
             room_cleared = false;
         }
     }
+    if (current_room > initial)
+        SetMonstersWave();
 }
 
 

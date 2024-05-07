@@ -11,6 +11,7 @@ extern RenderWindow window;
 /*
 
 */
+extern int current_room;
 extern Sprite Player;
 extern float playerdeltatime;
 enum state;

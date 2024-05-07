@@ -19,7 +19,7 @@ void SetMonstersSprites() {
 
 void SetMonstersWave() {
     BODnumber = 0;
-    ArcaneArcherNumber = 0, NightBroneNumber = 0, SkeletonNumber = 0, ShardSoulNumber = 0, BrainMoleNumber = 0, RogueNumber = 1;
+    ArcaneArcherNumber = 0, NightBroneNumber = 10, SkeletonNumber = 0, ShardSoulNumber = 0, BrainMoleNumber = 0, RogueNumber = 0;
 	SetMonsters();
     NBset(NightBroneNumber);
     AASet(ArcaneArcherNumber);

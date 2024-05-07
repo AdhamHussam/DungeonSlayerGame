@@ -40,7 +40,7 @@ void Rwalk(int i) {
 void Rattack(int x, int y, int i) {
     Rmonsters[i].R.setTextureRect(RgetRect(40 + RmovmentCounter[i]));
     int initial = RmovmentCounter[i];
-    RupdateMonsterAnimationCounter(i);
+    RupdateMonsterAnimationCounter(i,0.1);
     if ((RmovmentCounter[i] == 3 || RmovmentCounter[i] == 7 || RmovmentCounter[i] == 12) && RmovmentCounter[i] > initial) {
         if (abs(x) < 100 && abs(y) < 30) {
             Player_Health -= Rmonsters[i].damage;

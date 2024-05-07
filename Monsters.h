@@ -31,3 +31,4 @@ void SetMonstersSprites();
 void SetMonstersWave();
 void MoveMonsters();
 void ShowMonsters();
+void ResetMonsters();

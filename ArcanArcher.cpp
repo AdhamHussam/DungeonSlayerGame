@@ -1,9 +1,10 @@
 #include "ArcanArcher.h"
 #include "RandomizePlaces.h"
+#include "globals.h"
 
 Texture AAtexture,AAArow;
 ArcanArcher AAoriginal,AAmonsters[30];
-int AAMovmentCounter[30],AAnumber;
+int AAMovmentCounter[30];
 float AAMonsterCounter[30],AAdeltatime;
 Sprite player;
 
@@ -33,6 +34,7 @@ void AAwalk(int i) {
     float magnitude = sqrt(Direction.x * Direction.x + Direction.y * Direction.y);
     Vector2f norm_direction = Direction / magnitude;
     AAmonsters[i].AA.move(Vector2f(norm_direction.x * AAmonsters[i].speed * AAdeltatime, norm_direction.y * AAmonsters[i].speed * AAdeltatime));
+    CheckMonsterCollisions(AAmonsters[i].AA, norm_direction.x * AAmonsters[i].speed * AAdeltatime, norm_direction.y * AAmonsters[i].speed * AAdeltatime);
     AAUpdateMonsterAnimationCounter(i);
     AAMovmentCounter[i] %= 8;
 }
@@ -109,8 +111,7 @@ void AACreate() {
 }
 
 void AASet(int AAn) {
-    AAnumber = AAn;
-    for (int i = 0; i < AAnumber; i++) {
+    for (int i = 0; i < ArcaneArcherNumber; i++) {
         AAmonsters[i] = AAoriginal;
         AAMonsterCounter[i] = 0;
         AAMovmentCounter[i] = 0;
@@ -125,12 +126,13 @@ void AASet(int AAn) {
 void AAMove(float time,Sprite p,int attct, int& PlayerHealth, bool& IsHit) {
     player = p;
     AAdeltatime = time;
-    for (int i = 0; i < AAnumber; i++) {
+    for (int i = 0; i < ArcaneArcherNumber; i++) {
 
         // check if alive
         if (!AAmonsters[i].alive)
             continue;
 
+        room_cleared = false;
         if (abs(AAmonsters[i].arrow.getPosition().x - AAmonsters[i].target.x) > 2) {
             AAArowFire(i);
         }
@@ -196,7 +198,7 @@ void AAMove(float time,Sprite p,int attct, int& PlayerHealth, bool& IsHit) {
 }
 
 void AADraw(RenderWindow &window) {
-    for (int i = 0; i < AAnumber; i++) {
+    for (int i = 0; i < ArcaneArcherNumber; i++) {
         if(AAmonsters[i].alive) {
             window.draw(AAmonsters[i].AA);
             window.draw(AAmonsters[i].arrow);

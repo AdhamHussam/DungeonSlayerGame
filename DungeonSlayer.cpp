@@ -4,6 +4,7 @@
 #include "Monsters.h"
 #include "globals.h"
 #include "PauseMenu.h"
+#include "GUI.h"
 
 
 // Game properties
@@ -12,38 +13,43 @@ enum state
     idle, run, hit, base,  xmove, cmove, vmove, dead, walk
 };
 
-
 int doors = 5;
 int right_walls = 25;
 int left_walls = 25;
 int up_walls = 24;
 int down_walls = 26;
 
+// music triggers
+
+bool openertrigger = false;
+bool map_opener_trigger = false;
+bool death_trigger = false;
+
 // menu number
-int pagenum = 69;
+int pagenum = 10;
+
+// gui struct
+GUI gui;
 
 
 // player attributes
-float lastX= 0 , lastY= 0;
+float lastX = 0 , lastY = 0;
 int walk_speed = 100;
 int run_speed = 200;
 Vector2f velocity = { 0, 0 };
 float AnimationCounter = 0;
+float dash_duration = 0.075;
 int maximagecounter = 0;
 int ImageCounter = 0;
-bool sha8al = false;
+bool animation_running = false;
 bool isDead = false;
-bool openertrigger = false;
-bool map_opener_trigger = false;
-bool death_trigger = false;
+
 bool ispassing = false;
 bool passed_door = false;
-bool room_cleared = true;
 bool isdashing = false;
 bool finishedanimationonce = false;
-float cooldown[5];
 
-//RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer" ,Style::Fullscreen);
+
 Menu menu(1920, 1080);
 PauseMenu pause(1920, 1080);
 
@@ -78,139 +84,14 @@ Texture pausebg;
 Sprite pausemenu;
 Sprite Map1;
 
+
 // Room 0 Borders
 RectangleShape gate1(Vector2f({ 1, 1 }));
 RectangleShape gate2(Vector2f({ 1, 1 }));
 RectangleShape gate3(Vector2f({ 1, 1 }));
 RectangleShape gate4(Vector2f({ 1, 1 }));
 RectangleShape gate5(Vector2f({ 1, 1 }));
-
-
-RectangleShape borderR1(Vector2f({ 100,1000 }));
-RectangleShape borderR2(Vector2f({ 50,200 }));
-RectangleShape borderR3(Vector2f({ 50,800 }));
-RectangleShape borderR4(Vector2f({ 50,100 }));
-RectangleShape borderR5(Vector2f({ 50,1000 }));
-RectangleShape borderR6(Vector2f({ 50,200 }));
-RectangleShape borderR7(Vector2f({ 50,150 }));
-RectangleShape borderR8(Vector2f({ 50,150 }));
-RectangleShape borderR9(Vector2f({ 50,1000 }));
-RectangleShape borderR10(Vector2f({ 100,50 }));
-RectangleShape borderR11(Vector2f({ 50,250 }));
-RectangleShape borderR12(Vector2f({ 150,50 }));
-RectangleShape borderR13(Vector2f({ 50,900 }));
-RectangleShape borderR14(Vector2f({ 75,50 }));
-RectangleShape borderR15(Vector2f({ 50,200 }));
-RectangleShape borderR16(Vector2f({ 50,500 }));
-RectangleShape borderR17(Vector2f({ 50,600 }));
-RectangleShape borderR18(Vector2f({ 50,600 }));
-RectangleShape borderR19(Vector2f({ 50,800 }));
-RectangleShape borderR20(Vector2f({ 50,775 }));
-RectangleShape borderR21(Vector2f({ 10,10 }));
-RectangleShape borderR22(Vector2f({ 10,10 }));
-RectangleShape borderR23(Vector2f({ 10,10 }));
-RectangleShape borderR24(Vector2f({ 10,10 }));
-RectangleShape borderR25(Vector2f({ 10,10 }));
-
-RectangleShape borderL1(Vector2f({ 50,1000 })); 
-RectangleShape borderL2(Vector2f({ 50,200 })); 
-RectangleShape borderL3(Vector2f({ 50,800 })); 
-RectangleShape borderL4(Vector2f({ 50, 100 })); 
-RectangleShape borderL5(Vector2f({ 50, 1000 }));
-RectangleShape borderL6(Vector2f({ 50, 200 }));
-RectangleShape borderL7(Vector2f({ 50, 150 }));
-RectangleShape borderL8(Vector2f({ 50, 150 }));
-RectangleShape borderL9(Vector2f({ 50, 1000 }));
-RectangleShape borderL10(Vector2f({ 100, 50 }));
-RectangleShape borderL11(Vector2f({ 50, 250 }));
-RectangleShape borderL12(Vector2f({ 150, 50 }));
-RectangleShape borderL13(Vector2f({ 50, 900 }));
-RectangleShape borderL14(Vector2f({ 75,50 }));
-RectangleShape borderL15(Vector2f({ 50,200 }));
-RectangleShape borderL16(Vector2f({ 50,500 }));
-RectangleShape borderL17(Vector2f({ 50,600 }));
-RectangleShape borderL18(Vector2f({ 50,600 }));
-RectangleShape borderL19(Vector2f({ 50, 775 }));
-RectangleShape borderL20(Vector2f({ 50,800 }));
-RectangleShape borderL21(Vector2f({ 10,10 }));
-RectangleShape borderL22(Vector2f({ 10,10 }));
-RectangleShape borderL23(Vector2f({ 10,10 }));
-RectangleShape borderL24(Vector2f({ 10,10 }));
-RectangleShape borderL25(Vector2f({ 10,10 }));
-
-RectangleShape borderU1(Vector2f({ 700,50 }));
-RectangleShape borderU2(Vector2f({ 700,50 }));
-RectangleShape borderU3(Vector2f({ 100,50 }));
-RectangleShape borderU4(Vector2f({ 100,50 }));
-RectangleShape borderU5(Vector2f({ 900,50 }));
-RectangleShape borderU6(Vector2f({ 900,50 }));
-RectangleShape borderU7(Vector2f({ 100,50 }));
-RectangleShape borderU8(Vector2f({ 100,50 }));
-RectangleShape borderU9(Vector2f({ 600,50 }));
-RectangleShape borderU10(Vector2f({ 600,50 }));
-RectangleShape borderU11(Vector2f({ 75,50 }));
-RectangleShape borderU12(Vector2f({ 75,50 }));
-RectangleShape borderU13(Vector2f({ 1000,50 }));
-RectangleShape borderU14(Vector2f({ 1000,50 }));
-RectangleShape borderU15(Vector2f({ 250,50 }));
-RectangleShape borderU16(Vector2f({ 600,50 }));
-RectangleShape borderU17(Vector2f({ 600,50 }));
-RectangleShape borderU18(Vector2f({ 250,50 }));
-RectangleShape borderU19(Vector2f({ 2000,50 }));
-RectangleShape borderU20(Vector2f({ 10,10 }));
-RectangleShape borderU21(Vector2f({ 10,10 }));
-RectangleShape borderU22(Vector2f({ 10,10 }));
-RectangleShape borderU23(Vector2f({ 10,10 }));
-RectangleShape borderU24(Vector2f({ 10,10 }));
-
-RectangleShape borderD1(Vector2f({ 2000,50 }));
-RectangleShape borderD2(Vector2f({ 700,50 }));
-RectangleShape borderD3(Vector2f({ 700,50 }));
-RectangleShape borderD4(Vector2f({ 100,50 }));
-RectangleShape borderD5(Vector2f({ 100,50 }));
-RectangleShape borderD6(Vector2f({ 600,50 }));
-RectangleShape borderD7(Vector2f({ 600,50 }));
-RectangleShape borderD8(Vector2f({ 50,50 }));
-RectangleShape borderD9(Vector2f({ 50,50 }));
-RectangleShape borderD10(Vector2f({ 50,50 }));
-RectangleShape borderD11(Vector2f({ 50,50 }));
-RectangleShape borderD12(Vector2f({ 1000,50 }));
-RectangleShape borderD13(Vector2f({ 1000,50 }));
-RectangleShape borderD14(Vector2f({ 150,50 }));
-RectangleShape borderD15(Vector2f({ 150,50 }));
-RectangleShape borderD16(Vector2f({ 750,50 }));
-RectangleShape borderD17(Vector2f({ 750,50 }));
-RectangleShape borderD18(Vector2f({ 250,50 }));
-RectangleShape borderD19(Vector2f({ 250,50 }));
-RectangleShape borderD20(Vector2f({ 550,50 }));
-RectangleShape borderD21(Vector2f({ 550,50 }));
-RectangleShape borderD22(Vector2f({ 10,10 }));
-RectangleShape borderD23(Vector2f({ 10,10 }));
-RectangleShape borderD24(Vector2f({ 10,10 }));
-RectangleShape borderD25(Vector2f({ 10,10 }));
-RectangleShape borderD26(Vector2f({ 10,10 }));
-
-RectangleShape gates[] = { gate1, gate2 , gate3, gate4, gate5};
-
-RectangleShape right_borders[] = { borderR1 , borderR2 , borderR3 , borderR4 ,borderR5, borderR6, borderR7, borderR8, borderR9, borderR10 ,
-    borderR11, borderR12 , borderR13 , borderR14 , borderR15 , borderR16 , borderR17, borderR18, borderR19 ,borderR20, borderR21 , borderR22,
-    borderR23, borderR24 , borderR25
-};
-
-RectangleShape left_borders[] = { borderL1,borderL2 , borderL3 , borderL4, borderL5 , borderL6 , borderL7, borderL8, borderL9, borderL10,
-    borderL11 , borderL12 , borderL13 , borderL14 , borderL15 , borderL16 ,borderL17, borderL18, borderL19 , borderL20, borderL21, borderL22,
-    borderL23 ,borderL24 , borderL25
-};
-
-RectangleShape up_borders[] = { borderU1, borderU2 , borderU3 , borderU4, borderU5, borderU6, borderU7, borderU8, borderU9, borderU10,
-    borderU11,borderU12 ,borderU13, borderU14 , borderU15 , borderU16, borderU17, borderU18, borderU19,borderU20 , borderU21, borderU22,
-    borderU23 , borderU24
-};
-
-RectangleShape down_borders[] = { borderD1,borderD2, borderD3 , borderD4, borderD5, borderD6, borderD7, borderD8, borderD9 ,borderD10,
-    borderD11 , borderD12 , borderD13 , borderD14 , borderD15 , borderD16, borderD17, borderD18 , borderD19 ,borderD20, borderD21 , 
-    borderD22 , borderD23, borderD24 , borderD25 , borderD26
-};
+RectangleShape gates[] = { gate1, gate2 , gate3, gate4, gate5 };
 
 SoundBuffer menu_opener;
 Sound MenuOpener;
@@ -232,6 +113,7 @@ void PauseMenuHandler(RenderWindow& window);
 void Instructions_Menu(RenderWindow& window);
 void Instructions_Draw();
 void update();
+void dash();
 void checkpause();
 void check_room();
 void fell();
@@ -265,6 +147,7 @@ void update()
         trackView();
         checkCollisions();
         checkpause();
+        dash();
     }
     else {
         death_handler();
@@ -276,8 +159,19 @@ void checkCollisions()
     //doors
     for (int i = 0; i < doors; i++) {
         if (Player.getGlobalBounds().intersects(gates[i].getGlobalBounds())) {
-            ispassing = true;
-            Player.move(0, -500 * playerdeltatime);
+            
+            if (room_cleared)
+            {
+                ispassing = true;
+                Player.move(0, -500 * playerdeltatime);
+            }
+            else {
+                if (Keyboard::isKeyPressed(Keyboard::S) && i == current_room - 1)
+                    velocity.y = 0; 
+                if (Keyboard::isKeyPressed(Keyboard::W) && i == current_room)
+                    velocity.y = 0;
+            }
+          
             break;
         }
         else ispassing = false;
@@ -326,10 +220,8 @@ void setTextures()
     pausemenu.setTexture(pausebg);
     DeathScreen.setTexture(death_screen);
     
-    
-
     bg.setScale(0.5, 0.5);
-    Instructions.setScale(0.5, 0.5);
+    Instructions.setScale(0.75, 0.8);
     pausemenu.setScale(0.5, 0.5);
     DeathScreen.setScale(0.7, 0.7);
     
@@ -348,6 +240,10 @@ void setTextures()
     Player.setScale(0.2, 0.2);
     Player.setOrigin(Idle.getSize().x / 2, Idle.getSize().y / 2);
     Player.setPosition(initial_position);
+
+    // GUI
+    gui.setSkillsTexture();
+    gui.setPlayerInfoTexture();
 
     // walls
 
@@ -498,13 +394,13 @@ void Draw()
     window.draw(Map1);
     if (!ispassing)
         window.draw(Player);
-
     ShowMonsters();
+    gui.drawGUI(window);
     
-    /*for (int i = 0; i < doors; i++) {
+ /*   for (int i = 0; i < doors; i++) {
         window.draw(gates[i]);
-    } */ 
-    /*for(int i = 0; i < left_walls;i++){
+    } 
+    for(int i = 0; i < left_walls;i++){
         window.draw(left_borders[i]);
     }
     for(int i = 0; i < up_walls;i++){
@@ -601,86 +497,83 @@ void Switch_States()
     }
     // state switch logic 
    
-    if (!sha8al) {
+    if (!animation_running) {
         
         if ((Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W)) && Keyboard::isKeyPressed(Keyboard::LShift))
         {
-            curr_state = state::run;
+            curr_state = run;
         }
         else if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W))
         {
-            curr_state = state::walk;
+            curr_state = walk;
         }
         else
         {
-            curr_state = state::idle;
+            curr_state = idle;
         }
 
         if ((Keyboard::isKeyPressed(Keyboard::Space) || Mouse::isButtonPressed(Mouse::Left)) && cooldown[0] == 0)
         {
-            curr_state = state::base;
+            curr_state = base;
             cooldown[0] = 1.5;
         } 
         if (Keyboard::isKeyPressed(Keyboard::X) && cooldown[1] == 0)
         {
-            curr_state = state::xmove;
+            curr_state = xmove;
             cooldown[1] = 3;
         }
-        if (Keyboard::isKeyPressed(Keyboard::C)&& cooldown[2] == 0)
+        if (Keyboard::isKeyPressed(Keyboard::C) && cooldown[2] == 0)
         {
-            curr_state = state::cmove;
+            curr_state = cmove;
             cooldown[2] = 6;
         }
         if (Keyboard::isKeyPressed(Keyboard::V)&& cooldown[3] == 0)
         {  
-            curr_state = state::vmove;
+            curr_state = vmove;
             cooldown[3] = 9;
         }
         if (Keyboard::isKeyPressed(Keyboard::Q) && cooldown[4] == 0) {
-            
-            velocity.x *= 1350;
-            velocity.y *= 1350;
-            Player.setTexture(RunAnimation[2]);
-            Player.move(velocity);
+
             cooldown[4] = 3;
+            isdashing = true;
         }
         
         if (ishit)
         {
-            curr_state = state::hit;
+            curr_state = hit;
         }
         if (Player_Health <= 0)
         {
-            curr_state = state::dead;
+            curr_state = dead;
         }
         
         // set Animation variables based on state 
 
         switch (curr_state)
         {
-        case state::base:
+        case base:
             maximagecounter = 8;
-            ImageCounter = 0; sha8al = true;
+            ImageCounter = 0; animation_running = true;
             break;
-        case state::vmove:
+        case vmove:
             maximagecounter = 7;
-            ImageCounter = 0; sha8al = true;
+            ImageCounter = 0; animation_running = true;
             break;
-        case state::xmove:
+        case xmove:
             maximagecounter = 7;
-            ImageCounter = 0; sha8al = true;
+            ImageCounter = 0; animation_running = true;
             break;
-        case state::cmove:
+        case cmove:
             maximagecounter = 8;
-            ImageCounter = 0; sha8al = true;
+            ImageCounter = 0; animation_running = true;
             break;
-        case state::hit:
+        case hit:
             maximagecounter = 3;
-            ImageCounter = 0; sha8al = true;
+            ImageCounter = 0; animation_running = true;
             break;
-        case state::dead:
+        case dead:
             maximagecounter = 3;
-            ImageCounter = 0; sha8al = true;
+            ImageCounter = 0; animation_running = true;
             break;
         }
     }
@@ -688,15 +581,15 @@ void Switch_States()
     // Animate 
 
     switch (curr_state) {
-    case state::run:maximagecounter = 8; Player.setTexture(RunAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
-    case state::walk: maximagecounter = 8; Player.setTexture(walkAnimation[ImageCounter]); UpdateAnimationCounter(0.2); break;
-    case state::idle: Player.setTexture(Idle); UpdateAnimationCounter(0.1); break;
-    case state::base: Player.setTexture(BaseAttack[ImageCounter]); UpdateAnimationCounter(0.08); break;//0.12
-    case state::vmove: Player.setTexture(Vmove[ImageCounter]); UpdateAnimationCounter(0.11); break;
-    case state::xmove: Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
-    case state::cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
-    case state::hit:Player.setTexture(HitAnimation[ImageCounter]); UpdateAnimationCounter(0.15); break;    
-    case state::dead: Player.setTexture(DeathAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
+    case run:maximagecounter = 8; Player.setTexture(RunAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
+    case walk: maximagecounter = 8; Player.setTexture(walkAnimation[ImageCounter]); UpdateAnimationCounter(0.2); break;
+    case idle: Player.setTexture(Idle); UpdateAnimationCounter(0.1); break;
+    case base: Player.setTexture(BaseAttack[ImageCounter]); UpdateAnimationCounter(0.08); break;//0.12
+    case vmove: Player.setTexture(Vmove[ImageCounter]); UpdateAnimationCounter(0.11); break;
+    case xmove: Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
+    case cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
+    case hit:Player.setTexture(HitAnimation[ImageCounter]); UpdateAnimationCounter(0.15); break;    
+    case dead: Player.setTexture(DeathAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
     }
 
 }
@@ -712,7 +605,7 @@ void UpdateAnimationCounter(float st)
         {
             ishit = false;
             if (curr_state != state::dead) {
-                if (sha8al) sha8al = false;
+                if (animation_running) animation_running = false;
                 ImageCounter = 0;
             }
             else 
@@ -730,7 +623,7 @@ void UpdateAnimationCounter(float st)
 void menu_handler()
 {
     while (true) {
-        if (pagenum == 69)
+        if (pagenum == 10)
         {
             while (window.isOpen())
             {
@@ -754,19 +647,28 @@ void menu_handler()
                             menu.MoveDown();
                         if (event.key.code == Keyboard::Return) {
                             if (menu.pressed() == 0) {
-                                pagenum = 0;
+                                if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                                    GameClock.restart();
+                                    pagenum = 0;
+                                }
                             }
                             if (menu.pressed() == 1) {
-                                pagenum = 1;
+                                if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                                    GameClock.restart();
+                                    pagenum = 1;
+                                }
                             }
                             if (menu.pressed() == 2) {
-                                pagenum = -1;
+                                if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                                    GameClock.restart();
+                                    pagenum = -1;
+                                }
                             }
                         }
                     }
                 }
                 window.clear();
-                if (pagenum != 69) {
+                if (pagenum != 10) {
                     break;
                 }
                 window.draw(bg);
@@ -823,7 +725,7 @@ void Instructions_Menu(RenderWindow& window) {
         }
         Instructions_Draw();
         if (Keyboard::isKeyPressed(Keyboard::Key::Escape)) {
-            pagenum = 69;
+            pagenum = 10;
             menu_handler();
         }
     }
@@ -886,7 +788,7 @@ void PauseMenuHandler(RenderWindow& window)
         if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 3) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 GameClock.restart();
-                pagenum = 69;
+                pagenum = 10;
                 game_reset();
                 menu_handler();
             }
@@ -903,10 +805,10 @@ void PauseMenuHandler(RenderWindow& window)
 void game_reset() 
 {
     Player_Health = 100;
-    curr_state = state::idle;
+    curr_state = idle;
     DeathSound.stop();
     isDead = false;
-    for (int i = 0; i < 4; i++) 
+    for (int i = 0; i < 5; i++) 
         cooldown[i] = 0;
     Player.setPosition(initial_position);
     Player.setScale(0.2, 0.2);
@@ -914,6 +816,7 @@ void game_reset()
     map_opener_trigger = false;
     death_trigger = false;
     room_cleared = true;
+    ResetMonsters();
     current_room = 0;
     current_wave = 0;
     float AnimationCounter = 0;
@@ -987,7 +890,7 @@ void death_handler()
         if (Keyboard::isKeyPressed(Keyboard::Enter) && game_over.selectedp == 1) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 GameClock.restart();
-                pagenum = 69;
+                pagenum = 10;
                 game_reset();
                 view.setCenter(960, 540); //update
                 window.setView(view);
@@ -1025,12 +928,14 @@ void check_room()
     int initial = current_room;
     for (int i = 0; i < doors; i++) {
         if (Player.getPosition().y < gates[i].getPosition().y - 200) {
-            current_room = max(current_room,i + 1);
-            room_cleared = false;
+            current_room = max(current_room,i + 1);          
         }
     }
-    if (current_room > initial)
+    if (current_room > initial){
         SetMonstersWave();
+        room_cleared = false;
+        Player_Health += 20 * (current_room - 1);
+    }
 }
 
 
@@ -1042,4 +947,23 @@ void checkpause()
             pausetimer.restart();
         }
     }
+}
+
+
+void dash()
+{
+    if (isdashing) {
+        if (dash_duration > 0) {
+            run_speed = 1000;
+            walk_speed = 1000;
+            dash_duration -= playerdeltatime;
+        }
+        else {
+            isdashing = false;
+            dash_duration = 0.075;
+            run_speed = 200;
+            walk_speed = 100;
+        }
+    }
+   
 }

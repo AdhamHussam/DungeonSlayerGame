@@ -31,6 +31,7 @@ void Bringerwalk(int x, int y, int i) {
     float magnitude = sqrt(Direction.x * Direction.x + Direction.y * Direction.y);
     Vector2f norm_direction = Direction / magnitude;
     BODmonsters[i].BOD.move(Vector2f(norm_direction.x * BODmonsters[i].speed * playerdeltatime, norm_direction.y * BODmonsters[i].speed * playerdeltatime));
+    CheckMonsterCollisions(BODmonsters[i].BOD, norm_direction.x * BODmonsters[i].speed * playerdeltatime, norm_direction.y * BODmonsters[i].speed * playerdeltatime);
     //BODmonsters[i].BOD.move(((abs(x) > 1) ? ((x > 0) ? BODmonsters[i].speed*playerdeltatime : -BODmonsters[i].speed* playerdeltatime) : 0), ((y < 0) ? BODmonsters[i].speed* playerdeltatime : -BODmonsters[i].speed* playerdeltatime));
     UpdateMonsterAnimationCounter(i);
     MovmentCounter[i] %= 8;
@@ -109,6 +110,7 @@ void MonstersMovment() {
             continue;
         }
 
+        room_cleared = false;
         if (BODstate[i] == BOD::BODspawn) {
             spawn(i);
             continue;

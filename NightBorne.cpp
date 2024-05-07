@@ -4,7 +4,7 @@
 
 Texture NBtexture;
 NightBrone NBoriginal, NBmonsters[30];
-int NBmovmentCounter[30], NBnumber;
+int NBmovmentCounter[30];
 float NBmonsterCounter[30], NBdeltatime;
 
 enum NBenum {
@@ -33,6 +33,7 @@ void NBwalk(int i) {
     float magnitude = sqrt(Direction.x * Direction.x + Direction.y * Direction.y);
     Vector2f norm_direction = Direction / magnitude;
     NBmonsters[i].NB.move(Vector2f(norm_direction.x * NBmonsters[i].speed * NBdeltatime, norm_direction.y * NBmonsters[i].speed * NBdeltatime));
+    CheckMonsterCollisions(NBmonsters[i].NB, abs(norm_direction.x * NBmonsters[i].speed * NBdeltatime), abs(norm_direction.y * NBmonsters[i].speed * NBdeltatime));
     NBupdateMonsterAnimationCounter(i);
     NBmovmentCounter[i] %= 6;
 }
@@ -91,8 +92,7 @@ void NBcreate() {
 }
 
 void NBset(int NBn) {
-    NBnumber = NBn;
-    for (int i = 0; i < NBnumber; i++) {
+    for (int i = 0; i < NightBroneNumber; i++) {
         NBmonsters[i] = NBoriginal;
         NBmonsterCounter[i] = 0;
         NBmovmentCounter[i] = 0;
@@ -106,12 +106,13 @@ void NBset(int NBn) {
 
 void NBmove(float time, Sprite p, int attct, int& PlayerHealth, bool& IsHit) {
     NBdeltatime = time;
-    for (int i = 0; i < NBnumber; i++) {
+    for (int i = 0; i < NightBroneNumber; i++) {
 
         // check if alive
         if (!NBmonsters[i].alive)
             continue;
 
+        room_cleared = false;
         // check if NB will die
         if (NBmonsters[i].health <= 0 && NBstate[i] != NBenum::NB_die) {
             NBmovmentCounter[i] = 0;
@@ -181,7 +182,7 @@ void NBmove(float time, Sprite p, int attct, int& PlayerHealth, bool& IsHit) {
 }
 
 void NBdraw(RenderWindow& window) {
-    for (int i = 0; i < NBnumber; i++) {
+    for (int i = 0; i < NightBroneNumber; i++) {
         if (NBmonsters[i].alive) {
             window.draw(NBmonsters[i].NB);
         }

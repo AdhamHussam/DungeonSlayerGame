@@ -19,7 +19,6 @@ void SetMonstersSprites() {
 }
 
 void SetMonstersWave() {
-    BODnumber = 0,ArcaneArcherNumber = 0, NightBroneNumber = 0, SkeletonNumber = 0, ShardSoulNumber = 0, BrainMoleNumber = 0, RogueNumber = 0;
     MonsterNumber();
 	SetMonsters();
     NBset(NightBroneNumber);
@@ -41,14 +40,15 @@ void MoveMonsters() {
         attct = 5;
     else if (curr_state == player_vmove)
         attct = 10;
+    room_cleared = true;
 	MonstersMovment();
+    Rmove(playerdeltatime, Player, attct, Player_Health);
     NBmove(playerdeltatime, Player, attct, Player_Health, ishit);
     AAMove(playerdeltatime,Player,attct,Player_Health,ishit);
     GoblinDynamics(10, attct);
     Smove(playerdeltatime, Player, attct, Player_Health, ishit);
     SSmove(playerdeltatime, Player, attct, Player_Health);
     BMmove(playerdeltatime, Player, attct, Player_Health);
-    Rmove(playerdeltatime, Player, attct, Player_Health);
 }
 
 void ShowMonsters() {
@@ -65,4 +65,14 @@ void ShowMonsters() {
     SSdraw(window);
     BMdraw(window);
     Rdraw(window);
+}
+
+void ResetMonsters() {
+    BODnumber = 0;
+    ArcaneArcherNumber = 0;
+    NightBroneNumber = 0;
+    SkeletonNumber = 0;
+    ShardSoulNumber = 0;
+    BrainMoleNumber = 0;
+    RogueNumber = 0;
 }

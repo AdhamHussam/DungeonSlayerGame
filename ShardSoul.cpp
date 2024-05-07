@@ -4,7 +4,7 @@
 
 Texture SStexture;
 ShardSoul SSoriginal, SSmonsters[30];
-int SSmovmentCounter[30], SSnumber;
+int SSmovmentCounter[30];
 float SSmonSSterCounter[30], SSdeltatime;
 
 enum SSenum {
@@ -34,6 +34,7 @@ void SSwalk(int i) {
     float magnitude = sqrt(Direction.x * Direction.x + Direction.y * Direction.y);
     Vector2f norm_direction = Direction / magnitude;
     SSmonsters[i].SS.move(Vector2f(norm_direction.x * SSmonsters[i].speed * SSdeltatime, norm_direction.y * SSmonsters[i].speed * SSdeltatime));
+    CheckMonsterCollisions(SSmonsters[i].SS, norm_direction.x * SSmonsters[i].speed * SSdeltatime, norm_direction.y * SSmonsters[i].speed * SSdeltatime);
     SSupdateMonSSterAnimationCounter(i);
     SSmovmentCounter[i] %= 8;
 }
@@ -80,8 +81,7 @@ void SScreate() {
 }
 
 void SSset(int SSn) {
-    SSnumber = SSn;
-    for (int i = 0; i < SSnumber; i++) {
+    for (int i = 0; i < ShardSoulNumber; i++) {
         SSmonsters[i] = SSoriginal;
         SSmonSSterCounter[i] = 0;
         SSmovmentCounter[i] = 0;
@@ -95,11 +95,12 @@ void SSset(int SSn) {
 
 void SSmove(float time, Sprite p, int attct, int& PlayerHealth) {
     SSdeltatime = time;
-    for (int i = 0; i < SSnumber; i++) {
+    for (int i = 0; i < ShardSoulNumber; i++) {
         // check if alive
         if (!SSmonsters[i].alive)
             continue;
 
+        room_cleared = false;
         // check if SS will die
         if (SSmonsters[i].health <= 0 && SState[i] != SSenum::SS_die) {
             SSmovmentCounter[i] = 0;
@@ -148,7 +149,7 @@ void SSmove(float time, Sprite p, int attct, int& PlayerHealth) {
 }
 
 void SSdraw(RenderWindow& window) {
-    for (int i = 0; i < SSnumber; i++)
+    for (int i = 0; i < ShardSoulNumber; i++)
         if (SSmonsters[i].alive)
             window.draw(SSmonsters[i].SS);
 }

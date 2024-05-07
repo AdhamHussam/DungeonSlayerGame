@@ -5,7 +5,7 @@
 
 Texture Rtexture,Dtexture;
 Rogue Roriginal, Rmonsters[30];
-int RmovmentCounter[30], Rnumber;
+int RmovmentCounter[30];
 float RmonsterCounter[30], Rdeltatime;
 
 enum Renum {
@@ -34,6 +34,7 @@ void Rwalk(int i) {
     float magnitude = sqrt(Direction.x * Direction.x + Direction.y * Direction.y);
     Vector2f norm_direction = Direction / magnitude;
     Rmonsters[i].R.move(Vector2f(norm_direction.x * Rmonsters[i].speed * Rdeltatime, norm_direction.y * Rmonsters[i].speed * Rdeltatime));
+    CheckMonsterCollisions(Rmonsters[i].R, norm_direction.x * Rmonsters[i].speed * Rdeltatime, norm_direction.y * Rmonsters[i].speed * Rdeltatime);
     RupdateMonsterAnimationCounter(i);
     RmovmentCounter[i] %= 6;
 }
@@ -98,6 +99,7 @@ void dash(int i) {
     }
     Vector2f norm_direction = Direction / magnitude;
     Rmonsters[i].R.move(Vector2f(norm_direction.x * 1000 * Rdeltatime, norm_direction.y * 1000 * Rdeltatime));
+    CheckMonsterCollisions(Rmonsters[i].R, norm_direction.x * 1000 * Rdeltatime, norm_direction.y * 1000 * Rdeltatime);
     RupdateMonsterAnimationCounter(i);
     RmovmentCounter[i] %= 5;
 }
@@ -115,8 +117,7 @@ void Rcreate() {
 }
 
 void Rset(int Rn) {
-    Rnumber = Rn;
-    for (int i = 0; i < Rnumber; i++) {
+    for (int i = 0; i < RogueNumber; i++) {
         Rmonsters[i] = Roriginal;
         RmonsterCounter[i] = 0;
         RmovmentCounter[i] = 0;
@@ -130,12 +131,13 @@ void Rset(int Rn) {
 
 void Rmove(float time, Sprite p, int attct, int& PlayerHealth) {
     Rdeltatime = time;
-    for (int i = 0; i < Rnumber; i++) {
+    for (int i = 0; i < RogueNumber; i++) {
 
         // check if alive
         if (!Rmonsters[i].alive)
             continue;
 
+        room_cleared = false;
         // check if R will die
         if (Rmonsters[i].health <= 0 && Rstate[i] != Renum::R_die) {
             Rmonsters[i].R.setTexture(Dtexture);
@@ -211,7 +213,7 @@ void Rmove(float time, Sprite p, int attct, int& PlayerHealth) {
 }
 
 void Rdraw(RenderWindow& window) {
-    for (int i = 0; i < Rnumber; i++) {
+    for (int i = 0; i < RogueNumber; i++) {
         if (Rmonsters[i].alive) {
             window.draw(Rmonsters[i].R);
         }

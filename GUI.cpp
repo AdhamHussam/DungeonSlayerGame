@@ -138,7 +138,7 @@ void GUI::updatePlayerInfo(RenderWindow& window) {
 		 (float)health * 1.45 * helath_start / 100, PlayerInfoTexture.getSize().y));
 
 	armorBar.setTextureRect(IntRect(helath_start - 7, 0,
-		 (float)armor * 1.45 * helath_start / 100, PlayerInfoTexture.getSize().y));
+		 (float)armor * 1.45 * helath_start / 90, PlayerInfoTexture.getSize().y));
 
 }
 

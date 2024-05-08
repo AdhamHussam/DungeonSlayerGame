@@ -12,7 +12,7 @@ void RandPosition(int& x, int& y) {
 	}
 	else if (current_room == 3) {
 		x = rand() % 2000 - 1200;
-		y = rand() % 700 + 1500;
+		y = rand() % 500 + 1800;
 	}
 	else if (current_room == 4) {
 		x = rand() % 1000 - 650;

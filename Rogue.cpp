@@ -107,7 +107,7 @@ void dash(int i) {
 void Rcreate() {
     Rtexture.loadFromFile("enemies/Rogue.png");
     Dtexture.loadFromFile("enemies/Rogue2.png");
-    Roriginal.health = 30;
+    Roriginal.health = 200;
     Roriginal.R.setTexture(Rtexture);
     Roriginal.R.setTextureRect(RgetRect(0));
     Roriginal.R.setOrigin(26, 23);
@@ -159,9 +159,9 @@ void Rmove(float time, Sprite p, int attct, int& PlayerHealth) {
         }
 
         if (x < 0)
-            Rmonsters[i].R.setScale(Vector2f(-3, 3));
+            Rmonsters[i].R.setScale(Vector2f(-4, 4));
         else
-            Rmonsters[i].R.setScale(Vector2f(3, 3));
+            Rmonsters[i].R.setScale(Vector2f(4, 4));
 
         Rmonsters[i].cooldown -= Rdeltatime;
         Rmonsters[i].stamina -= Rdeltatime;

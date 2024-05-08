@@ -119,9 +119,9 @@ void MonstersMovment() {
         // check distance between BOD and Player and make BOD look torward Player
         double x = Player.getPosition().x - BODmonsters[i].BOD.getPosition().x, y = BODmonsters[i].BOD.getPosition().y - Player.getPosition().y;
         if (x > 0)
-            BODmonsters[i].BOD.setScale(Vector2f(-1.7, 1.7));
+            BODmonsters[i].BOD.setScale(Vector2f(-2.3, 2.3));
         else
-            BODmonsters[i].BOD.setScale(Vector2f(1.7, 1.7));
+            BODmonsters[i].BOD.setScale(Vector2f(2.3, 2.3));
 
 
         // passing time for cooldown

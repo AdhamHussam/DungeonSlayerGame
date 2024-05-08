@@ -69,7 +69,7 @@ void AAspawn(int i) {
     if (AAMovmentCounter[i] == 4) {
         AAMovmentCounter[i] = 0;
         AAmonsters[i].power *= 2;
-        AAmonsters[i].health+=5;
+        AAmonsters[i].health++;
         AAmonsters[i].ArrowSpeed += 100;
         AAstate[i] = AAenum::AA_walk;
         AAmonsters[i].cooldown = 10;
@@ -95,12 +95,12 @@ void AAArowFire(int i) {
 void AACreate() {
     AAArow.loadFromFile("enemies/Arcane archer/projectile.png");
     AAoriginal.health = 5;
-    AAoriginal.power = 1;
+    AAoriginal.power = 4;
     AAoriginal.cooldown = 10;
     AAoriginal.arrow.setTexture(AAArow);
     AAoriginal.arrow.setScale(2.5, 2.5);
     AAoriginal.arrow.setPosition(100000, 100000);
-    AAoriginal.ArrowSpeed = 1000;
+    AAoriginal.ArrowSpeed = 2000;
     AAoriginal.target = { 100000,100000 };
     AAtexture.loadFromFile("enemies/Arcane archer/spritesheet.png");
     AAoriginal.AA.setTexture(AAtexture);

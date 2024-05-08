@@ -11,7 +11,7 @@ void SetMonstersSprites() {
 	CreateMonsters();
     AACreate();
     NBcreate();
-    GBLNcreate();
+    create_goblins();
     Screate();
     SScreate();
     BMcreate();
@@ -23,7 +23,7 @@ void SetMonstersWave() {
 	SetMonsters();
     NBset(NightBroneNumber);
     AASet(ArcaneArcherNumber);
-    GBLNset(10);
+    set_goblins(3);
     Sset(SkeletonNumber);
     SSset(ShardSoulNumber);
     BMset(BrainMoleNumber);
@@ -45,7 +45,7 @@ void MoveMonsters() {
     Rmove(playerdeltatime, Player, attct, Player_Health);
     NBmove(playerdeltatime, Player, attct, Player_Health, ishit);
     AAMove(playerdeltatime,Player,attct,Player_Health,ishit);
-    GoblinDynamics(10, attct);
+    goblins_move(3, attct);
     Smove(playerdeltatime, Player, attct, Player_Health, ishit);
     SSmove(playerdeltatime, Player, attct, Player_Health);
     BMmove(playerdeltatime, Player, attct, Player_Health);
@@ -60,7 +60,7 @@ void ShowMonsters() {
         }
     AADraw(window);
     NBdraw(window);
-    GBLNdraw(10);
+    draw_goblin(window, 3);
     Sdraw(window);
     SSdraw(window);
     BMdraw(window);

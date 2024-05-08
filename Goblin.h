@@ -2,36 +2,27 @@
 #include "includes.h"
 
 enum GoblinState {
-	Hit,
-	Attack,
-	Run,
-	Death,
-	Spawn
+	GBLNwalk, GBLNhurt, GBLNdie, GBLNspawn, GBLNattack
 };
 
 struct Goblin {
-	Sprite GBLN_run, G_Attack, G_Hit, G_Bomb, current;
-	int speed, power, cooldown, health, animationSpeed, currentFrame, cooldownMax;
-	int runAttackFrameHeight, runAttackFrameWidth, runAttackTotalFrames;
-	int deathFrameHeight, deathFrameWidth, deathTotalFrames;
-	int bombFrameHeight, bombFrameWidth, bomTotalFrames;
-	float MonsterCounter = 0;
-	Vector2f position;
-	bool isAlive, throwBomb;
-	IntRect textureRect;
-	GoblinState state;
+	Sprite Gwalk, Gattack, Gdie, Ghit, Gcurrent, Gspawn;
+	int health = 10;
+	bool is_alive;
+	float speed = 100, cooldown = 5;
+	GoblinState goblin_state;
 };
 
-void GBLNcreate();
-void GBLNset(int);
-void GoblinSwitchState(Goblin&, GoblinState);
-void GBLNupdateBomb(Goblin&);
-void GBLNupdateDeath(Goblin&);
-void GBLNupdateRunAttack(Goblin&);
-void GBLNdie(Goblin&);
-void GBLNhit(Goblin&);
-void GBLNspawn(Goblin&);
-void GBLNmove(Goblin&);
-void GBLNdraw(int);
-void GBLattack(int, int, Goblin&);
-void GoblinDynamics(int, int);
+void create_goblins();
+void set_goblins(int);
+void draw_goblin(RenderWindow&, int);
+IntRect get_rect(int, GoblinState);
+void update_goblin_animation_counter(int, float);
+void clear_goblin(int, GoblinState);
+void goblin_spawn(int);
+void goblin_walk(int, int, int);
+void goblins_die(int);
+void goblin_hurt(int);
+void goblin_attack(int, int, int);
+void goblins_move(int, int);
+

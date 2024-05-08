@@ -7,6 +7,7 @@ int globalInt = 0;  // Definition
 Clock GameClock;
 View view(Vector2f(0, 0), Vector2f(1920, 1080));
 
+int level = 1;
 bool room_cleared = true;
 int current_room = 0,current_wave = 0;
 int ArcaneArcherNumber, NightBroneNumber, SkeletonNumber, ShardSoulNumber, BrainMoleNumber, RogueNumber;

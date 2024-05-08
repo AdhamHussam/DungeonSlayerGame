@@ -33,7 +33,7 @@ void SetMonstersWave() {
 void MoveMonsters() {
     int attct = 0;
     if (curr_state == player_base)
-        attct = 1;
+        attct = 100;
     else if (curr_state == player_xmove)
         attct = 3;
     else if (curr_state == player_cmove)

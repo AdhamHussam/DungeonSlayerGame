@@ -99,8 +99,31 @@ void GUI::setPlayerInfoTexture() {
 	armorBarTexture.loadFromFile(R"(GUI\armor.png)");
 	armorBar.setTexture(armorBarTexture);
 
+	loadingEffectTexture.loadFromFile(R"(GUI\loading_effect.png)");
+	loadingEffect.setTexture(loadingEffectTexture);
+	loadingEffect.setScale(3.15,3.15);
+
 }
 
+//void setMonstersHPTexture() {
+//	monsterHPBackTexture.loadFromFile(R"(GUI\monster_bar_back.png)");
+//	monsterHPBack.setTexture(monsterHPBackTexture);
+//
+//	monsterHPTexture.loadFromFile(R"(GUI\monster_bar.png)");
+//	monsterHP.setTexture(monsterHPTexture);
+//
+//}
+//void DrawMonsterHP(Vector2f pos, float health)
+//{
+//	monsterHPBack.setPosition(pos.x, pos.y - 40);
+//	monsterHP.setPosition(pos.x, pos.y - 40);
+//
+//	monsterHP.setTextureRect(IntRect(0, 0, monsterHPTexture.getSize().x * health, monsterHPTexture.getSize().y));
+//
+//	window.draw(monsterHPBack);
+//
+//	
+//}
 void GUI::updatePlayerInfo(RenderWindow& window) {
 	Vector2f infoPosition = { Player.getPosition().x - window.getSize().x/2-20,
 								Player.getPosition().y - window.getSize().y / 2 -20};
@@ -115,11 +138,33 @@ void GUI::updatePlayerInfo(RenderWindow& window) {
 		 (float)health * 1.45 * helath_start / 100, PlayerInfoTexture.getSize().y));
 
 	armorBar.setTextureRect(IntRect(helath_start - 7, 0,
-		 (float)armor * 1.45 * helath_start / 60, PlayerInfoTexture.getSize().y));
+		 (float)armor * 1.45 * helath_start / 100, PlayerInfoTexture.getSize().y));
 
 }
-// player_health
+
+void GUI::DrawloadingEffect(RenderWindow& window)
+{
+
+	Vector2f firstposition = { Player.getPosition().x - 35 ,Player.getPosition().y + window.getSize().y / 3 - 7 };
+	float cooldowns[] = { 1.5, 3, 6, 9 };
+	float posx[] = { firstposition.x - 180, firstposition.x - 60, firstposition.x + 60, firstposition.x + 180 };
+	float posy = firstposition.y;
+	for (int i = 0; i < 4; i++)
+	{
+		if (cooldown[i] > 0)
+		{
+			loadingEffect.setPosition(posx[i], posy);
+			loadingEffect.setColor(Color(255, 255, 255, 255 * cooldown[i] / cooldowns[i]));
+			/*loadingEffect.setTextureRect(IntRect(0, 0,
+				 loadingEffectTexture.getSize().x * cooldown[i] / cooldowns[i],
+				 loadingEffectTexture.getSize().y));*/
+			window.draw(loadingEffect);
+		}
+	}
+
+}
 void GUI::drawGUI(RenderWindow& window) {
+	//DrawMonsterHP(Player.getPosition(), Player_Health / 100);
 	updateSkill();
 	updatePlayerInfo(window);
 	window.draw(PlayerInfo);
@@ -129,7 +174,9 @@ void GUI::drawGUI(RenderWindow& window) {
 	for (int i = 0; i < 4; i++)
 	{
 		skills[i].drawSkill(window, i);
+
 	}
+	DrawloadingEffect(window);
 
 }
 

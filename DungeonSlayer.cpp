@@ -242,8 +242,10 @@ void setTextures()
     Player.setPosition(initial_position);
 
     // GUI
+
     gui.setSkillsTexture();
     gui.setPlayerInfoTexture();
+    //setMonstersHPTexture();
 
     // walls
 

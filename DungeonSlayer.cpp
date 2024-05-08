@@ -234,7 +234,7 @@ void setTextures()
     DeathScreen.setTexture(death_screen);
     
     bg.setScale(0.5, 0.5);
-    Instructions.setScale(0.75, 0.8);
+    Instructions.setScale(0.75, 0.75);
     pausemenu.setScale(0.5, 0.5);
     DeathScreen.setScale(0.7, 0.7);
     
@@ -812,6 +812,8 @@ void PauseMenuHandler(RenderWindow& window)
         if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 2) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 GameClock.restart();
+                level = 1;
+                Map.setTexture(map1);
                 game_reset();
                 break;
             }
@@ -820,6 +822,8 @@ void PauseMenuHandler(RenderWindow& window)
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 GameClock.restart();
                 pagenum = 10;
+                level = 1;
+                Map.setTexture(map1);
                 game_reset();
                 menu_handler();
             }
@@ -911,6 +915,8 @@ void death_handler()
         if (Keyboard::isKeyPressed(Keyboard::Enter) && game_over.selectedp == 0) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 GameClock.restart();
+                level = 1;
+                Map.setTexture(map1);
                 game_reset();
                 break;
             }
@@ -922,6 +928,8 @@ void death_handler()
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 GameClock.restart();
                 pagenum = 10;
+                level = 1;
+                Map.setTexture(map1);
                 game_reset();
                 view.setCenter(960, 540); //update
                 window.setView(view);

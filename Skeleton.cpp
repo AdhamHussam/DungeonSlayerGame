@@ -33,6 +33,7 @@ void Swalk(int i) {
     float magnitude = sqrt(Direction.x * Direction.x + Direction.y * Direction.y);
     Vector2f norm_direction = Direction / magnitude;
     Smonsters[i].S.move(Vector2f(norm_direction.x * Smonsters[i].speed * Sdeltatime, norm_direction.y * Smonsters[i].speed * Sdeltatime));
+    CheckMonsterCollisions(Smonsters[i].S, norm_direction.x * Smonsters[i].speed * Sdeltatime, norm_direction.y * Smonsters[i].speed * Sdeltatime);
     SupdateMonsterAnimationCounter(i);
     SmovmentCounter[i] %= 12;
 }

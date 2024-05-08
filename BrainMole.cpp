@@ -34,6 +34,7 @@ void BMwalk(int i) {
     float magnitude = sqrt(Direction.x * Direction.x + Direction.y * Direction.y);
     Vector2f norm_direction = Direction / magnitude;
     BMmonsters[i].BM.move(Vector2f(norm_direction.x * BMmonsters[i].speed * BMdeltatime, norm_direction.y * BMmonsters[i].speed * BMdeltatime));
+    CheckMonsterCollisions(BMmonsters[i].BM, norm_direction.x * BMmonsters[i].speed * BMdeltatime, norm_direction.y * BMmonsters[i].speed * BMdeltatime);
     BMupdateMonBMterAnimationCounter(i);
     BMmovmentCounter[i] %= 4;
 }

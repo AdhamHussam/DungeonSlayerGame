@@ -33,6 +33,7 @@ void NBwalk(int i) {
     float magnitude = sqrt(Direction.x * Direction.x + Direction.y * Direction.y);
     Vector2f norm_direction = Direction / magnitude;
     NBmonsters[i].NB.move(Vector2f(norm_direction.x * NBmonsters[i].speed * NBdeltatime, norm_direction.y * NBmonsters[i].speed * NBdeltatime));
+    CheckMonsterCollisions(NBmonsters[i].NB, abs(norm_direction.x * NBmonsters[i].speed * NBdeltatime), abs(norm_direction.y * NBmonsters[i].speed * NBdeltatime));
     NBupdateMonsterAnimationCounter(i);
     NBmovmentCounter[i] %= 6;
 }

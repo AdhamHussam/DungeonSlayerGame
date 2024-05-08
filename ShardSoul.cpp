@@ -34,6 +34,7 @@ void SSwalk(int i) {
     float magnitude = sqrt(Direction.x * Direction.x + Direction.y * Direction.y);
     Vector2f norm_direction = Direction / magnitude;
     SSmonsters[i].SS.move(Vector2f(norm_direction.x * SSmonsters[i].speed * SSdeltatime, norm_direction.y * SSmonsters[i].speed * SSdeltatime));
+    CheckMonsterCollisions(SSmonsters[i].SS, norm_direction.x * SSmonsters[i].speed * SSdeltatime, norm_direction.y * SSmonsters[i].speed * SSdeltatime);
     SSupdateMonSSterAnimationCounter(i);
     SSmovmentCounter[i] %= 8;
 }

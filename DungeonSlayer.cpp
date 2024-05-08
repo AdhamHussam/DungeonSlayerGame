@@ -27,7 +27,6 @@ bool death_trigger = false;
 
 // menu number
 int pagenum = 10;
-int level = 1;
 
 // gui struct
 GUI gui;

@@ -972,8 +972,8 @@ void check_room()
     if (current_room > initial){
         SetMonstersWave();
         room_cleared = false;
-        if(current_room!=1)
-            Player_Health += (15 + (current_room - 2) * 5 ) ;
+        if(current_room != 1)
+            Player_Health += (15 + ((current_room - 1) * 5 ) * level ) ;
     }
 }
 

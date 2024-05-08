@@ -963,7 +963,8 @@ void check_room()
     if (current_room > initial){
         SetMonstersWave();
         room_cleared = false;
-        Player_Health += 20 * (current_room - 1);
+        if(current_room!=1)
+            Player_Health += (20 + (current_room - 1) * 5 ) ;
     }
 }
 
@@ -1001,9 +1002,8 @@ void dash()
 void Go_Next()
 {
     go_next = true;
-    // draw text 
     if (Keyboard::isKeyPressed(Keyboard::E)) {
-     
+
         game_reset();
         if (level == 1) {
             Map.setTexture(map2);
@@ -1016,7 +1016,11 @@ void Go_Next()
             return;
         }
 
-        else Map.setTexture(map1);
+        else {
+            Map.setTexture(map1);
+            level = 1;
+            return;
+        }
     }
 
    

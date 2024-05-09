@@ -123,7 +123,7 @@ void AASet(int AAn) {
         AAstate[i] = AAenum::AA_spawn;
         if (level == 2) {
             AAmonsters[i].power = 10;
-            AAmonsters[i].health = AAmonsters[i].max_health = 30;
+            AAmonsters[i].health = AAmonsters[i].max_health = 60;
         }
     }
 }
@@ -165,10 +165,18 @@ void AAMove(float time,Sprite p,int attct, int& PlayerHealth, bool& IsHit) {
         }
 
         double x = player.getPosition().x - AAmonsters[i].AA.getPosition().x, y = AAmonsters[i].AA.getPosition().y - player.getPosition().y;
-        if (x < 0)
-            AAmonsters[i].AA.setScale(Vector2f(-2.5, 2.5));
-        else
-            AAmonsters[i].AA.setScale(Vector2f(2.5, 2.5));
+        if(level != 2){
+            if (x < 0)
+                AAmonsters[i].AA.setScale(Vector2f(-2.5, 2.5));
+            else
+                AAmonsters[i].AA.setScale(Vector2f(2.5, 2.5));
+        }
+        else {
+            if (x < 0)
+                AAmonsters[i].AA.setScale(Vector2f(-5, 5));
+            else
+                AAmonsters[i].AA.setScale(Vector2f(5, 5));
+        }
         AAmonsters[i].cooldown -= AAdeltatime;
 
         // check if BOD is being attacked

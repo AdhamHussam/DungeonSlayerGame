@@ -3,7 +3,7 @@
 #include "RandomizePlaces.h"
 
 Texture BMtexture;
-BrainMole BMoriginal, BMmonsters[30];
+BrainMole BMoriginal;
 int BMmovmentCounter[30];
 float BMmonBMterCounter[30], BMdeltatime;
 
@@ -148,6 +148,9 @@ void BMmove(float time, Sprite p, int attct, int& PlayerHealth) {
 void BMdraw(RenderWindow& window) {
     for (int i = 0; i < BrainMoleNumber; i++)
         if (BMmonsters[i].alive)
+        {
             window.draw(BMmonsters[i].BM);
+            gui.DrawMonsterHP(BMmonsters[i].BM.getPosition(), BMmonsters[i].health, 1,30, 35);
+        }
 }
 

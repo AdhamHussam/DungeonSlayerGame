@@ -1,19 +1,26 @@
 #include "includes.h"
 #include "Monsters.h"
 #include "globals.h"
+#include "GUI.h"
+#include "BrainMole.h"
 
 // Define global variables here
 int globalInt = 0;  // Definition
 Clock GameClock;
 View view(Vector2f(0, 0), Vector2f(1920, 1080));
 
+int level = 1;
 bool room_cleared = true;
 int current_room = 0,current_wave = 0;
 int ArcaneArcherNumber, NightBroneNumber, SkeletonNumber, ShardSoulNumber, BrainMoleNumber, RogueNumber;
 RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer");
 int BODnumber;
 BringerOfDeath BODmonsters[30];
+NightBrone NBmonsters[30];
+ShardSoul SSmonsters[30];
+Skeleton Smonsters[100];
 BringerOfDeath BODoriginal;
+BrainMole BMmonsters[30];
 Texture BODtexture;
 bool showBODSpell[30], BODalive[30];
 Sprite Player;
@@ -21,6 +28,7 @@ float playerdeltatime = 0;
 int Player_Health = 100;
 bool ishit = false;
 float cooldown[5];
+GUI gui;
 enum state
 {
     idle, run, hit, base,  xmove, cmove, vmove, dead, walk

@@ -12,7 +12,7 @@ void RandPosition(int& x, int& y) {
 	}
 	else if (current_room == 3) {
 		x = rand() % 2000 - 1200;
-		y = rand() % 700 + 1500;
+		y = rand() % 500 + 1800;
 	}
 	else if (current_room == 4) {
 		x = rand() % 1000 - 650;
@@ -27,7 +27,7 @@ void RandPosition(int& x, int& y) {
 void MonsterNumber() {
 	ifstream file("NumberOfMonsters.csv");
 	string row;
-	for (int i = 0; i <= current_room; i++)
+	for (int i = 0; i <= current_room + (level - 1)*6; i++)
 		getline(file, row);
 	stringstream ss(row);
 	string cell;

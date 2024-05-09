@@ -3,7 +3,7 @@
 #include "RandomizePlaces.h"
 
 Texture Stexture;
-Skeleton Soriginal, Smonsters[100];
+Skeleton Soriginal;
 int SmovmentCounter[100];
 float SmonsterCounter[100], Sdeltatime;
 
@@ -153,7 +153,10 @@ void Smove(float time, Sprite p, int attct, int& PlayerHealth, bool& IsHit) {
 void Sdraw(RenderWindow& window) {
     for (int i = 0; i < SkeletonNumber; i++)
         if (Smonsters[i].alive)
+        {
             window.draw(Smonsters[i].S);
+            gui.DrawMonsterHP(Smonsters[i].S.getPosition(), Smonsters[i].health, 5, 20, 30);
+        }
 }
 
 void NewSkeleton(Vector2f x) {

@@ -28,9 +28,8 @@ bool death_trigger = false;
 // menu number
 int pagenum = 10;
 
-// gui struct
-GUI gui;
-
+Text go_next_text;
+Font game_font;
 
 // player attributes
 float lastX = 0 , lastY = 0;
@@ -43,7 +42,7 @@ int maximagecounter = 0;
 int ImageCounter = 0;
 bool animation_running = false;
 bool isDead = false;
-
+bool go_next = false;
 bool ispassing = false;
 bool passed_door = false;
 bool isdashing = false;
@@ -73,6 +72,9 @@ Texture Cmove[8];
 Texture walkAnimation[8];
 
 Texture map1;
+Texture map2;
+Texture map3;
+
 Texture mainmenubg;
 Texture instructs;
 Texture death_screen;
@@ -82,7 +84,7 @@ Sprite bg;
 Sprite Room;
 Texture pausebg;
 Sprite pausemenu;
-Sprite Map1;
+Sprite Map;
 
 
 // Room 0 Borders
@@ -91,7 +93,9 @@ RectangleShape gate2(Vector2f({ 1, 1 }));
 RectangleShape gate3(Vector2f({ 1, 1 }));
 RectangleShape gate4(Vector2f({ 1, 1 }));
 RectangleShape gate5(Vector2f({ 1, 1 }));
-RectangleShape gates[] = { gate1, gate2 , gate3, gate4, gate5 };
+
+RectangleShape finalgate(Vector2f({ 100, 250 }));
+RectangleShape gates[] = { gate1, gate2 , gate3, gate4, gate5 , finalgate};
 
 SoundBuffer menu_opener;
 Sound MenuOpener;
@@ -125,6 +129,7 @@ void checkCollisions();
 void Draw();
 void UpdateAnimationCounter(float st = 0.1);
 void game_reset();
+void Go_Next();
 
 // Main 
 int main()
@@ -176,6 +181,11 @@ void checkCollisions()
         }
         else ispassing = false;
     }
+
+    if (room_cleared && Player.getGlobalBounds().intersects(gates[5].getGlobalBounds())) {
+        Go_Next();
+    }
+    else go_next = false;
     
     // right
     for (int i = 0; i < right_walls; i++) {
@@ -221,17 +231,19 @@ void setTextures()
     DeathScreen.setTexture(death_screen);
     
     bg.setScale(0.5, 0.5);
-    Instructions.setScale(0.75, 0.8);
+    Instructions.setScale(0.75, 0.75);
     pausemenu.setScale(0.5, 0.5);
     DeathScreen.setScale(0.7, 0.7);
     
     // Room
 
     map1.loadFromFile("lvl1.png");
-    Map1.setTexture(map1);
-    Map1.setScale(3.8, 3.333);
-    Map1.setOrigin(map1.getSize().x / 2, map1.getSize().y / 2);
-    Map1.setPosition(0, 178 * 16);
+    map2.loadFromFile("lvl2.png");
+    map3.loadFromFile("lvl3.png");
+    Map.setTexture(map1);
+    Map.setScale(3.8, 3.333);
+    Map.setOrigin(map1.getSize().x / 2, map1.getSize().y / 2);
+    Map.setPosition(0, 178 * 16);
 
     //Player
     
@@ -242,8 +254,10 @@ void setTextures()
     Player.setPosition(initial_position);
 
     // GUI
+
     gui.setSkillsTexture();
     gui.setPlayerInfoTexture();
+    gui.setMonstersHPTexture();
 
     // walls
 
@@ -252,6 +266,7 @@ void setTextures()
     gates[2].setPosition(-60, 2830);
     gates[3].setPosition(-60, 1540);
     gates[4].setPosition(-60, -275);
+    gates[5].setPosition(-90, -2000);
 
     right_borders[0].setPosition(650, 6700);
     right_borders[1].setPosition(100, 6330);
@@ -385,32 +400,45 @@ void setTextures()
     menu_opener.loadFromFile("Title card.mp3");
     death_sound.loadFromFile("Death Sound.mp3");
     game_music.loadFromFile("Game music.mp3");
+
+    game_font.loadFromFile("Ungai.ttf");
+    go_next_text.setFont(game_font);
+    go_next_text.setFillColor(Color{ 255,215,0 });
+    go_next_text.setString("Press E to proceed to next level");
+    go_next_text.setCharacterSize(30);
+    go_next_text.setPosition(Player.getPosition().x-100, Player.getPosition().y + 100);
+
+
 }
 
 
 void Draw()
 {
     window.clear();
-    window.draw(Map1);
+    window.draw(Map);
     if (!ispassing)
         window.draw(Player);
+    if (go_next) {
+        go_next_text.setPosition(Player.getPosition().x-350, Player.getPosition().y - 150);
+        window.draw(go_next_text);
+    }
     ShowMonsters();
     gui.drawGUI(window);
     
- /*   for (int i = 0; i < doors; i++) {
-        window.draw(gates[i]);
-    } 
-    for(int i = 0; i < left_walls;i++){
-        window.draw(left_borders[i]);
-    }
-    for(int i = 0; i < up_walls;i++){
-        window.draw(up_borders[i]);
-    }
-    for(int i = 0; i < right_walls;i++)
-      window.draw(right_borders[i]);
+    //for (int i = 0; i < doors+1; i++) {
+    //    window.draw(gates[i]);
+    //} 
+    //for(int i = 0; i < left_walls;i++){
+    //    window.draw(left_borders[i]);
+    //}
+    //for(int i = 0; i < up_walls;i++){
+    //    window.draw(up_borders[i]);
+    //}
+    //for(int i = 0; i < right_walls;i++)
+    //  window.draw(right_borders[i]);
 
-     for(int i = 0; i < down_walls;i++)
-      window.draw(down_borders[i]);*/
+    //for (int i = 0; i < down_walls; i++)
+    //    window.draw(down_borders[i]);
 
     window.display();
 }
@@ -781,6 +809,8 @@ void PauseMenuHandler(RenderWindow& window)
         if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 2) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 GameClock.restart();
+                level = 1;
+                Map.setTexture(map1);
                 game_reset();
                 break;
             }
@@ -789,6 +819,8 @@ void PauseMenuHandler(RenderWindow& window)
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 GameClock.restart();
                 pagenum = 10;
+                level = 1;
+                Map.setTexture(map1);
                 game_reset();
                 menu_handler();
             }
@@ -880,6 +912,8 @@ void death_handler()
         if (Keyboard::isKeyPressed(Keyboard::Enter) && game_over.selectedp == 0) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 GameClock.restart();
+                level = 1;
+                Map.setTexture(map1);
                 game_reset();
                 break;
             }
@@ -891,6 +925,8 @@ void death_handler()
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 GameClock.restart();
                 pagenum = 10;
+                level = 1;
+                Map.setTexture(map1);
                 game_reset();
                 view.setCenter(960, 540); //update
                 window.setView(view);
@@ -899,7 +935,7 @@ void death_handler()
         }
 
         window.clear();
-        window.draw(Map1);
+        window.draw(Map);
         if (!ispassing)
             window.draw(Player);
 
@@ -934,7 +970,8 @@ void check_room()
     if (current_room > initial){
         SetMonstersWave();
         room_cleared = false;
-        Player_Health += 20 * (current_room - 1);
+        if(current_room != 1)
+            Player_Health += (15 + ((current_room - 1) * 5 ) * level ) ;
     }
 }
 
@@ -954,8 +991,8 @@ void dash()
 {
     if (isdashing) {
         if (dash_duration > 0) {
-            run_speed = 1000;
-            walk_speed = 1000;
+            run_speed = 1500;
+            walk_speed = 1500;
             dash_duration -= playerdeltatime;
         }
         else {
@@ -965,5 +1002,33 @@ void dash()
             walk_speed = 100;
         }
     }
+   
+}
+
+
+void Go_Next()
+{
+    go_next = true;
+    if (Keyboard::isKeyPressed(Keyboard::E)) {
+
+        game_reset();
+        if (level == 1) {
+            Map.setTexture(map2);
+            level = 2;
+            return;
+        }
+        else if (level == 2) {
+            Map.setTexture(map3);
+            level = 3;
+            return;
+        }
+
+        else {
+            Map.setTexture(map1);
+            level = 1;
+            return;
+        }
+    }
+
    
 }

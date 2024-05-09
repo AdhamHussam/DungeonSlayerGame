@@ -52,7 +52,7 @@ void GUI::updateSkill() {
 	loadingname += ".png";
 	loadingframe.loadFromFile(loadingname);
 	skillframe.loadFromFile(framename);
-	pair<int, int> firstposition = { Player.getPosition().x - 40 ,Player.getPosition().y + window.getSize().y / 3 - 20 };
+	pair<int, int> firstposition = { Player.getPosition().x - 40 ,Player.getPosition().y + window.getSize().y / 3 + 50};
 
 	//skills_background.setPosition(firstposition.first-240, firstposition.second);
 	firstposition.second += 10;
@@ -197,7 +197,7 @@ void GUI::updatePlayerInfo(RenderWindow& window) {
 void GUI::DrawloadingEffect(RenderWindow& window)
 {
 
-	Vector2f firstposition = { Player.getPosition().x - 35 ,Player.getPosition().y + window.getSize().y / 3 - 7 };
+	Vector2f firstposition = { Player.getPosition().x - 35 ,Player.getPosition().y + window.getSize().y / 3 + 63 };
 	float cooldowns[] = { 1.5, 3, 6, 9 };
 	float posx[] = { firstposition.x - 180, firstposition.x - 60, firstposition.x + 60, firstposition.x + 180 };
 	float posy = firstposition.y;

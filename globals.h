@@ -1,3 +1,8 @@
+#include "GUI.h"
+#include "BrainMole.h"
+#include "NightBorne.h"
+#include "ShardSoul.h"
+#include "Skeleton.h"
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
@@ -23,6 +28,11 @@ extern BOD BODstate[], BODattacks;
 extern int Player_Health;
 extern bool ishit;
 extern float cooldown[5];
+extern BrainMole BMmonsters[30];
+extern NightBrone NBmonsters[30];
+extern ShardSoul SSmonsters[30];
+extern Skeleton Smonsters[100];
+extern GUI gui;
 
 extern RectangleShape borderR1;
 extern RectangleShape borderR2;

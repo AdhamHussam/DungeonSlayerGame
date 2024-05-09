@@ -3,7 +3,7 @@
 #include "RandomizePlaces.h"
 
 Texture SStexture;
-ShardSoul SSoriginal, SSmonsters[30];
+ShardSoul SSoriginal;
 int SSmovmentCounter[30];
 float SSmonSSterCounter[30], SSdeltatime;
 
@@ -151,6 +151,9 @@ void SSmove(float time, Sprite p, int attct, int& PlayerHealth) {
 void SSdraw(RenderWindow& window) {
     for (int i = 0; i < ShardSoulNumber; i++)
         if (SSmonsters[i].alive)
+        {
             window.draw(SSmonsters[i].SS);
+            gui.DrawMonsterHP(BMmonsters[i].BM.getPosition(), BMmonsters[i].health, 7, 20, 15);
+        }
 }
 

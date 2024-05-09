@@ -3,7 +3,7 @@
 #include "RandomizePlaces.h"
 
 Texture NBtexture;
-NightBrone NBoriginal, NBmonsters[30];
+NightBrone NBoriginal;
 int NBmovmentCounter[30];
 float NBmonsterCounter[30], NBdeltatime;
 
@@ -185,6 +185,7 @@ void NBdraw(RenderWindow& window) {
     for (int i = 0; i < NightBroneNumber; i++) {
         if (NBmonsters[i].alive) {
             window.draw(NBmonsters[i].NB);
+            gui.DrawMonsterHP(NBmonsters[i].NB.getPosition(), NBmonsters[i].health, 7, 20, 15);
         }
     }
 }

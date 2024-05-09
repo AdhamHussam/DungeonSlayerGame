@@ -28,8 +28,6 @@ bool death_trigger = false;
 // menu number
 int pagenum = 10;
 
-// gui struct
-GUI gui;
 Text go_next_text;
 Font game_font;
 
@@ -259,7 +257,7 @@ void setTextures()
 
     gui.setSkillsTexture();
     gui.setPlayerInfoTexture();
-    //setMonstersHPTexture();
+    gui.setMonstersHPTexture();
 
     // walls
 

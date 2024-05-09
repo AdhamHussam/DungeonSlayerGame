@@ -92,6 +92,9 @@ void GBLNdraw(int gbln_num) {
     for (int i = 0; i < gbln_num; i++) {
        // goblins[i].current.setScale(2.5, 2.5);
         window.draw(goblins[i].current);
+        gui.DrawMonsterHP(goblins[i].position, goblins[i].health, 10, 20, 15);
+            //10 is the full health
+            // 20 is the left shift for the health bar and 15 is the up shift, edit them when adding the monster
     }
 }
 

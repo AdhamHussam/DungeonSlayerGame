@@ -15,15 +15,9 @@ struct GUIskill {
     GUIskill() = default;
 };
 
-//Sprite monsterHPBack;
-//Sprite monsterHP;
-//Texture monsterHPBackTexture;
-//Texture monsterHPTexture;
 
 
 
-//void setMonstersHPTexture();
-//void DrawMonsterHP(Vector2f pos, float health);
 
 
 struct GUI {
@@ -34,12 +28,16 @@ struct GUI {
     Texture armorBarTexture;
     Texture staminaBarTexture;
     Texture loadingEffectTexture;
+    Texture monsterHPBackTexture;
+Texture monsterHPTexture;
     GUIskill skills[4];
     Sprite PlayerInfo;
     Sprite healthBar;
     Sprite armorBar;
     Sprite staminaBar;
     Sprite loadingEffect;
+    Sprite monsterHPBack;
+    Sprite monsterHP;
     int framenum = 1;
 
     RectangleShape skills_background;
@@ -49,6 +47,12 @@ struct GUI {
     void drawGUI(RenderWindow& window);
     void DrawloadingEffect(RenderWindow& window);
     void setPlayerInfoTexture();
+
+    void setMonstersHPTexture();
+
+    void DrawMonsterHP(Vector2f pos, float health, int origHealth, int xdif, int ydif);
+    void drawBODHP(Vector2f pos, float health);
+    void drawBossHP(float health);
 
     GUI() = default;
 };

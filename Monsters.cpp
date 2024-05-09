@@ -55,6 +55,7 @@ void ShowMonsters() {
     for (int i = 0; i < BODnumber; i++)
         if (BODalive[i]) {
             window.draw(BODmonsters[i].BOD);
+            gui.drawBODHP(BODmonsters[i].BOD.getPosition(), BODmonsters[i].health / 10.0);
             if (showBODSpell[i])
                 window.draw(BODmonsters[i].spell);
         }

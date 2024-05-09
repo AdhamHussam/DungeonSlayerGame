@@ -80,7 +80,6 @@ void GUI::updateSkill() {
 	else
 		skills[3].myFrame = skillframe;
 
-
 	if (frameClock.getElapsedTime().asSeconds() > frameDelay) {
 		framenum %= 4;
 		framenum++;
@@ -173,14 +172,19 @@ void GUI::updatePlayerInfo(RenderWindow& window) {
 	int health = (Player_Health > 100 ? 100 : Player_Health);
 	int armor = Player_Health - health;
 	PlayerInfo.setPosition(infoPosition);
-	healthBar.setPosition(infoPosition.x + helath_start, infoPosition.y);
-	armorBar.setPosition(infoPosition.x + helath_start, infoPosition.y);
-	staminaBar.setPosition(infoPosition);
-	healthBar.setTextureRect(IntRect(helath_start - 7, 0,
-		 (float)health * 1.45 * helath_start / 100, PlayerInfoTexture.getSize().y));
+	healthBar.setPosition(infoPosition.x + helath_start -  10, infoPosition.y);
+	armorBar.setPosition(infoPosition.x + helath_start-10, infoPosition.y);
+	staminaBar.setPosition(infoPosition.x + helath_start-10, infoPosition.y);
 
-	armorBar.setTextureRect(IntRect(helath_start - 7, 0,
-		 (float)armor * 1.45 * helath_start / 90, PlayerInfoTexture.getSize().y));
+	staminaBar.setTextureRect(IntRect(helath_start - 10, 0,
+		(3-cooldown[4]) / 3.0 * staminaBarTexture.getSize().x / 2, PlayerInfoTexture.getSize().y));
+
+	healthBar.setTextureRect(IntRect(helath_start - 10, 0,
+		 (float)health * 1.5 * helath_start / 100, PlayerInfoTexture.getSize().y));
+
+
+	armorBar.setTextureRect(IntRect(helath_start - 10, 0,
+		 (float)armor * 1.5 * helath_start / 90, PlayerInfoTexture.getSize().y));
 
 }
 

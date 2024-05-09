@@ -238,6 +238,7 @@ void draw_goblin(RenderWindow& window, int num) {
 	for (int i = 0; i < num; i++) {
 		if (goblins[i].is_alive) {
 			window.draw(goblins[i].Gcurrent);
+			gui.DrawMonsterHP(goblins[i].Gcurrent.getPosition(), goblins[i].health, 10, 30, 35);
 		}
 	}
 }

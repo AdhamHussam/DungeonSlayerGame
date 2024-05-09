@@ -151,6 +151,7 @@ void BMdraw(RenderWindow& window) {
         {
             window.draw(BMmonsters[i].BM);
             gui.DrawMonsterHP(BMmonsters[i].BM.getPosition(), BMmonsters[i].health, 1,30, 35);
+            
         }
 }
 

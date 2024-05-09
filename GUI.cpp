@@ -108,8 +108,13 @@ void GUI::setMonstersHPTexture() {
 	monsterHPBackTexture.loadFromFile(R"(GUI\monster_bar_back.png)");
 	monsterHPBack.setTexture(monsterHPBackTexture);
 
+	bossHPBackTexture.loadFromFile(R"(GUI\boss_empty.png)");
+	bossHPBack.setTexture(bossHPBackTexture);
+
 	monsterHPTexture.loadFromFile(R"(GUI\monster_bar.png)");
 	monsterHP.setTexture(monsterHPTexture);
+	bossHPTexture.loadFromFile(R"(GUI\boss_full.png)");
+	bossHP.setTexture(bossHPTexture);
 
 }
 
@@ -131,7 +136,6 @@ void GUI::DrawMonsterHP(Vector2f pos, float health, int origHealth, int xdif,int
 
 	window.draw(monsterHPBack);
 	window.draw(monsterHP);
-	
 }
 void GUI::drawBODHP(Vector2f pos, float health) {
 	
@@ -152,19 +156,21 @@ void GUI::drawBODHP(Vector2f pos, float health) {
 	window.draw(monsterHP);
 }
 
-void GUI::drawBossHP( float health) {
-	/*Vector2f pos = {};
-	monsterHPBack.setPosition(pos);
-	monsterHPBack.setScale(2, 2);
+void GUI::drawBossHP(float health, int max_health) {
+	Vector2f pos = { Player.getPosition().x - bossHPTexture.getSize().x/2,
+								Player.getPosition().y - window.getSize().y / 2 +40 };
+	bossHPBack.setPosition(pos);
+	bossHPBack.setScale(1, 1);
 
-	monsterHP.setPosition(pos);
-	monsterHP.setScale(2, 2);
+	bossHP.setPosition(pos);
+	bossHP.setScale(1, 1);
 
-	monsterHP.setTextureRect(IntRect(0, 0, monsterHPTexture.getSize().x * health, monsterHPTexture.getSize().y));
+	bossHP.setTextureRect(IntRect(0, 0, bossHPTexture.getSize().x * health/max_health, bossHPTexture.getSize().y));
 
-	window.draw(monsterHPBack);
-	window.draw(monsterHP);*/
+	window.draw(bossHPBack);
+	window.draw(bossHP);
 }
+
 void GUI::updatePlayerInfo(RenderWindow& window) {
 	Vector2f infoPosition = { Player.getPosition().x - window.getSize().x/2-20,
 								Player.getPosition().y - window.getSize().y / 2 -20};

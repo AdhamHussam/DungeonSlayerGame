@@ -29,7 +29,9 @@ struct GUI {
     Texture staminaBarTexture;
     Texture loadingEffectTexture;
     Texture monsterHPBackTexture;
-Texture monsterHPTexture;
+    Texture bossHPBackTexture;
+    Texture bossHPTexture;
+    Texture monsterHPTexture;
     GUIskill skills[4];
     Sprite PlayerInfo;
     Sprite healthBar;
@@ -38,6 +40,8 @@ Texture monsterHPTexture;
     Sprite loadingEffect;
     Sprite monsterHPBack;
     Sprite monsterHP;
+    Sprite bossHPBack;
+    Sprite bossHP;
     int framenum = 1;
 
     RectangleShape skills_background;
@@ -52,7 +56,7 @@ Texture monsterHPTexture;
 
     void DrawMonsterHP(Vector2f pos, float health, int origHealth, int xdif, int ydif);
     void drawBODHP(Vector2f pos, float health);
-    void drawBossHP(float health);
+    void drawBossHP(float health, int max_health);
 
     GUI() = default;
 };

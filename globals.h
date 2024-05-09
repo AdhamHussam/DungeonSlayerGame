@@ -13,7 +13,7 @@ extern View view;
 
 extern int level;
 extern bool room_cleared;
-extern int ArcaneArcherNumber, NightBroneNumber, SkeletonNumber, ShardSoulNumber, BrainMoleNumber, RogueNumber;
+extern int ArcaneArcherNumber, NightBroneNumber, SkeletonNumber, ShardSoulNumber, BrainMoleNumber, RogueNumber, GoblinNumber;
 extern RenderWindow window;
 /*
 

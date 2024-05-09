@@ -39,7 +39,7 @@ void goblin_walk(int x, int y, int i) {
 	float magnitude = sqrt(Direction.x * Direction.x + Direction.y * Direction.y);
 	Vector2f norm_direction = Direction / magnitude;
 	goblins[i].Gcurrent.move(Vector2f(norm_direction.x * goblins[i].speed * playerdeltatime, norm_direction.y * goblins[i].speed * playerdeltatime));
-	
+	CheckMonsterCollisions(goblins[i].Gcurrent, norm_direction.x * goblins[i].speed * playerdeltatime, norm_direction.y * goblins[i].speed * playerdeltatime);
 	update_goblin_animation_counter(i);
 	goblin_movement_counter[i] %= 8;
 }
@@ -124,6 +124,7 @@ void goblins_move(int num, int attct) {
 		if (!goblins[i].is_alive)
 			continue;
 
+		room_cleared = false;
 		if (goblins[i].goblin_state == GoblinState::GBLNdie) {
 			goblins_die(i);
 			continue;

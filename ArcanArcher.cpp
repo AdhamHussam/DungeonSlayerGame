@@ -204,7 +204,7 @@ void AADraw(RenderWindow &window) {
             window.draw(AAmonsters[i].AA);
             window.draw(AAmonsters[i].arrow);
             gui.DrawMonsterHP(AAmonsters[i].AA.getPosition(),
-                AAmonsters[i].health, (5 >= AAmonsters[i].health ? 5 : AAmonsters[i].health), 25, 60);
+                AAmonsters[i].health, AAmonsters[i].max_health, 25, 60);
         }
     }
 }

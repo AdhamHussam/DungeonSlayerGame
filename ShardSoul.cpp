@@ -153,7 +153,7 @@ void SSdraw(RenderWindow& window) {
         if (SSmonsters[i].alive)
         {
             window.draw(SSmonsters[i].SS);
-            gui.DrawMonsterHP(BMmonsters[i].BM.getPosition(), BMmonsters[i].health, 7, 20, 15);
+            gui.DrawMonsterHP(SSmonsters[i].SS.getPosition(), SSmonsters[i].health, 7, 20, 15);
         }
 }
 

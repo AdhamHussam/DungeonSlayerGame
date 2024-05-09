@@ -215,8 +215,11 @@ void AADraw(RenderWindow &window) {
         if(AAmonsters[i].alive) {
             window.draw(AAmonsters[i].AA);
             window.draw(AAmonsters[i].arrow);
-            gui.DrawMonsterHP(AAmonsters[i].AA.getPosition(),
-                AAmonsters[i].health, AAmonsters[i].max_health, 25, 60);
+            if (level == 2)
+                gui.drawBossHP(AAmonsters[i].health, AAmonsters[i].max_health);
+            else
+                gui.DrawMonsterHP(AAmonsters[i].AA.getPosition(),
+                    AAmonsters[i].health, AAmonsters[i].max_health, 25, 60);
         }
     }
 }

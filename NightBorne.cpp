@@ -195,7 +195,10 @@ void NBdraw(RenderWindow& window) {
     for (int i = 0; i < NightBroneNumber; i++) {
         if (NBmonsters[i].alive) {
             window.draw(NBmonsters[i].NB);
-            gui.DrawMonsterHP(NBmonsters[i].NB.getPosition(), NBmonsters[i].health, ((level == 1)?60:7), 20, 15);
+            if (level == 1)
+                gui.drawBossHP(NBmonsters[i].health, 60);
+            else
+                gui.DrawMonsterHP(NBmonsters[i].NB.getPosition(), NBmonsters[i].health, 7, 20, 15);
         }
     }
 }

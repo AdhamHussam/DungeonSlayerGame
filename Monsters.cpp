@@ -49,6 +49,7 @@ void MoveMonsters() {
     Smove(playerdeltatime, Player, attct, Player_Health, ishit);
     SSmove(playerdeltatime, Player, attct, Player_Health);
     BMmove(playerdeltatime, Player, attct, Player_Health);
+    room_cleared = true;
 }
 
 void ShowMonsters() {

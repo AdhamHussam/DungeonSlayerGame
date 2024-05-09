@@ -101,6 +101,10 @@ void NBset(int NBn) {
         NBmonsters[i].NB.setPosition(x,y);
         NBmonsters[i].alive = true;
         NBstate[i] = NBenum::NB_spawn;
+        if (level == 1) {
+            NBmonsters[i].AttackSpeed = 0.7;
+            NBmonsters[i].health = 40;
+        }
     }
 }
 
@@ -185,7 +189,7 @@ void NBdraw(RenderWindow& window) {
     for (int i = 0; i < NightBroneNumber; i++) {
         if (NBmonsters[i].alive) {
             window.draw(NBmonsters[i].NB);
-            gui.DrawMonsterHP(NBmonsters[i].NB.getPosition(), NBmonsters[i].health, 7, 20, 15);
+            gui.DrawMonsterHP(NBmonsters[i].NB.getPosition(), NBmonsters[i].health, ((level == 1)?40:7), 20, 15);
         }
     }
 }

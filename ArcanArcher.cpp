@@ -121,6 +121,10 @@ void AASet(int AAn) {
         AAmonsters[i].AA.setPosition(x,y);
         AAmonsters[i].alive = true;
         AAstate[i] = AAenum::AA_spawn;
+        if (level == 2) {
+            AAmonsters[i].power = 10;
+            AAmonsters[i].health = AAmonsters[i].max_health = 30;
+        }
     }
 }
 

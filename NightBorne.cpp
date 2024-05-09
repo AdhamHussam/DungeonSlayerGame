@@ -101,10 +101,8 @@ void NBset(int NBn) {
         NBmonsters[i].NB.setPosition(x,y);
         NBmonsters[i].alive = true;
         NBstate[i] = NBenum::NB_spawn;
-        if (level == 1) {
-            NBmonsters[i].AttackSpeed = 0.7;
-            NBmonsters[i].health = 40;
-        }
+        if (level == 1)
+            NBmonsters[i].health = 60;
     }
 }
 
@@ -136,14 +134,22 @@ void NBmove(float time, Sprite p, int attct, int& PlayerHealth, bool& IsHit) {
             continue;
         }
 
-        if (x < 0)
-            NBmonsters[i].NB.setScale(Vector2f(-3, 3));
-        else
-            NBmonsters[i].NB.setScale(Vector2f(3, 3));
+        if(level != 1){
+            if (x < 0)
+                NBmonsters[i].NB.setScale(Vector2f(-3, 3));
+            else
+                NBmonsters[i].NB.setScale(Vector2f(3, 3));
+        }
+        else {
+            if (x < 0)
+                NBmonsters[i].NB.setScale(Vector2f(-5, 5));
+            else
+                NBmonsters[i].NB.setScale(Vector2f(5, 5));
+        }
 
         NBmonsters[i].cooldown -= NBdeltatime;
 
-        if (NBmonsters[i].cooldown < 7) {
+        if (NBmonsters[i].cooldown < 7 && level != 1) {
             NBmonsters[i].AttackSpeed = 0.15;
             NBmonsters[i].speed = 100;
         }
@@ -189,7 +195,7 @@ void NBdraw(RenderWindow& window) {
     for (int i = 0; i < NightBroneNumber; i++) {
         if (NBmonsters[i].alive) {
             window.draw(NBmonsters[i].NB);
-            gui.DrawMonsterHP(NBmonsters[i].NB.getPosition(), NBmonsters[i].health, ((level == 1)?40:7), 20, 15);
+            gui.DrawMonsterHP(NBmonsters[i].NB.getPosition(), NBmonsters[i].health, ((level == 1)?60:7), 20, 15);
         }
     }
 }

@@ -106,6 +106,17 @@ Sound DeathSound;
 SoundBuffer game_music;
 Sound GameMusic;
 
+SoundBuffer player_attack1;
+SoundBuffer player_attackX;
+SoundBuffer player_attackC;
+SoundBuffer player_attackV;
+SoundBuffer player_hurt;
+SoundBuffer menu_sound;
+
+Sound PlayerAttack;
+Sound PlayerHurt;
+Sound MenuSounds;
+
 
 // Game functions
 
@@ -401,6 +412,16 @@ void setTextures()
     death_sound.loadFromFile("Death Sound.mp3");
     game_music.loadFromFile("Game music.mp3");
 
+    player_attack1.loadFromFile("Sound effects/unsheath_sword.mp3");
+    player_attackX.loadFromFile("Sound effects/mixkit-X.wav");
+    player_attackC.loadFromFile("Sound effects/mixkit-C.wav");
+    player_attackV.loadFromFile("Sound effects/mixkit-V.wav");
+    player_hurt.loadFromFile("Sound effects/Lit body hit.mp3");
+    PlayerHurt.setBuffer(player_hurt);
+
+    menu_sound.loadFromFile("Sound effects/interface.mp3");
+    MenuSounds.setBuffer(menu_sound);
+
     game_font.loadFromFile("Ungai.ttf");
     go_next_text.setFont(game_font);
     go_next_text.setFillColor(Color{ 255,215,0 });
@@ -542,22 +563,30 @@ void Switch_States()
 
         if ((Keyboard::isKeyPressed(Keyboard::Space) || Mouse::isButtonPressed(Mouse::Left)) && cooldown[0] == 0)
         {
-            curr_state = base;
+            curr_state = base;       
+             PlayerAttack.setBuffer(player_attack1);
+             PlayerAttack.play();
             cooldown[0] = 1.5;
         } 
         if (Keyboard::isKeyPressed(Keyboard::X) && cooldown[1] == 0)
         {
             curr_state = xmove;
+            PlayerAttack.setBuffer(player_attackX);
+            PlayerAttack.play();
             cooldown[1] = 3;
         }
         if (Keyboard::isKeyPressed(Keyboard::C) && cooldown[2] == 0)
         {
             curr_state = cmove;
+            PlayerAttack.setBuffer(player_attackC);
+            PlayerAttack.play();
             cooldown[2] = 6;
         }
         if (Keyboard::isKeyPressed(Keyboard::V)&& cooldown[3] == 0)
         {  
             curr_state = vmove;
+            PlayerAttack.setBuffer(player_attackV);
+            PlayerAttack.play();
             cooldown[3] = 9;
         }
         if (Keyboard::isKeyPressed(Keyboard::Q) && cooldown[4] == 0) {
@@ -569,6 +598,7 @@ void Switch_States()
         if (ishit)
         {
             curr_state = hit;
+            PlayerHurt.play();
         }
         if (Player_Health <= 0)
         {
@@ -669,10 +699,14 @@ void menu_handler()
                     }
 
                     if (event.type == Event::KeyPressed) {
-                        if (event.key.code == Keyboard::Up)
+                        if (event.key.code == Keyboard::Up) {
                             menu.MoveUp();
-                        if (event.key.code == Keyboard::Down)
+                            MenuSounds.play();
+                        }
+                        if (event.key.code == Keyboard::Down) {
                             menu.MoveDown();
+                            MenuSounds.play();
+                        }
                         if (event.key.code == Keyboard::Return) {
                             if (menu.pressed() == 0) {
                                 if (GameClock.getElapsedTime().asSeconds() > 0.2) {
@@ -781,6 +815,7 @@ void PauseMenuHandler(RenderWindow& window)
         if (Keyboard::isKeyPressed(Keyboard::Up)) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 pause.moveup();
+                MenuSounds.play();
                 GameClock.restart();
             }
         }
@@ -788,6 +823,7 @@ void PauseMenuHandler(RenderWindow& window)
         if (Keyboard::isKeyPressed(Keyboard::Down)) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 pause.movedown();
+                MenuSounds.play();
                 GameClock.restart();
             }
         }
@@ -796,6 +832,7 @@ void PauseMenuHandler(RenderWindow& window)
         if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 0) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 GameClock.restart();
+                MenuSounds.play();
                 GameMusic.play();
                 break;
             }
@@ -808,6 +845,7 @@ void PauseMenuHandler(RenderWindow& window)
         }
         if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 2) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                MenuSounds.play();
                 GameClock.restart();
                 level = 1;
                 Map.setTexture(map1);
@@ -817,6 +855,7 @@ void PauseMenuHandler(RenderWindow& window)
         }
         if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 3) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                MenuSounds.play();
                 GameClock.restart();
                 pagenum = 10;
                 level = 1;
@@ -896,6 +935,7 @@ void death_handler()
         if (Keyboard::isKeyPressed(Keyboard::Up)) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 game_over.moveup();
+                MenuSounds.play();
                 GameClock.restart();
             }
         }
@@ -903,6 +943,7 @@ void death_handler()
         if (Keyboard::isKeyPressed(Keyboard::Down)) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
                 game_over.movedown();
+                MenuSounds.play();
                 GameClock.restart();
             }
         }
@@ -911,6 +952,7 @@ void death_handler()
        
         if (Keyboard::isKeyPressed(Keyboard::Enter) && game_over.selectedp == 0) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                MenuSounds.play();
                 GameClock.restart();
                 level = 1;
                 Map.setTexture(map1);
@@ -923,6 +965,7 @@ void death_handler()
 
         if (Keyboard::isKeyPressed(Keyboard::Enter) && game_over.selectedp == 1) {
             if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                MenuSounds.play();
                 GameClock.restart();
                 pagenum = 10;
                 level = 1;

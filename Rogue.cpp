@@ -216,7 +216,7 @@ void Rdraw(RenderWindow& window) {
     for (int i = 0; i < RogueNumber; i++) {
         if (Rmonsters[i].alive) {
             window.draw(Rmonsters[i].R);
-            gui.drawBossHP(Rmonsters[i].health, 100);
+            gui.drawBossHP(Rmonsters[i].health, 200);
         }
     }
 }

@@ -13,7 +13,7 @@ int level = 1;
 bool room_cleared = true;
 int current_room = 0,current_wave = 0;
 int ArcaneArcherNumber, NightBroneNumber, SkeletonNumber, ShardSoulNumber, BrainMoleNumber, RogueNumber, GoblinNumber;
-RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer");
+RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer", Style::Fullscreen);
 int BODnumber;
 BringerOfDeath BODmonsters[30];
 NightBrone NBmonsters[30];

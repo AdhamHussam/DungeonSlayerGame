@@ -33,6 +33,8 @@ Font game_font;
 
 // player attributes
 float lastX = 0 , lastY = 0;
+float player_scale = 0.2;
+float button_lag = 0.2;
 int walk_speed = 100;
 int run_speed = 200;
 Vector2f velocity = { 0, 0 };
@@ -260,7 +262,7 @@ void setTextures()
     
     Idle.loadFromFile("idle.png");
     Player.setTexture(Idle);
-    Player.setScale(0.2, 0.2);
+    Player.setScale(player_scale, player_scale);
     Player.setOrigin(Idle.getSize().x / 2, Idle.getSize().y / 2);
     Player.setPosition(initial_position);
 
@@ -444,7 +446,7 @@ void Draw()
         window.draw(go_next_text);
     }
     ShowMonsters();
-    gui.drawGUI(window);
+    gui.drawGUI(window);    
     
     //for (int i = 0; i < doors+1; i++) {
     //    window.draw(gates[i]);
@@ -481,12 +483,12 @@ void playerMovement()
 
     if (Keyboard::isKeyPressed(Keyboard::A) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
-        Player.setScale(-0.2, 0.2);
+        Player.setScale(-player_scale, player_scale);
         velocity.x = -run_speed * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::D) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
-        Player.setScale(0.2, 0.2);
+        Player.setScale(player_scale, player_scale);
         velocity.x = run_speed * playerdeltatime;
     }
     else {
@@ -510,12 +512,12 @@ void playerMovement()
 
     if (Keyboard::isKeyPressed(Keyboard::A))
     {
-        Player.setScale(-0.2, 0.2);
+        Player.setScale(-player_scale, player_scale);
         velocity.x = -walk_speed * playerdeltatime;
     }
     else if (Keyboard::isKeyPressed(Keyboard::D))
     {
-        Player.setScale(0.2, 0.2);
+        Player.setScale(player_scale, player_scale);
         velocity.x = walk_speed * playerdeltatime;
     }
     else {
@@ -548,60 +550,50 @@ void Switch_States()
    
     if (!animation_running) {
         
-        if ((Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W)) && Keyboard::isKeyPressed(Keyboard::LShift))
-        {
+        if ((Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W)) && Keyboard::isKeyPressed(Keyboard::LShift)) {
             curr_state = run;
         }
-        else if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W))
-        {
+        else if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::W)) {
             curr_state = walk;
         }
-        else
-        {
+        else {
             curr_state = idle;
         }
 
-        if ((Keyboard::isKeyPressed(Keyboard::Space) || Mouse::isButtonPressed(Mouse::Left)) && cooldown[0] == 0)
-        {
+        if ((Keyboard::isKeyPressed(Keyboard::Space) || Mouse::isButtonPressed(Mouse::Left)) && cooldown[0] == 0) {
             curr_state = base;       
              PlayerAttack.setBuffer(player_attack1);
              PlayerAttack.play();
             cooldown[0] = 1.5;
         } 
-        if (Keyboard::isKeyPressed(Keyboard::X) && cooldown[1] == 0)
-        {
+        if (Keyboard::isKeyPressed(Keyboard::X) && cooldown[1] == 0 ) {
             curr_state = xmove;
             PlayerAttack.setBuffer(player_attackX);
             PlayerAttack.play();
             cooldown[1] = 3;
         }
-        if (Keyboard::isKeyPressed(Keyboard::C) && cooldown[2] == 0)
-        {
+        if (Keyboard::isKeyPressed(Keyboard::C) && cooldown[2] == 0 ) {
             curr_state = cmove;
             PlayerAttack.setBuffer(player_attackC);
             PlayerAttack.play();
             cooldown[2] = 6;
         }
-        if (Keyboard::isKeyPressed(Keyboard::V)&& cooldown[3] == 0)
-        {  
+        if (Keyboard::isKeyPressed(Keyboard::V) && cooldown[3] == 0 ) {  
             curr_state = vmove;
             PlayerAttack.setBuffer(player_attackV);
             PlayerAttack.play();
             cooldown[3] = 9;
         }
-        if (Keyboard::isKeyPressed(Keyboard::Q) && cooldown[4] == 0) {
-
+        if (Keyboard::isKeyPressed(Keyboard::Q) && cooldown[4] == 0 ) {
             cooldown[4] = 3;
             isdashing = true;
         }
         
-        if (ishit)
-        {
+        if (ishit) {
             curr_state = hit;
             PlayerHurt.play();
         }
-        if (Player_Health <= 0)
-        {
+        if (Player_Health <= 0) {
             curr_state = dead;
         }
         
@@ -639,15 +631,15 @@ void Switch_States()
     // Animate 
 
     switch (curr_state) {
-    case run:maximagecounter = 8; Player.setTexture(RunAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
-    case walk: maximagecounter = 8; Player.setTexture(walkAnimation[ImageCounter]); UpdateAnimationCounter(0.2); break;
-    case idle: Player.setTexture(Idle); UpdateAnimationCounter(0.1); break;
-    case base: Player.setTexture(BaseAttack[ImageCounter]); UpdateAnimationCounter(0.08); break;//0.12
-    case vmove: Player.setTexture(Vmove[ImageCounter]); UpdateAnimationCounter(0.11); break;
-    case xmove: Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
-    case cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
-    case hit:Player.setTexture(HitAnimation[ImageCounter]); UpdateAnimationCounter(0.15); break;    
-    case dead: Player.setTexture(DeathAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
+        case run:maximagecounter = 8; Player.setTexture(RunAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
+        case walk: maximagecounter = 8; Player.setTexture(walkAnimation[ImageCounter]); UpdateAnimationCounter(0.2); break;
+        case idle: Player.setTexture(Idle); UpdateAnimationCounter(0.1); break;
+        case base: Player.setTexture(BaseAttack[ImageCounter]); UpdateAnimationCounter(0.08); break;//0.12
+        case vmove: Player.setTexture(Vmove[ImageCounter]); UpdateAnimationCounter(0.11); break;
+        case xmove: Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
+        case cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
+        case hit:Player.setTexture(HitAnimation[ImageCounter]); UpdateAnimationCounter(0.15); break;    
+        case dead: Player.setTexture(DeathAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
     }
 
 }
@@ -709,19 +701,19 @@ void menu_handler()
                         }
                         if (event.key.code == Keyboard::Return) {
                             if (menu.pressed() == 0) {
-                                if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                                if (GameClock.getElapsedTime().asSeconds() > button_lag) {
                                     GameClock.restart();
                                     pagenum = 0;
                                 }
                             }
                             if (menu.pressed() == 1) {
-                                if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                                if (GameClock.getElapsedTime().asSeconds() > button_lag) {
                                     GameClock.restart();
                                     pagenum = 1;
                                 }
                             }
                             if (menu.pressed() == 2) {
-                                if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+                                if (GameClock.getElapsedTime().asSeconds() > button_lag) {
                                     GameClock.restart();
                                     pagenum = -1;
                                 }
@@ -813,7 +805,7 @@ void PauseMenuHandler(RenderWindow& window)
         window.setView(view);
 
         if (Keyboard::isKeyPressed(Keyboard::Up)) {
-            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+            if (GameClock.getElapsedTime().asSeconds() > button_lag) {
                 pause.moveup();
                 MenuSounds.play();
                 GameClock.restart();
@@ -821,7 +813,7 @@ void PauseMenuHandler(RenderWindow& window)
         }
 
         if (Keyboard::isKeyPressed(Keyboard::Down)) {
-            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+            if (GameClock.getElapsedTime().asSeconds() > button_lag) {
                 pause.movedown();
                 MenuSounds.play();
                 GameClock.restart();
@@ -830,7 +822,7 @@ void PauseMenuHandler(RenderWindow& window)
 
 
         if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 0) {
-            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+            if (GameClock.getElapsedTime().asSeconds() > button_lag) {
                 GameClock.restart();
                 MenuSounds.play();
                 GameMusic.play();
@@ -838,13 +830,13 @@ void PauseMenuHandler(RenderWindow& window)
             }
         }
         if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 1) {
-            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+            if (GameClock.getElapsedTime().asSeconds() > button_lag) {
                 GameClock.restart();
                 // options menu
             }
         }
         if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 2) {
-            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+            if (GameClock.getElapsedTime().asSeconds() > button_lag) {
                 MenuSounds.play();
                 GameClock.restart();
                 level = 1;
@@ -854,7 +846,7 @@ void PauseMenuHandler(RenderWindow& window)
             }
         }
         if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 3) {
-            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+            if (GameClock.getElapsedTime().asSeconds() > button_lag) {
                 MenuSounds.play();
                 GameClock.restart();
                 pagenum = 10;
@@ -933,7 +925,7 @@ void death_handler()
         }
 
         if (Keyboard::isKeyPressed(Keyboard::Up)) {
-            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+            if (GameClock.getElapsedTime().asSeconds() > button_lag) {
                 game_over.moveup();
                 MenuSounds.play();
                 GameClock.restart();
@@ -941,7 +933,7 @@ void death_handler()
         }
 
         if (Keyboard::isKeyPressed(Keyboard::Down)) {
-            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+            if (GameClock.getElapsedTime().asSeconds() > button_lag) {
                 game_over.movedown();
                 MenuSounds.play();
                 GameClock.restart();
@@ -951,7 +943,7 @@ void death_handler()
         // Restart
        
         if (Keyboard::isKeyPressed(Keyboard::Enter) && game_over.selectedp == 0) {
-            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+            if (GameClock.getElapsedTime().asSeconds() > button_lag) {
                 MenuSounds.play();
                 GameClock.restart();
                 level = 1;
@@ -964,7 +956,7 @@ void death_handler()
         // retrun to Main menu
 
         if (Keyboard::isKeyPressed(Keyboard::Enter) && game_over.selectedp == 1) {
-            if (GameClock.getElapsedTime().asSeconds() > 0.2) {
+            if (GameClock.getElapsedTime().asSeconds() > button_lag) {
                 MenuSounds.play();
                 GameClock.restart();
                 pagenum = 10;
@@ -1023,7 +1015,7 @@ void check_room()
 void checkpause()
 {
     if (Keyboard::isKeyPressed(Keyboard::Escape) && !isDead) {
-        if (pausetimer.getElapsedTime().asSeconds() > 0.2) {
+        if (pausetimer.getElapsedTime().asSeconds() > button_lag) {
             PauseMenuHandler(window);
             pausetimer.restart();
         }
@@ -1045,8 +1037,7 @@ void dash()
             run_speed = 200;
             walk_speed = 100;
         }
-    }
-   
+    }  
 }
 
 
@@ -1054,8 +1045,9 @@ void Go_Next()
 {
     go_next = true;
     if (Keyboard::isKeyPressed(Keyboard::E)) {
-
+        
         game_reset();
+        
         if (level == 1) {
             Map.setTexture(map2);
             level = 2;
@@ -1066,7 +1058,6 @@ void Go_Next()
             level = 3;
             return;
         }
-
         else {
             Map.setTexture(map1);
             level = 1;

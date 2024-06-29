@@ -76,6 +76,8 @@ Texture walkAnimation[8];
 Texture map1;
 Texture map2;
 Texture map3;
+Texture map4;
+Texture map5;
 
 Texture mainmenubg;
 Texture instructs;
@@ -253,6 +255,8 @@ void setTextures()
     map1.loadFromFile("lvl1.png");
     map2.loadFromFile("lvl2.png");
     map3.loadFromFile("lvl3.png");
+    map4.loadFromFile("lvl4.png");
+    map5.loadFromFile("lvl5.png");
     Map.setTexture(map1);
     Map.setScale(3.8, 3.333);
     Map.setOrigin(map1.getSize().x / 2, map1.getSize().y / 2);
@@ -1047,14 +1051,18 @@ void Go_Next()
     if (Keyboard::isKeyPressed(Keyboard::E)) {
         
         game_reset();
-        
         if (level == 1) {
             Map.setTexture(map2);
             level = 2;
             return;
         }
         else if (level == 2) {
-            Map.setTexture(map3);
+            Map.setTexture(map4);
+            level = 3;
+            return;
+        }
+        else if(level == 3){
+            Map.setTexture(map5);
             level = 3;
             return;
         }

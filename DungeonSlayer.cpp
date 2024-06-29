@@ -6,12 +6,18 @@
 #include "PauseMenu.h"
 #include "GUI.h"
 
-
 // Game properties
 enum state
 {
-    idle, run, hit, base,  xmove, cmove, vmove, dead, walk
+    idle, run, hit, base, xmove, cmove, vmove, dead, walk
+}; 
+
+enum NPCstate
+{
+    npc_idle, npc_talk
 };
+
+NPCstate npc_state = NPCstate::npc_idle;
 
 int doors = 5;
 int right_walls = 25;
@@ -39,9 +45,11 @@ int walk_speed = 100;
 int run_speed = 200;
 Vector2f velocity = { 0, 0 };
 float AnimationCounter = 0;
+float NPCcounter = 0;
 float dash_duration = 0.075;
 int maximagecounter = 0;
 int ImageCounter = 0;
+int NPCImageCOunter = 0;
 bool animation_running = false;
 bool isDead = false;
 bool go_next = false;
@@ -79,6 +87,10 @@ Texture map3;
 Texture map4;
 Texture map5;
 
+Texture shop_npc_idle[4];
+Texture shop_npc_talk[4];
+
+Sprite ShopNPC;
 Texture mainmenubg;
 Texture instructs;
 Texture death_screen;
@@ -143,6 +155,7 @@ void setTextures();
 void checkCollisions();
 void Draw();
 void UpdateAnimationCounter(float st = 0.1);
+void NpcAnimation(float st);
 void game_reset();
 void Go_Next();
 
@@ -157,7 +170,7 @@ int main()
 
 // Definitions;
 void update()
-{
+{ 
     if (!isDead) {
         fell();
         Switch_States();
@@ -412,7 +425,19 @@ void setTextures()
     }
     for (int i = 0; i < 3; i++) {
         DeathAnimation[i].loadFromFile("Dead/Dead" + to_string(i) + ".png");
+    } 
+    for (int i = 0; i < 4; i++) {
+        shop_npc_idle[i].loadFromFile("upgrade npc/npc idle/" + to_string(i) +".png");
+    }  
+    for (int i = 0; i < 4; i++) {
+        shop_npc_talk[i].loadFromFile("upgrade npc/npc talk/" + to_string(i) + ".png");
     }
+
+    // Shop NPC
+    ShopNPC.setTexture(shop_npc_idle[0]);
+    ShopNPC.setOrigin(45, 45);
+    ShopNPC.setPosition(220, 6700);
+    ShopNPC.setScale(3,3);
 
     menu_opener.loadFromFile("Title card.mp3");
     death_sound.loadFromFile("Death Sound.mp3");
@@ -443,6 +468,7 @@ void Draw()
 {
     window.clear();
     window.draw(Map);
+    window.draw(ShopNPC);
     if (!ispassing)
         window.draw(Player);
     if (go_next) {
@@ -450,6 +476,7 @@ void Draw()
         window.draw(go_next_text);
     }
     ShowMonsters();
+   
     gui.drawGUI(window);    
     
     //for (int i = 0; i < doors+1; i++) {
@@ -646,6 +673,12 @@ void Switch_States()
         case dead: Player.setTexture(DeathAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
     }
 
+    switch (npc_state) {
+        case npc_idle:ShopNPC.setTexture(shop_npc_idle[NPCImageCOunter]); NpcAnimation(0.25);
+            break;
+        case npc_talk:ShopNPC.setTexture(shop_npc_talk[NPCImageCOunter]); NpcAnimation(0.1);
+            break;
+    }
 }
 
 void UpdateAnimationCounter(float st)
@@ -662,16 +695,23 @@ void UpdateAnimationCounter(float st)
                 if (animation_running) animation_running = false;
                 ImageCounter = 0;
             }
-            else 
-            {
+            else {
                 Player.setTexture(DeathAnimation[2]);
                 isDead = true;
-
             }
-
         }
     }
+}
 
+void NpcAnimation(float st)
+{
+    NPCcounter += playerdeltatime;
+    if (NPCcounter >= st)
+    {
+        NPCcounter = 0;
+        NPCImageCOunter++;
+        NPCImageCOunter %= 4;
+    }
 }
 
 void menu_handler()
@@ -1057,18 +1097,18 @@ void Go_Next()
             return;
         }
         else if (level == 2) {
-            Map.setTexture(map4);
+            Map.setTexture(map3);
             level = 3;
             return;
         }
         else if(level == 3){
-            Map.setTexture(map5);
-            level = 3;
+            Map.setTexture(map4);
+            level = 4;
             return;
         }
-        else {
-            Map.setTexture(map1);
-            level = 1;
+        else if(level == 4) {
+            Map.setTexture(map5);
+            level = 5;
             return;
         }
     }

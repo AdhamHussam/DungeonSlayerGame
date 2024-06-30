@@ -17,7 +17,8 @@ enum NPCstate
     npc_idle, npc_talk
 };
 
-NPCstate npc_state = NPCstate::npc_idle;
+NPCstate upgrade_npc_state = NPCstate::npc_idle;
+NPCstate trade_npc_state = NPCstate::npc_idle;
 
 int doors = 5;
 int right_walls = 25;
@@ -45,11 +46,13 @@ int walk_speed = 100;
 int run_speed = 200;
 Vector2f velocity = { 0, 0 };
 float AnimationCounter = 0;
-float NPCcounter = 0;
+float upgradeNPCcounter = 0;
+float tradeNPCcounter = 0;
 float dash_duration = 0.075;
 int maximagecounter = 0;
 int ImageCounter = 0;
-int NPCImageCOunter = 0;
+int upgradeNPCImageCounter = 0;
+int tradeNPCImageCounter = 0;
 bool animation_running = false;
 bool isDead = false;
 bool go_next = false;
@@ -87,10 +90,15 @@ Texture map3;
 Texture map4;
 Texture map5;
 
-Texture shop_npc_idle[4];
-Texture shop_npc_talk[4];
+Texture upgrade_npc_idle[4];
+Texture upgrade_npc_talk[4];
 
-Sprite ShopNPC;
+Texture trade_npc_idle[11];
+Texture trade_npc_talk[11];
+
+Sprite UpgradeNPC;
+Sprite TradeNPC;
+
 Texture mainmenubg;
 Texture instructs;
 Texture death_screen;
@@ -147,7 +155,6 @@ void update();
 void dash();
 void checkpause();
 void check_room();
-void fell();
 void death_handler();
 void trackView();
 void playerMovement();
@@ -155,7 +162,8 @@ void setTextures();
 void checkCollisions();
 void Draw();
 void UpdateAnimationCounter(float st = 0.1);
-void NpcAnimation(float st);
+void upgradeNpcAnimation(float st);
+void tradeNpcAnimation(float st);
 void game_reset();
 void Go_Next();
 
@@ -172,7 +180,6 @@ int main()
 void update()
 { 
     if (!isDead) {
-        fell();
         Switch_States();
         playerMovement();
         MoveMonsters();
@@ -427,17 +434,29 @@ void setTextures()
         DeathAnimation[i].loadFromFile("Dead/Dead" + to_string(i) + ".png");
     } 
     for (int i = 0; i < 4; i++) {
-        shop_npc_idle[i].loadFromFile("upgrade npc/npc idle/" + to_string(i) +".png");
+        upgrade_npc_idle[i].loadFromFile("Npc/upgrader/idle/" + to_string(i) +".png");
     }  
     for (int i = 0; i < 4; i++) {
-        shop_npc_talk[i].loadFromFile("upgrade npc/npc talk/" + to_string(i) + ".png");
+        upgrade_npc_talk[i].loadFromFile("Npc/upgrader/talk/" + to_string(i) + ".png");
+    }
+     for (int i = 0; i < 11; i++) {
+        trade_npc_idle[i].loadFromFile("Npc/trader/Idle2/Idle" + to_string(i) + ".png");
+    }  
+    for (int i = 0; i < 7; i++) {
+        trade_npc_talk[i].loadFromFile("Npc/trader/Idle2/Idle" + to_string(i) + ".png");
     }
 
-    // Shop NPC
-    ShopNPC.setTexture(shop_npc_idle[0]);
-    ShopNPC.setOrigin(45, 45);
-    ShopNPC.setPosition(220, 6700);
-    ShopNPC.setScale(3,3);
+    // Upgrade NPC
+    UpgradeNPC.setTexture(upgrade_npc_idle[0]);
+    UpgradeNPC.setOrigin(45, 45);
+    UpgradeNPC.setPosition(300, 6700);
+    UpgradeNPC.setScale(3,3);
+
+    //Trade NPC
+    TradeNPC.setTexture(trade_npc_idle[0]);
+    TradeNPC.setOrigin(64, 64);
+    TradeNPC.setPosition(-750, 6650);
+    TradeNPC.setScale(2.5,2.5);
 
     menu_opener.loadFromFile("Title card.mp3");
     death_sound.loadFromFile("Death Sound.mp3");
@@ -468,7 +487,8 @@ void Draw()
 {
     window.clear();
     window.draw(Map);
-    window.draw(ShopNPC);
+    window.draw(UpgradeNPC);
+    window.draw(TradeNPC);
     if (!ispassing)
         window.draw(Player);
     if (go_next) {
@@ -673,10 +693,16 @@ void Switch_States()
         case dead: Player.setTexture(DeathAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
     }
 
-    switch (npc_state) {
-        case npc_idle:ShopNPC.setTexture(shop_npc_idle[NPCImageCOunter]); NpcAnimation(0.25);
+    switch (upgrade_npc_state) {
+        case npc_idle:UpgradeNPC.setTexture(upgrade_npc_idle[upgradeNPCImageCounter]); upgradeNpcAnimation(0.2);
             break;
-        case npc_talk:ShopNPC.setTexture(shop_npc_talk[NPCImageCOunter]); NpcAnimation(0.1);
+        case npc_talk:UpgradeNPC.setTexture(upgrade_npc_talk[upgradeNPCImageCounter]); upgradeNpcAnimation(0.1);
+            break;
+    } 
+    switch (trade_npc_state) {
+        case npc_idle:TradeNPC.setTexture(trade_npc_idle[tradeNPCImageCounter]); tradeNpcAnimation(0.15);
+            break;
+        case npc_talk:TradeNPC.setTexture(trade_npc_talk[tradeNPCImageCounter]); tradeNpcAnimation(0.1);
             break;
     }
 }
@@ -703,14 +729,24 @@ void UpdateAnimationCounter(float st)
     }
 }
 
-void NpcAnimation(float st)
+void upgradeNpcAnimation(float st)
 {
-    NPCcounter += playerdeltatime;
-    if (NPCcounter >= st)
+    upgradeNPCcounter += playerdeltatime;
+    if (upgradeNPCcounter >= st)
     {
-        NPCcounter = 0;
-        NPCImageCOunter++;
-        NPCImageCOunter %= 4;
+        upgradeNPCcounter = 0;
+        upgradeNPCImageCounter++;
+        upgradeNPCImageCounter %= 4;
+    }
+}
+void tradeNpcAnimation(float st)
+{
+    tradeNPCcounter += playerdeltatime;
+    if (tradeNPCcounter >= st)
+    {
+        tradeNPCcounter = 0;
+        tradeNPCImageCounter++;
+        tradeNPCImageCounter %= 11;
     }
 }
 
@@ -1023,19 +1059,6 @@ void death_handler()
         game_over.draw(window);
         window.display();
     }
-}
-
-void fell()
-{
-    for(int i = 0; i <5; i++)
-    if (Player.getGlobalBounds().intersects(left_borders[20+i].getGlobalBounds())
-        && Player.getGlobalBounds().intersects(right_borders[20+i].getGlobalBounds()) 
-        && Player.getGlobalBounds().intersects(up_borders[19+i].getGlobalBounds()) 
-        && Player.getGlobalBounds().intersects(down_borders[21+i].getGlobalBounds())) 
-        {
-            Player_Health -= 200;
-        }
-
 }
 
 void check_room()

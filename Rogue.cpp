@@ -21,8 +21,7 @@ IntRect RgetRect(int pos) {
 
 void RupdateMonsterAnimationCounter(int i, float st = 0.15) {
     RmonsterCounter[i] += Rdeltatime;
-    if (RmonsterCounter[i] >= st)
-    {
+    if (RmonsterCounter[i] >= st) {
         RmonsterCounter[i] = 0;
         RmovmentCounter[i]++;
     }

@@ -71,7 +71,6 @@ void PauseMenu::moveup()
             selectedp = 3;
 
         }
-
         pausemenu[selectedp].setFillColor(Color{ 255,215,0 });
     }
 }

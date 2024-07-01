@@ -60,6 +60,7 @@ void Rhurt(int i) {
     RupdateMonsterAnimationCounter(i,0.1);
     if (RmovmentCounter[i] == 7) {
         RmovmentCounter[i] = 0;
+        AblazeCharge += 4;
         Rstate[i] = Renum::R_walk;
     }
 }

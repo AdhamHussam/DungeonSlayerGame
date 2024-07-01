@@ -15,7 +15,7 @@ Menu::Menu(float width, float height) {
 
 	mainmenu[1].setFont(font);
 	mainmenu[1].setFillColor(Color::White);
-	mainmenu[1].setString("Instructions");
+	mainmenu[1].setString("Credits");
 	mainmenu[1].setCharacterSize(90);
 	mainmenu[1].setPosition(Vector2f(100,600));
 

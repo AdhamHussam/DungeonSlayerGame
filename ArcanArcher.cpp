@@ -59,8 +59,10 @@ void AAattack(int i) {
 void AAdie(int i) {
     AAmonsters[i].AA.setTextureRect(AAgetRect(8 + AAMovmentCounter[i]));
     AAUpdateMonsterAnimationCounter(i);
-    if (AAMovmentCounter[i] == 8)
+    if (AAMovmentCounter[i] == 8) {
         AAmonsters[i].alive = false;
+        AblazeCharge+=2;
+    }
 }
 
 void AAspawn(int i) {

@@ -64,10 +64,14 @@ void NBhurt(int i) {
 }
 
 void NBdie(int i) {
+    
     NBmonsters[i].NB.setTextureRect(NBgetRect(92 + NBmovmentCounter[i]));
     NBupdateMonsterAnimationCounter(i);
-    if (NBmovmentCounter[i] == 23)
+    if (NBmovmentCounter[i] == 23) {
         NBmonsters[i].alive = false;
+        if (level > 1) AblazeCharge+=2;
+        else AblazeCharge += 10;
+    }
 }
 
 void NBspawn(int i) {

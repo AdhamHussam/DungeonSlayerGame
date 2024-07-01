@@ -71,6 +71,7 @@ void BMdie(int x, int y,int i) {
             Player_Health--;
         }
         BMmonsters[i].alive = false;
+        AblazeCharge++;
     }
 }
 

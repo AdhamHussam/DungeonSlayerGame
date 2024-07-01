@@ -50,7 +50,6 @@ void MoveMonsters() {
     SSmove(playerdeltatime, Player, attct, Player_Health);
     BMmove(playerdeltatime, Player, attct, Player_Health);
  //   room_cleared = true;
-
 }
 
 void ShowMonsters() {
@@ -61,12 +60,12 @@ void ShowMonsters() {
             if (showBODSpell[i])
                 window.draw(BODmonsters[i].spell);
         }
-    AADraw(window);
-    NBdraw(window);
     draw_goblin(window, GoblinNumber);
     Sdraw(window);
     SSdraw(window);
     BMdraw(window);
+    AADraw(window);
+    NBdraw(window);
     Rdraw(window);
 }
 

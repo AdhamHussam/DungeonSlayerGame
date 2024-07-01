@@ -36,23 +36,32 @@ bool death_trigger = false;
 int pagenum = 10;
 
 Text go_next_text;
+Text set_your_heart_text;
 Font game_font;
 
 // player attributes
 float lastX = 0 , lastY = 0;
 float player_scale = 0.2;
+float animation_multiplier = 1;
 float button_lag = 0.2;
+float AblazeDuration = 15;
 int walk_speed = 100;
 int run_speed = 200;
+int cooldown_divider = 1;
 Vector2f velocity = { 0, 0 };
 float AnimationCounter = 0;
 float upgradeNPCcounter = 0;
 float tradeNPCcounter = 0;
+float PowerUpcounter = 0;
 float dash_duration = 0.075;
 int maximagecounter = 0;
 int ImageCounter = 0;
 int upgradeNPCImageCounter = 0;
+int PowerUpImageCounter = 0;
 int tradeNPCImageCounter = 0;
+
+float intensity = 35.0;
+
 bool animation_running = false;
 bool isDead = false;
 bool go_next = false;
@@ -60,6 +69,9 @@ bool ispassing = false;
 bool passed_door = false;
 bool isdashing = false;
 bool finishedanimationonce = false;
+bool AblazeReady = false;
+bool Ablaze = false;
+bool power_up = false;
 
 
 Menu menu(1920, 1080);
@@ -69,12 +81,12 @@ Clock pausetimer;
 Clock attacktimer;
 Clock dashtimer;
 
-
 Vector2f initial_position(-500, 7000);
 
 // Textures
 
 Texture Idle;
+Texture Idle2;
 Texture RunAnimation[8];
 Texture DeathAnimation[3];
 Texture HitAnimation[3];
@@ -83,6 +95,7 @@ Texture Vmove[7];
 Texture Xmove[7];
 Texture Cmove[8];
 Texture walkAnimation[8];
+Texture powerup[5];
 
 Texture map1;
 Texture map2;
@@ -99,17 +112,20 @@ Texture trade_npc_talk[11];
 Sprite UpgradeNPC;
 Sprite TradeNPC;
 
+CircleShape shadow1;
+CircleShape shadow2;
+
+Sprite Powerup;
 Texture mainmenubg;
-Texture instructs;
+Texture credits;
 Texture death_screen;
 Sprite DeathScreen;
-Sprite Instructions;
+Sprite Credits;
 Sprite bg;
 Sprite Room;
 Texture pausebg;
 Sprite pausemenu;
 Sprite Map;
-
 
 // Room 0 Borders
 RectangleShape gate1(Vector2f({ 1, 1 }));
@@ -149,8 +165,8 @@ void music_handler();
 void Switch_States();
 void Game_play(RenderWindow& window);
 void PauseMenuHandler(RenderWindow& window);
-void Instructions_Menu(RenderWindow& window);
-void Instructions_Draw();
+void Credits_Menu(RenderWindow& window);
+void Credits_Draw();
 void update();
 void dash();
 void checkpause();
@@ -164,8 +180,13 @@ void Draw();
 void UpdateAnimationCounter(float st = 0.1);
 void upgradeNpcAnimation(float st);
 void tradeNpcAnimation(float st);
+void powerupAnimation(float st);
 void game_reset();
 void Go_Next();
+void check_ablaze();
+void set_your_heart_ablaze();
+void camera_shake();
+    
 
 // Main 
 int main()
@@ -177,8 +198,9 @@ int main()
 }
 
 // Definitions;
-void update()
-{ 
+void update() {
+
+    cout << AblazeCharge << " " << AblazeReady << ' ' << Ablaze << " " << AblazeDuration << '\n';
     if (!isDead) {
         Switch_States();
         playerMovement();
@@ -188,14 +210,17 @@ void update()
         checkCollisions();
         checkpause();
         dash();
+        check_ablaze();
+        set_your_heart_ablaze();
+        camera_shake();
+        window.setView(view);
     }
-    else {
-        death_handler();
-    } 
+    else death_handler();
+ 
 }
 
-void checkCollisions() 
-{
+void checkCollisions() {
+
     //doors
     for (int i = 0; i < doors; i++) {
         if (Player.getGlobalBounds().intersects(gates[i].getGlobalBounds())) {
@@ -252,21 +277,21 @@ void checkCollisions()
   
 }
 
-void setTextures()
-{
+void setTextures() {
+
     // Menus   
     mainmenubg.loadFromFile("Main Menu.jpg");
-    instructs.loadFromFile("instructions.png");
+    credits.loadFromFile("Credits.jpg");
     pausebg.loadFromFile("pausebg.png");
     death_screen.loadFromFile("death_screen.png");
 
     bg.setTexture(mainmenubg);
-    Instructions.setTexture(instructs);
+    Credits.setTexture(credits);
     pausemenu.setTexture(pausebg);
     DeathScreen.setTexture(death_screen);
     
     bg.setScale(0.5, 0.5);
-    Instructions.setScale(0.75, 0.75);
+    Credits.setScale(1, 1);
     pausemenu.setScale(0.5, 0.5);
     DeathScreen.setScale(0.7, 0.7);
     
@@ -285,6 +310,7 @@ void setTextures()
     //Player
     
     Idle.loadFromFile("idle.png");
+    Idle2.loadFromFile("AblazeIdle.png");
     Player.setTexture(Idle);
     Player.setScale(player_scale, player_scale);
     Player.setOrigin(Idle.getSize().x / 2, Idle.getSize().y / 2);
@@ -445,18 +471,33 @@ void setTextures()
     for (int i = 0; i < 7; i++) {
         trade_npc_talk[i].loadFromFile("Npc/trader/Idle2/Idle" + to_string(i) + ".png");
     }
+    for (int i = 0; i < 5; i++) {
+        powerup[i].loadFromFile("Player effects/power up/powerup" + to_string(i) + ".png");
+    }
 
     // Upgrade NPC
     UpgradeNPC.setTexture(upgrade_npc_idle[0]);
     UpgradeNPC.setOrigin(45, 45);
     UpgradeNPC.setPosition(300, 6700);
     UpgradeNPC.setScale(3,3);
+    
+    shadow1.setFillColor({ 10,10,10 });
+    shadow1.setScale(2.25, 0.6666);
+    shadow1.setRadius(30);
+    shadow1.setPosition(285,6790);
+    shadow1.setOrigin(15, 15);
 
     //Trade NPC
     TradeNPC.setTexture(trade_npc_idle[0]);
     TradeNPC.setOrigin(64, 64);
     TradeNPC.setPosition(-750, 6650);
     TradeNPC.setScale(2.5,2.5);
+
+    shadow2.setFillColor({ 10,10,10 });
+    shadow2.setScale(2,0.6666);
+    shadow2.setRadius(20);
+    shadow2.setPosition(-780, 6800);
+    shadow2.setOrigin(10, 10);
 
     menu_opener.loadFromFile("Title card.mp3");
     death_sound.loadFromFile("Death Sound.mp3");
@@ -473,53 +514,64 @@ void setTextures()
     MenuSounds.setBuffer(menu_sound);
 
     game_font.loadFromFile("Ungai.ttf");
+
     go_next_text.setFont(game_font);
     go_next_text.setFillColor(Color{ 255,215,0 });
     go_next_text.setString("Press E to proceed to next level");
     go_next_text.setCharacterSize(30);
     go_next_text.setPosition(Player.getPosition().x-100, Player.getPosition().y + 100);
 
+    set_your_heart_text.setFont(game_font);
+    set_your_heart_text.setFillColor(Color{ 255,215,0 });
+    set_your_heart_text.setString("Set Your Heart Ablaze");
+    set_your_heart_text.setCharacterSize(40);
+    set_your_heart_text.setPosition(Player.getPosition().x-100, Player.getPosition().y + 100);
 
 }
 
 
-void Draw()
-{
+void Draw() {
     window.clear();
     window.draw(Map);
+    window.draw(shadow1);
+    window.draw(shadow2);
     window.draw(UpgradeNPC);
     window.draw(TradeNPC);
-    if (!ispassing)
-        window.draw(Player);
+    if (!ispassing)window.draw(Player);
+    ShowMonsters();       
+    if (power_up) {
+        Powerup.setScale(2,2);
+        Powerup.setPosition(Player.getPosition().x-180, Player.getPosition().y-90);
+        window.draw(Powerup);
+    }
     if (go_next) {
         go_next_text.setPosition(Player.getPosition().x-350, Player.getPosition().y - 150);
         window.draw(go_next_text);
+    } 
+    if (AblazeReady) {
+        set_your_heart_text.setPosition(Player.getPosition().x- 300, Player.getPosition().y - 350);
+        window.draw(set_your_heart_text);
     }
-    ShowMonsters();
-   
+   /* for (int i = 0; i < doors+1; i++) {
+        window.draw(gates[i]);
+    } 
+    for(int i = 0; i < left_walls;i++){
+        window.draw(left_borders[i]);
+    }
+    for(int i = 0; i < up_walls;i++){
+        window.draw(up_borders[i]);
+    }
+    for(int i = 0; i < right_walls;i++)
+      window.draw(right_borders[i]);
+
+    for (int i = 0; i < down_walls; i++)
+        window.draw(down_borders[i]);*/
+
     gui.drawGUI(window);    
-    
-    //for (int i = 0; i < doors+1; i++) {
-    //    window.draw(gates[i]);
-    //} 
-    //for(int i = 0; i < left_walls;i++){
-    //    window.draw(left_borders[i]);
-    //}
-    //for(int i = 0; i < up_walls;i++){
-    //    window.draw(up_borders[i]);
-    //}
-    //for(int i = 0; i < right_walls;i++)
-    //  window.draw(right_borders[i]);
-
-    //for (int i = 0; i < down_walls; i++)
-    //    window.draw(down_borders[i]);
-
     window.display();
 }
 
-void playerMovement()
-{
-    
+void playerMovement() { 
     if (Keyboard::isKeyPressed(Keyboard::W) && Keyboard::isKeyPressed(Keyboard::LShift))
     {
         velocity.y = -run_speed * playerdeltatime;
@@ -580,17 +632,12 @@ void playerMovement()
 
 }
 
-
-
-void trackView()
-{
+void trackView() {
     view.setCenter(Player.getPosition()); //update
-    window.setView(view);
 }
 
 
-void Switch_States()
-{
+void Switch_States() {
     // cooldown timer
     for (int i = 0; i < 5; i++) {
         cooldown[i] -= playerdeltatime;
@@ -621,19 +668,19 @@ void Switch_States()
             curr_state = xmove;
             PlayerAttack.setBuffer(player_attackX);
             PlayerAttack.play();
-            cooldown[1] = 3;
+            cooldown[1] = 3 / cooldown_divider;
         }
         if (Keyboard::isKeyPressed(Keyboard::C) && cooldown[2] == 0 ) {
             curr_state = cmove;
             PlayerAttack.setBuffer(player_attackC);
             PlayerAttack.play();
-            cooldown[2] = 6;
+            cooldown[2] = 6 / cooldown_divider;
         }
         if (Keyboard::isKeyPressed(Keyboard::V) && cooldown[3] == 0 ) {  
             curr_state = vmove;
             PlayerAttack.setBuffer(player_attackV);
             PlayerAttack.play();
-            cooldown[3] = 9;
+            cooldown[3] = 9/cooldown_divider;
         }
         if (Keyboard::isKeyPressed(Keyboard::Q) && cooldown[4] == 0 ) {
             cooldown[4] = 3;
@@ -682,13 +729,16 @@ void Switch_States()
     // Animate 
 
     switch (curr_state) {
-        case run:maximagecounter = 8; Player.setTexture(RunAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
+        case run:maximagecounter = 8; Player.setTexture(RunAnimation[ImageCounter]); UpdateAnimationCounter(0.1*animation_multiplier); break;
         case walk: maximagecounter = 8; Player.setTexture(walkAnimation[ImageCounter]); UpdateAnimationCounter(0.2); break;
-        case idle: Player.setTexture(Idle); UpdateAnimationCounter(0.1); break;
-        case base: Player.setTexture(BaseAttack[ImageCounter]); UpdateAnimationCounter(0.08); break;//0.12
-        case vmove: Player.setTexture(Vmove[ImageCounter]); UpdateAnimationCounter(0.11); break;
-        case xmove: Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
-        case cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.1); break;
+        case idle: 
+            if (Ablaze) Player.setTexture(Idle2);
+            else Player.setTexture(Idle);
+            UpdateAnimationCounter(0.1); break;
+        case base: Player.setTexture(BaseAttack[ImageCounter]); UpdateAnimationCounter(0.08*animation_multiplier); break;//0.12
+        case vmove: Player.setTexture(Vmove[ImageCounter]); UpdateAnimationCounter(0.11* animation_multiplier); break;
+        case xmove: Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.1* animation_multiplier); break;
+        case cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.1* animation_multiplier); break;
         case hit:Player.setTexture(HitAnimation[ImageCounter]); UpdateAnimationCounter(0.15); break;    
         case dead: Player.setTexture(DeathAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
     }
@@ -705,10 +755,13 @@ void Switch_States()
         case npc_talk:TradeNPC.setTexture(trade_npc_talk[tradeNPCImageCounter]); tradeNpcAnimation(0.1);
             break;
     }
+
+    if (power_up) {
+        Powerup.setTexture(powerup[PowerUpImageCounter]); powerupAnimation(0.15);
+    }
 }
 
-void UpdateAnimationCounter(float st)
-{
+void UpdateAnimationCounter(float st) {
     AnimationCounter += playerdeltatime;
     if (AnimationCounter >= st)
     {
@@ -729,8 +782,7 @@ void UpdateAnimationCounter(float st)
     }
 }
 
-void upgradeNpcAnimation(float st)
-{
+void upgradeNpcAnimation(float st) {
     upgradeNPCcounter += playerdeltatime;
     if (upgradeNPCcounter >= st)
     {
@@ -739,8 +791,8 @@ void upgradeNpcAnimation(float st)
         upgradeNPCImageCounter %= 4;
     }
 }
-void tradeNpcAnimation(float st)
-{
+
+void tradeNpcAnimation(float st) {
     tradeNPCcounter += playerdeltatime;
     if (tradeNPCcounter >= st)
     {
@@ -750,8 +802,20 @@ void tradeNpcAnimation(float st)
     }
 }
 
-void menu_handler()
-{
+void powerupAnimation(float st) {
+    PowerUpcounter += playerdeltatime;
+    if (PowerUpcounter >= st)
+    {
+        PowerUpcounter = 0;
+        PowerUpImageCounter++;
+        if (PowerUpImageCounter >= 5) {
+            PowerUpImageCounter = 0;
+            power_up = false;
+        }
+    }
+}
+
+void menu_handler() {
     while (true) {
         if (pagenum == 10)
         {
@@ -818,14 +882,13 @@ void menu_handler()
                 Game_play(window);
             }
             if (pagenum == 1) {
-                Instructions_Menu(window);
+                Credits_Menu(window);
             }
         }
     }
 }
 
-void Game_play(RenderWindow& window)
-{  
+void Game_play(RenderWindow& window) {  
     while (window.isOpen()) {
         float elapsed = GameClock.restart().asSeconds();
         playerdeltatime = elapsed;
@@ -841,34 +904,30 @@ void Game_play(RenderWindow& window)
     }
 }
 
-
-void Instructions_Draw() {
+void Credits_Draw() {
     window.clear();
-    window.draw(Instructions);
+    window.draw(Credits);
     window.display();
 }
 
-
-void Instructions_Menu(RenderWindow& window) {
+void Credits_Menu(RenderWindow& window) {
     while (window.isOpen()) {
-        Event instructionsMenu;
-        while (window.pollEvent(instructionsMenu)) {
-            if (instructionsMenu.type == Event::Closed) {
+        Event creditsMenu;
+        while (window.pollEvent(creditsMenu)) {
+            if (creditsMenu.type == Event::Closed) {
                 window.close();
             }
         }
-        Instructions_Draw();
+        Credits_Draw();
         if (Keyboard::isKeyPressed(Keyboard::Key::Escape)) {
             pagenum = 10;
             menu_handler();
         }
     }
-
 }
 
 
-void PauseMenuHandler(RenderWindow& window)
-{
+void PauseMenuHandler(RenderWindow& window) {
     if (GameMusic.getStatus() == Sound::Playing) 
         GameMusic.pause();
 
@@ -881,7 +940,8 @@ void PauseMenuHandler(RenderWindow& window)
             }
         }
      
-        view.setCenter(960, 540); //update
+        //point view at pause menu
+        view.setCenter(960, 540); 
         window.setView(view);
 
         if (Keyboard::isKeyPressed(Keyboard::Up)) {
@@ -899,7 +959,6 @@ void PauseMenuHandler(RenderWindow& window)
                 GameClock.restart();
             }
         }
-
 
         if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 0) {
             if (GameClock.getElapsedTime().asSeconds() > button_lag) {
@@ -942,11 +1001,9 @@ void PauseMenuHandler(RenderWindow& window)
         pause.draw(window);
         window.display();
     }
-
 }
 
-void game_reset() 
-{
+void game_reset() {
     Player_Health = 100;
     curr_state = idle;
     DeathSound.stop();
@@ -962,15 +1019,27 @@ void game_reset()
     ResetMonsters();
     current_room = 0;
     current_wave = 0;
-    float AnimationCounter = 0;
-    int maximagecounter = 0;
-    int ImageCounter = 0;
-    int globalInt = 0;
-    float playerdeltatime = 0;
+    AnimationCounter = 0;
+    maximagecounter = 0;
+    ImageCounter = 0;
+    globalInt = 0;
+    playerdeltatime = 0;
+    pause.pausemenu[0].setFillColor(Color{ 255, 215, 0 });
+    pause.selectedp = 0;
+    for (int i = 1; i < 4; i++)
+        pause.pausemenu[i].setFillColor(Color::White);
+
+    AblazeCharge = 0;
+    upgradeNPCcounter = 0;
+    tradeNPCcounter = 0; 
+    upgradeNPCImageCounter = 0;
+    tradeNPCImageCounter = 0;
+    AblazeReady = false;
+    Ablaze = false;
+    power_up = false;
 }
 
-void music_handler()
-{
+void music_handler() {
     if (MenuOpener.getStatus() == Sound::Playing) MenuOpener.stop();
     if (GameMusic.getStatus() != Sound::Playing && !map_opener_trigger) {
         GameMusic.setVolume(5);
@@ -980,8 +1049,8 @@ void music_handler()
     }
 }
 
-void death_handler()
-{
+void death_handler() {
+
     lastX = Player.getPosition().x;
     lastY = Player.getPosition().y;
     GameOver game_over(1920, 1080, lastX, lastY);
@@ -1061,8 +1130,7 @@ void death_handler()
     }
 }
 
-void check_room()
-{
+void check_room() {
     int initial = current_room;
     for (int i = 0; i < doors; i++) {
         if (Player.getPosition().y < gates[i].getPosition().y - 200) {
@@ -1079,8 +1147,7 @@ void check_room()
 }
 
 
-void checkpause()
-{
+void checkpause(){
     if (Keyboard::isKeyPressed(Keyboard::Escape) && !isDead) {
         if (pausetimer.getElapsedTime().asSeconds() > button_lag) {
             PauseMenuHandler(window);
@@ -1090,8 +1157,8 @@ void checkpause()
 }
 
 
-void dash()
-{
+void dash() {
+
     if (isdashing) {
         if (dash_duration > 0) {
             run_speed = 1500;
@@ -1108,8 +1175,8 @@ void dash()
 }
 
 
-void Go_Next()
-{
+void Go_Next() {
+
     go_next = true;
     if (Keyboard::isKeyPressed(Keyboard::E)) {
         
@@ -1134,7 +1201,51 @@ void Go_Next()
             level = 5;
             return;
         }
+    }   
+}
+
+void check_ablaze() {
+
+    AblazeCharge = min(100, AblazeCharge);
+    if (AblazeCharge >= 100)
+        AblazeReady = true;
+}
+
+void set_your_heart_ablaze() {
+
+    if (AblazeReady and Keyboard::isKeyPressed(Keyboard::G)) {
+        power_up = true;
+        AblazeReady = false;
+        Ablaze = true;
+        AblazeCharge = 0;
+        
+    }
+    if (Ablaze) {
+        AblazeDuration -= playerdeltatime;
+        run_speed = 400;
+        animation_multiplier = 0.9;
+        cooldown_divider = 2;
+
+    }
+    else {
+        run_speed = 200;
+        animation_multiplier = 1;
+        cooldown_divider = 1;
     }
 
-   
+    if (AblazeDuration <= 0) {
+        Ablaze = false;
+        AblazeDuration = 10;
+    }
+}
+
+void camera_shake() {
+
+    if (power_up) {
+        float angle = static_cast<float>(rand()) / RAND_MAX * 2 * 3.14159f;
+        float offsetX = cos(angle) * intensity;
+        float offsetY = sin(angle) * intensity;
+        view.move(offsetX, offsetY);
+        intensity *= 0.9f; // Damping effect  
+    }
 }

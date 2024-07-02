@@ -300,7 +300,7 @@ void setAblazeMovesTexture() {
         RunAnimationUlt[i].loadFromFile("Run/run" + to_string(i) + ".png");
     }
     for (int i = 0; i < 7; i++) {
-        VmoveUlt[i].loadFromFile("V move/Vmove" + to_string(i) + ".png");
+        VmoveUlt[i].loadFromFile("V move/VmoveUlt" + to_string(i) + ".png");
     }
     for (int i = 0; i < 7; i++) {
         XmoveUlt[i].loadFromFile("X move/XmoveUlt" + to_string(i) + ".png");

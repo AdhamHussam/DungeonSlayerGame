@@ -8,7 +8,7 @@ using namespace sf;
 Texture skillframe1;
 Clock frameClock;
 float frameDelay = 0.11f;
-void GUIskill::drawSkill(sf::RenderWindow& window, int id) {
+void GUIskill::drawSkill(RenderWindow& window, int id) {
 	font.loadFromFile("Ungai.ttf");
 	Sprite border;
 	border.setScale(Vector2f(3.5, 3.5));
@@ -119,7 +119,25 @@ void GUI::setPlayerInfoTexture() {
 	coinsBackTexture.loadFromFile(R"(GUI\coins_back.png)");
 	coinsBack.setTexture(coinsBackTexture);
 	coinsCnt.setFont(font);
+
 }
+
+
+void GUI::setShopTexture() {
+	upgradeMenuTexture.loadFromFile(R"(GUI\UpgradeMenu.png)");
+	upgradeMenu.setTexture(upgradeMenuTexture);
+	upgradeMenu.setScale(1.5, 1.5);
+}
+void GUI::drawUpgradeMenu()
+{
+	Vector2f shopPosition = { Player.getPosition().x -800,
+								Player.getPosition().y -200};
+
+	upgradeMenu.setPosition(shopPosition);
+	window.draw(upgradeMenu);
+	cout << " drawn  ";
+}
+
 
 void GUI::setMonstersHPTexture() {
 	monsterHPBackTexture.loadFromFile(R"(GUI\monster_bar_back.png)");
@@ -135,7 +153,6 @@ void GUI::setMonstersHPTexture() {
 
 }
 
-// bm 30,35
 void GUI::DrawMonsterHP(Vector2f pos, float health, int origHealth, int xdif,int ydif)
 {
 	if (health <= 0)

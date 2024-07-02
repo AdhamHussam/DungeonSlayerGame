@@ -583,7 +583,7 @@ void upgradeShop() {
             {
                 if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
                     upgradetimer.restart();
-                    Max_Player_Health+=100;
+                    Max_Player_Health+=1000;
                     Player_Health = Max_Player_Health;
                     coinsCount -= healthUpCost;
                     healthUpCost += 10;
@@ -1231,7 +1231,7 @@ void check_room() {
         room_cleared = false;
         if(current_room != 1)
             Player_Health += (15 + ((current_room - 1) * 5 ) * level );
-        Player_Health = min(Player_Health, 200);
+        Player_Health = min(Player_Health, 2 * Max_Player_Health);
     }
 }
 

@@ -575,6 +575,7 @@ void setTextures() {
     upgrader_text.setFillColor(Color{ 255,215,0 });
     upgrader_text.setString("Press E to meet 3m Mo7sen");
     upgrader_text.setCharacterSize(30);
+    upgrader_text.setPosition(60, 6500);
 
     set_your_heart_text.setFont(game_font);
     set_your_heart_text.setFillColor(Color{ 255,215,0 });
@@ -702,9 +703,7 @@ void Draw() {
 
     gui.drawGUI(window);    
 
-    if (shopNear and !shopOpened)
-    {
-        upgrader_text.setPosition(Player.getPosition().x - 300, Player.getPosition().y - 400);
+    if (shopNear and !shopOpened) {
         window.draw(upgrader_text);
     }
     else if (shopOpened) gui.drawUpgradeMenu();
@@ -808,19 +807,19 @@ void Switch_States() {
             curr_state = xmove;
             PlayerAttack.setBuffer(player_attackX);
             PlayerAttack.play();
-            cooldown[1] = 3 / cooldown_divider;
+            cooldown[1] = (3 - cooldownUp*0.1) / cooldown_divider  ;
         }
         if (Keyboard::isKeyPressed(Keyboard::C) && cooldown[2] == 0 ) {
             curr_state = cmove;
             PlayerAttack.setBuffer(player_attackC);
             PlayerAttack.play();
-            cooldown[2] = 6 / cooldown_divider;
+            cooldown[2] = (6 - cooldownUp*0.3)/ cooldown_divider ;
         }
         if (Keyboard::isKeyPressed(Keyboard::V) && cooldown[3] == 0 ) {  
             curr_state = vmove;
             PlayerAttack.setBuffer(player_attackV);
             PlayerAttack.play();
-            cooldown[3] = 9/cooldown_divider;
+            cooldown[3] = (9 - cooldownUp*0.5)/cooldown_divider ;
         }
         if (Keyboard::isKeyPressed(Keyboard::Q) && cooldown[4] == 0 ) {
             cooldown[4] = 3;

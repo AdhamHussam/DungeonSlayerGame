@@ -16,7 +16,7 @@ bool Ablaze = false;
 bool room_cleared = true;
 int current_room = 0,current_wave = 0;
 int ArcaneArcherNumber, NightBroneNumber, SkeletonNumber, ShardSoulNumber, BrainMoleNumber, RogueNumber, GoblinNumber, CthuluNumber;
-RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer", Style::Fullscreen);
+RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer", Style::Default);
 int BODnumber;
 BringerOfDeath BODmonsters[30];
 NightBrone NBmonsters[30];

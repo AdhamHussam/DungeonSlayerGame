@@ -46,7 +46,7 @@ void Cattack(int x, int y, int i) {
     int initial = CmovementCounter[i];
     CupdateMonsterAnimationCounter(i, 0.1);
     if ((CmovementCounter[i] == 3 && CmovementCounter[i] > initial)) {
-        if (abs(x) < 100 && abs(y) < 100) {
+        if (abs(x) < 200 && abs(y) < 100) {
             Player_Health -= Cmonsters[i].damage;
             ishit = true;
         }
@@ -149,7 +149,7 @@ void Ctmove(float time, Sprite p, int attct, int& PlayerHealth) {
         }
 
         // make decision
-        else if (abs(x) < 100 && abs(y) < 100) {
+        else if (abs(x) < 200 && abs(y) < 100) {
             Cstate[i] = Cenum::C_attack;
             CmovementCounter[i] = 0;
             Cattack(x, y, i);
@@ -167,10 +167,4 @@ void Cdraw(RenderWindow& window) {
         }
     }
 }
-
-
-
-
-
-
 

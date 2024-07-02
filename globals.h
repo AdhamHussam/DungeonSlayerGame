@@ -15,6 +15,8 @@ extern int level;
 extern int AblazeCharge;
 extern bool room_cleared;
 extern int ArcaneArcherNumber, NightBroneNumber, SkeletonNumber, ShardSoulNumber, BrainMoleNumber, RogueNumber, GoblinNumber;
+extern bool Ablaze;
+extern bool AblazeReady;
 extern RenderWindow window;
 /*
 

@@ -23,15 +23,19 @@ struct GUIskill {
 struct GUI {
     Texture skillframe;
     Texture loadingframe;
+    Texture PlayerInfoUltTexture;
     Texture PlayerInfoTexture;
     Texture healthBarTexture;
     Texture armorBarTexture;
     Texture staminaBarTexture;
     Texture loadingEffectTexture;
     Texture monsterHPBackTexture;
+    Texture monsterHPTexture;
     Texture bossHPBackTexture;
     Texture bossHPTexture;
-    Texture monsterHPTexture;
+    Texture ultBarTexture;
+    Texture ultBarReadyTexture;
+    Texture ultBarBackTexture;
     GUIskill skills[4];
     Sprite PlayerInfo;
     Sprite healthBar;
@@ -42,6 +46,8 @@ struct GUI {
     Sprite monsterHP;
     Sprite bossHPBack;
     Sprite bossHP;
+    Sprite ultBarBack;
+    Sprite ultBar;
     int framenum = 1;
 
     RectangleShape skills_background;

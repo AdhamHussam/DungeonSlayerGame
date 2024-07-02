@@ -69,8 +69,6 @@ bool ispassing = false;
 bool passed_door = false;
 bool isdashing = false;
 bool finishedanimationonce = false;
-bool AblazeReady = false;
-bool Ablaze = false;
 bool power_up = false;
 
 

@@ -42,6 +42,8 @@ void GUI::setSkillsTexture() {
 	skills[2].photo.loadFromFile(R"(GUI\Cmove2.png)");
 
 	skills[3].photo.loadFromFile(R"(GUI\Vmove3.png)");
+
+	
 }
 void GUI::updateSkill() {
 	string framename;
@@ -89,7 +91,8 @@ void GUI::updateSkill() {
 }
 
 void GUI::setPlayerInfoTexture() {
-	PlayerInfoTexture.loadFromFile(R"(GUI\playerInfo.png)");
+	PlayerInfoTexture.loadFromFile(R"(GUI\playerInfo_1.png)");
+	PlayerInfoUltTexture.loadFromFile(R"(GUI\playerInfo.png)");
 	PlayerInfo.setTexture(PlayerInfoTexture);
 	healthBarTexture.loadFromFile(R"(GUI\hp_bar.png)");
 	healthBar.setTexture(healthBarTexture);
@@ -98,9 +101,19 @@ void GUI::setPlayerInfoTexture() {
 	armorBarTexture.loadFromFile(R"(GUI\armor.png)");
 	armorBar.setTexture(armorBarTexture);
 
+	ultBarBackTexture.loadFromFile(R"(GUI\ult_bar_back.png)");
+	ultBarBack.setTexture(ultBarBackTexture);
+	ultBarTexture.loadFromFile(R"(GUI\ult_bar.png)");
+	ultBar.setTexture(ultBarTexture);
+	ultBarReadyTexture.loadFromFile(R"(GUI\ult_bar_full.png)");
+	ultBar.setScale(3,3);
+	ultBarBack.setScale(3,3);
+
 	loadingEffectTexture.loadFromFile(R"(GUI\loading_effect.png)");
 	loadingEffect.setTexture(loadingEffectTexture);
 	loadingEffect.setScale(3.15,3.15);
+	
+
 
 }
 
@@ -174,9 +187,13 @@ void GUI::drawBossHP(float health, int max_health) {
 void GUI::updatePlayerInfo(RenderWindow& window) {
 	Vector2f infoPosition = { Player.getPosition().x - window.getSize().x/2-20,
 								Player.getPosition().y - window.getSize().y / 2 -20};
+	Vector2f ultPosition = { Player.getPosition().x - 280 ,Player.getPosition().y + window.getSize().y / 3 + 50 };
+
 	int helath_start = healthBarTexture.getSize().x/3;
 	int health = (Player_Health > 100 ? 100 : Player_Health);
 	int armor = Player_Health - health;
+	if (Ablaze)PlayerInfo.setTexture(PlayerInfoUltTexture);
+	else PlayerInfo.setTexture(PlayerInfoTexture);
 	PlayerInfo.setPosition(infoPosition);
 	healthBar.setPosition(infoPosition.x + helath_start -  10, infoPosition.y);
 	armorBar.setPosition(infoPosition.x + helath_start-10, infoPosition.y);
@@ -191,6 +208,13 @@ void GUI::updatePlayerInfo(RenderWindow& window) {
 
 	armorBar.setTextureRect(IntRect(helath_start - 10, 0,
 		 (float)armor * 1.5 * helath_start / 100, PlayerInfoTexture.getSize().y));
+
+	if (AblazeCharge == 100)ultBar.setTexture(ultBarReadyTexture);
+	else ultBar.setTexture(ultBarTexture);
+	ultBarBack.setPosition(ultPosition);
+	ultBar.setPosition(ultPosition);
+	ultBar.setTextureRect(IntRect(0, 0, ultBarTexture.getSize().x, ultBarTexture.getSize().y*AblazeCharge/100.0));
+
 
 }
 
@@ -227,6 +251,8 @@ void GUI::drawGUI(RenderWindow& window) {
 		skills[i].drawSkill(window, i);
 
 	}
+	window.draw(ultBarBack);
+	window.draw(ultBar);
 	DrawloadingEffect(window);
 
 }

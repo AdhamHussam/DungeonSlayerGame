@@ -17,11 +17,7 @@
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="RandomizePlaces.cpp" />
     <ClCompile Include="GUI.cpp" />
-<<<<<<< HEAD
     <ClCompile Include="FlameWizard.cpp" />
-=======
-    <ClCompile Include="Cthulu.cpp" />
->>>>>>> 968858543f440b7d1462f18ecf89b58c9a0918c7
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArcanArcher.h" />
@@ -40,10 +36,6 @@
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="RandomizePlaces.h" />
     <ClInclude Include="GUI.h" />
-<<<<<<< HEAD
     <ClInclude Include="FlameWizard.h" />
-=======
-    <ClInclude Include="cthulu.h" />
->>>>>>> 968858543f440b7d1462f18ecf89b58c9a0918c7
   </ItemGroup>
 </Project>

@@ -3,7 +3,6 @@
 #include "ArcanArcher.h"
 #include "NightBorne.h"
 #include "Goblin.h"
-#include "cthulu.h"
 
 struct Coordinates
 {

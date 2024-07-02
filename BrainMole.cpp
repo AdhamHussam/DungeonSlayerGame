@@ -72,7 +72,6 @@ void BMdie(int x, int y,int i) {
         }
         BMmonsters[i].alive = false;
         AblazeCharge++;
-        coinsCount += 0.2;
     }
 }
 

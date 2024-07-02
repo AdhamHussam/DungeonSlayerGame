@@ -67,7 +67,7 @@ void Sdie(int i) {
     Smonsters[i].S.setTextureRect(SgetRect(13 + SmovmentCounter[i]));
     SupdateMonsterAnimationCounter(i);
     if (SmovmentCounter[i] == 13)
-        Smonsters[i].sleep = false, coinsCount+=0.1;
+        Smonsters[i].sleep = false;
 }
 
 void Screate() {

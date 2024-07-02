@@ -5,7 +5,6 @@
 #include "ShardSoul.h"
 #include "BrainMole.h"
 #include "Rogue.h"
-#include "cthulu.h"
 #include "FlameWizard.h"
 #include "RandomizePlaces.h"
 
@@ -19,8 +18,6 @@ void SetMonstersSprites() {
     BMcreate();
     FWcreate();
     Rcreate();
-    Ccreate();
-
 }
 
 void SetMonstersWave() {
@@ -34,7 +31,6 @@ void SetMonstersWave() {
     BMset(BrainMoleNumber);
     FWset(5);
     Rset(RogueNumber);
-    Cset(1);
 }
 
 void MoveMonsters() {
@@ -57,8 +53,7 @@ void MoveMonsters() {
     Smove(playerdeltatime, Player, attct, Player_Health, ishit);
     SSmove(playerdeltatime, Player, attct, Player_Health);
     BMmove(playerdeltatime, Player, attct, Player_Health);
-    Ctmove(playerdeltatime, Player, attct, Player_Health);
-    room_cleared = true;
+ //   room_cleared = true;
 }
 
 void ShowMonsters() {
@@ -77,7 +72,6 @@ void ShowMonsters() {
     NBdraw(window);
     FWdraw(window);
     Rdraw(window);
-    Cdraw(window);
 }
 
 void ResetMonsters() {
@@ -89,5 +83,4 @@ void ResetMonsters() {
     BrainMoleNumber = 0;
     RogueNumber = 0;
     GoblinNumber = 0;
-    CthuluNumber = 0;
 }

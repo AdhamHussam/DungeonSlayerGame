@@ -68,7 +68,7 @@ void Rdie(int i) {
     Rmonsters[i].R.setTextureRect(RgetRect(90 + RmovmentCounter[i]));
     RupdateMonsterAnimationCounter(i,0.5);
     if (RmovmentCounter[i] == 5)
-        Rmonsters[i].alive = false,coinsCount+=50;
+        Rmonsters[i].alive = false;
 }
 
 void Rspawn(int i) {

@@ -69,8 +69,8 @@ void NBdie(int i) {
     NBupdateMonsterAnimationCounter(i);
     if (NBmovmentCounter[i] == 23) {
         NBmonsters[i].alive = false;
-        if (level > 1) AblazeCharge+=2,coinsCount+=0.5;
-        else AblazeCharge += 10, coinsCount+=20;
+        if (level > 1) AblazeCharge+=2;
+        else AblazeCharge += 10;
     }
 }
 

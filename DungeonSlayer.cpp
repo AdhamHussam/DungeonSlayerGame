@@ -207,8 +207,7 @@ int main()
 
 // Definitions;
 void update() {
-
-    cout << AblazeCharge << " " << AblazeReady << ' ' << Ablaze << " " << AblazeDuration << '\n';
+    cout << Player_Health << '\n';
     if (!isDead) {
         Switch_States();
         playerMovement();
@@ -565,13 +564,15 @@ void setTextures() {
 void upgradeShop() {
 
     if (abs(Player.getPosition().x - UpgradeNPC.getPosition().x) < 280 && abs(Player.getPosition().y - UpgradeNPC.getPosition().y) < 190) {
-        cout << "  near!  ";
-        if (Keyboard::isKeyPressed(Keyboard::E))
-            shopOpened = true;
-        if (shopOpened)
-        {
-            if ((Keyboard::isKeyPressed(Keyboard::Num1) || Keyboard::isKeyPressed(Keyboard::Numpad1)) and coinsCount >= damageUpCost)
-            {
+        //cout << "  near!  ";
+        if (Keyboard::isKeyPressed(Keyboard::E) and !shopOpened ) {
+            if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
+                upgradetimer.restart();
+                shopOpened = true;
+            }
+        }
+        if (shopOpened) {
+            if ((Keyboard::isKeyPressed(Keyboard::Num1) || Keyboard::isKeyPressed(Keyboard::Numpad1)) and coinsCount >= damageUpCost) {
                 if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
                     upgradetimer.restart();
                     damageUp++;
@@ -598,8 +599,12 @@ void upgradeShop() {
                     cooldownUpCost += 10;
                 }
             }
-            if(Keyboard::isKeyPressed(Keyboard::R))
-                shopOpened = false;
+            if (Keyboard::isKeyPressed(Keyboard::E)) {
+                if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
+                    shopOpened = false;
+                    upgradetimer.restart();
+                }
+            }
         }
     }
     else
@@ -644,8 +649,7 @@ void Draw() {
         window.draw(down_borders[i]);*/
 
     gui.drawGUI(window);    
-    if (shopOpened)
-        gui.drawUpgradeMenu();
+    if (shopOpened) gui.drawUpgradeMenu();
     window.display();
 }
 
@@ -741,7 +745,7 @@ void Switch_States() {
             curr_state = base;       
              PlayerAttack.setBuffer(player_attack1);
              PlayerAttack.play();
-            cooldown[0] = 1.5;
+             cooldown[0] = 1.5;
         } 
         if (Keyboard::isKeyPressed(Keyboard::X) && cooldown[1] == 0 ) {
             curr_state = xmove;
@@ -883,8 +887,7 @@ void upgradeNpcAnimation(float st) {
 
 void tradeNpcAnimation(float st) {
     tradeNPCcounter += playerdeltatime;
-    if (tradeNPCcounter >= st)
-    {
+    if (tradeNPCcounter >= st) {
         tradeNPCcounter = 0;
         tradeNPCImageCounter++;
         tradeNPCImageCounter %= 11;

@@ -76,6 +76,7 @@ bool shopOpened = false;
 Menu menu(1920, 1080);
 PauseMenu pause(1920, 1080);
 
+Clock cutscene;
 Clock pausetimer;
 Clock attacktimer;
 Clock dashtimer;
@@ -114,6 +115,12 @@ Texture upgrade_npc_talk[4];
 Texture trade_npc_idle[11];
 Texture trade_npc_talk[11];
 
+Texture Pscene1;
+Texture Mscene1[4];
+
+Sprite Pscene1s;
+Sprite Mscene1s;
+
 Sprite UpgradeNPC;
 Sprite TradeNPC;
 
@@ -131,7 +138,14 @@ Sprite Room;
 Texture pausebg;
 Sprite pausemenu;
 Sprite Map;
-
+IntRect monsterScene1SA(0, 0, 45, 40);
+Texture playerScene1;
+Texture monsterScene1;
+Texture textbox;
+Sprite textboxSP;
+Sprite textboxSM; 
+Sprite playerScene1S; 
+Sprite monsterScene1S(monsterScene1, monsterScene1SA); 
 // Room 0 Borders
 RectangleShape gate1(Vector2f({ 1, 1 }));
 RectangleShape gate2(Vector2f({ 1, 1 }));
@@ -194,7 +208,7 @@ void Go_Next();
 void check_ablaze();
 void set_your_heart_ablaze();
 void camera_shake();
-    
+void cutScene();
 
 // Main 
 int main()
@@ -559,6 +573,22 @@ void setTextures() {
     set_your_heart_text.setCharacterSize(40);
     set_your_heart_text.setPosition(Player.getPosition().x-100, Player.getPosition().y + 100);
 
+    //cutscene
+    playerScene1.loadFromFile("cutscenePlayer.png");
+    monsterScene1.loadFromFile("Rogue.png");
+    textbox.loadFromFile("textbox.png");
+    textboxSP.setTexture(textbox);
+    textboxSM.setTexture(textbox);
+    textboxSP.setScale(0.7, 0.7); 
+    textboxSM.setScale(0.7, 0.7);
+    textboxSP.setPosition(-100, 180);
+    textboxSM.setPosition(500, 380);
+    playerScene1S.setTexture(playerScene1);
+    monsterScene1S.setScale(-16, 16);
+    monsterScene1S.setPosition(2000, 495);
+    playerScene1S.setScale(0.5, 0.5);
+    playerScene1S.setPosition(10, 450);
+
 }
 
 void upgradeShop() {
@@ -911,6 +941,7 @@ void menu_handler() {
     while (true) {
         if (pagenum == 10)
         {
+            cutScene();
             while (window.isOpen())
             {
                 Event event;
@@ -1339,4 +1370,24 @@ void camera_shake() {
         view.move(offsetX, offsetY);
         intensity *= 0.9f; // Damping effect  
     }
+}
+void cutScene() {
+    if (cutscene.getElapsedTime().asSeconds() > 0.2) { 
+        if (monsterScene1SA.left == 150) { 
+            monsterScene1SA.left = 0; 
+        }
+        else {
+            monsterScene1SA.left += 50; 
+        }
+        monsterScene1S.setTextureRect(monsterScene1SA); 
+        cutscene.restart();  
+    }
+
+    window.clear(); 
+    window.draw(textboxSP); 
+    window.draw(textboxSM);
+    window.draw(monsterScene1S); 
+    window.draw(playerScene1S); 
+    window.display(); 
+
 }

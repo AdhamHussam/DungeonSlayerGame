@@ -106,8 +106,8 @@ void GUI::setPlayerInfoTexture() {
 	ultBarTexture.loadFromFile(R"(GUI\ult_bar.png)");
 	ultBar.setTexture(ultBarTexture);
 	ultBarReadyTexture.loadFromFile(R"(GUI\ult_bar_full.png)");
-	ultBar.setScale(3,3);
-	ultBarBack.setScale(3,3);
+	ultBar.setScale(3,13);
+	ultBarBack.setScale(3,15);
 
 	loadingEffectTexture.loadFromFile(R"(GUI\loading_effect.png)");
 	loadingEffect.setTexture(loadingEffectTexture);
@@ -187,7 +187,7 @@ void GUI::drawBossHP(float health, int max_health) {
 void GUI::updatePlayerInfo(RenderWindow& window) {
 	Vector2f infoPosition = { Player.getPosition().x - window.getSize().x/2-20,
 								Player.getPosition().y - window.getSize().y / 2 -20};
-	Vector2f ultPosition = { Player.getPosition().x - 280 ,Player.getPosition().y + window.getSize().y / 3 + 50 };
+	Vector2f ultPosition = { Player.getPosition().x + 930 ,Player.getPosition().y + window.getSize().y / 3 - 250 };
 
 	int helath_start = healthBarTexture.getSize().x/3;
 	int health = (Player_Health > 100 ? 100 : Player_Health);
@@ -212,7 +212,7 @@ void GUI::updatePlayerInfo(RenderWindow& window) {
 	if (AblazeCharge == 100)ultBar.setTexture(ultBarReadyTexture);
 	else ultBar.setTexture(ultBarTexture);
 	ultBarBack.setPosition(ultPosition);
-	ultBar.setPosition(ultPosition);
+	ultBar.setPosition(ultPosition.x, ultPosition.y + 30);
 	ultBar.setTextureRect(IntRect(0, 0, ultBarTexture.getSize().x, ultBarTexture.getSize().y*AblazeCharge/100.0));
 
 

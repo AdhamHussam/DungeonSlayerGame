@@ -207,8 +207,7 @@ int main()
 
 // Definitions;
 void update() {
-
-    cout << AblazeCharge << " " << AblazeReady << ' ' << Ablaze << " " << AblazeDuration << '\n';
+    cout << Player_Health << '\n';
     if (!isDead) {
         Switch_States();
         playerMovement();
@@ -585,7 +584,8 @@ void upgradeShop() {
             {
                 if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
                     upgradetimer.restart();
-                    healthUp++;
+                    Max_Player_Health += 1000;
+                    Player_Health = Max_Player_Health;
                     coinsCount -= healthUpCost;
                     healthUpCost += 10;
                 }
@@ -649,8 +649,7 @@ void Draw() {
         window.draw(down_borders[i]);*/
 
     gui.drawGUI(window);    
-    if (shopOpened)
-        gui.drawUpgradeMenu();
+    if (shopOpened) gui.drawUpgradeMenu();
     window.display();
 }
 
@@ -746,7 +745,7 @@ void Switch_States() {
             curr_state = base;       
              PlayerAttack.setBuffer(player_attack1);
              PlayerAttack.play();
-            cooldown[0] = 1.5;
+             cooldown[0] = 1.5;
         } 
         if (Keyboard::isKeyPressed(Keyboard::X) && cooldown[1] == 0 ) {
             curr_state = xmove;
@@ -888,8 +887,7 @@ void upgradeNpcAnimation(float st) {
 
 void tradeNpcAnimation(float st) {
     tradeNPCcounter += playerdeltatime;
-    if (tradeNPCcounter >= st)
-    {
+    if (tradeNPCcounter >= st) {
         tradeNPCcounter = 0;
         tradeNPCImageCounter++;
         tradeNPCImageCounter %= 11;

@@ -152,6 +152,7 @@ void Ctmove(float time, Sprite p, int attct, int& PlayerHealth) {
         // make decision
         else if (abs(x) < 100 && abs(y) < 100) {
             Cstate[i] = Cenum::C_attack;
+            CmovementCounter[i] = 0;
             Cattack(x, y, i);
         }
 

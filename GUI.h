@@ -63,6 +63,9 @@ struct GUI {
     Sprite upHe;
     Sprite upCo;
     Sprite upAt;
+    Text upHeT;
+    Text upCoT;
+    Text upAtT;
 
     Text coinsCnt;
     int framenum = 1;

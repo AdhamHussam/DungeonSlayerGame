@@ -79,10 +79,14 @@ void hurt(int i) {
 
 // make monster die
 void die(int i) {
+
     BODmonsters[i].BOD.setTextureRect(getRect(29 + MovmentCounter[i]));
     UpdateMonsterAnimationCounter(i);
     if (MovmentCounter[i] == 10)
-        BODalive[i] = false, AblazeCharge+=2;
+    {
+        BODalive[i] = false, AblazeCharge += 2;
+        coinsCount += 0.5;
+    }
 }
 
 // make monster spawn

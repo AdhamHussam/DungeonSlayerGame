@@ -283,7 +283,7 @@ void GUI::updatePlayerInfo(RenderWindow& window) {
 	coins.setScale(2, 2);
 	coinsBack.setPosition(coinsPosition.x - coinsBackTexture.getSize().x * 7-20, coinsPosition.y + coinsBackTexture.getSize().y * 4);
 	coinsBack.setScale(7, 7);
-	coinsCnt.setString(to_string(coinsCount));
+	coinsCnt.setString(to_string((int)coinsCount));
 	coinsCnt.setPosition(coinsPosition.x - 250, coinsPosition.y + 80);
 	coinsCnt.setCharacterSize(30);
 

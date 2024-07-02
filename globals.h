@@ -41,7 +41,7 @@ extern float healthUp;
 extern int healthUpCost;
 extern int cooldownUpCost;
 extern float cooldownUp;
-extern int coinsCount;
+extern float coinsCount;
 extern BrainMole BMmonsters[30];
 extern NightBrone NBmonsters[30];
 extern ShardSoul SSmonsters[30];

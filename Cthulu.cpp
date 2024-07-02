@@ -73,7 +73,7 @@ void Cdie(int i) {
     Cmonsters[i].Ct.setTextureRect(CgetRect( 90 + CmovementCounter[i]));
     CupdateMonsterAnimationCounter(i, 0.2);
     if (CmovementCounter[i] == 11)
-        Cmonsters[i].alive = false;
+        Cmonsters[i].alive = false, coinsCount += 30;
 }
 
 
@@ -163,7 +163,7 @@ void Cdraw(RenderWindow& window) {
     for (int i = 0; i < CthuluNumber; i++) {
         if (Cmonsters[i].alive) {
             window.draw(Cmonsters[i].Ct);
-            gui.drawBossHP(Cmonsters[i].health, 200);
+            gui.drawBossHP(Cmonsters[i].health, 150);
         }
     }
 }

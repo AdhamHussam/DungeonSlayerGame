@@ -211,8 +211,8 @@ void GUI::updatePlayerInfo(RenderWindow& window) {
 	Vector2f ultPosition = { Player.getPosition().x + 930 ,Player.getPosition().y + window.getSize().y / 3 - 250 };
 	Vector2f coinsPosition = { Player.getPosition().x + window.getSize().x / 2 ,Player.getPosition().y - window.getSize().y / 2 };
 	int helath_start = healthBarTexture.getSize().x/3;
-	int health = (Player_Health > 100 ? 100 : Player_Health);
-	int armor = Player_Health - health;
+	int health = (Player_Health > Max_Player_Health ? Max_Player_Health : Player_Health);
+	int armor = Player_Health - Max_Player_Health;
 	if (Ablaze)PlayerInfo.setTexture(PlayerInfoUltTexture);
 	else PlayerInfo.setTexture(PlayerInfoTexture);
 	PlayerInfo.setPosition(infoPosition);
@@ -228,7 +228,7 @@ void GUI::updatePlayerInfo(RenderWindow& window) {
 
 
 	armorBar.setTextureRect(IntRect(helath_start - 10, 0,
-		 (float)armor * 1.5 * helath_start / 100, PlayerInfoTexture.getSize().y));
+		 (float)armor * 1.5 * helath_start / Max_Player_Health, PlayerInfoTexture.getSize().y));
 
 	if (AblazeCharge == 100)ultBar.setTexture(ultBarReadyTexture);
 	else ultBar.setTexture(ultBarTexture);

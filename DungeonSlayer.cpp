@@ -582,7 +582,9 @@ void upgradeShop() {
             if ((Keyboard::isKeyPressed(Keyboard::Num2) || Keyboard::isKeyPressed(Keyboard::Numpad2)) and coinsCount >= healthUpCost)
             {
                 if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
-                    healthUp++;
+                    upgradetimer.restart();
+                    Max_Player_Health+=10;
+                    Player_Health = Max_Player_Health;
                     coinsCount -= healthUpCost;
                     healthUpCost += 10;
                 }
@@ -590,6 +592,7 @@ void upgradeShop() {
             if ((Keyboard::isKeyPressed(Keyboard::Num3) || Keyboard::isKeyPressed(Keyboard::Numpad3)) and coinsCount >= cooldownUpCost)
             {
                 if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
+                    upgradetimer.restart();
                     cooldownUp++;
                     coinsCount -= cooldownUpCost;
                     cooldownUpCost += 10;

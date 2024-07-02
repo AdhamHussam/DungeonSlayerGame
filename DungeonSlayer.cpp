@@ -85,13 +85,17 @@ Vector2f initial_position(-500, 7000);
 
 Texture Idle;
 Texture Idle2;
-Texture RunAnimation[8];
 Texture DeathAnimation[3];
 Texture HitAnimation[3];
 Texture BaseAttack[8];
+Texture RunAnimation[8];
 Texture Vmove[7];
 Texture Xmove[7];
 Texture Cmove[8];
+Texture RunAnimationUlt[8];
+Texture VmoveUlt[7];
+Texture XmoveUlt[7];
+Texture CmoveUlt[8];
 Texture walkAnimation[8];
 Texture powerup[5];
 
@@ -172,6 +176,8 @@ void check_room();
 void death_handler();
 void trackView();
 void playerMovement();
+void setNormalMovesTexture();
+void setAblazeMovesTexture();
 void setTextures();
 void checkCollisions();
 void Draw();
@@ -275,6 +281,34 @@ void checkCollisions() {
   
 }
 
+void setNormalMovesTexture() {
+    for (int i = 0; i < 8; i++) {
+        RunAnimation[i].loadFromFile("Run/run" + to_string(i) + ".png");
+    }
+    for (int i = 0; i < 7; i++) {
+        Vmove[i].loadFromFile("V move/Vmove" + to_string(i) + ".png");
+    }
+    for (int i = 0; i < 7; i++) {
+        Xmove[i].loadFromFile("X move/Xmove" + to_string(i) + ".png");
+    }
+    for (int i = 0; i < 8; i++) {
+        Cmove[i].loadFromFile("C move/Cmove" + to_string(i) + ".png");
+    }
+}
+void setAblazeMovesTexture() {
+    for (int i = 0; i < 8; i++) {
+        RunAnimationUlt[i].loadFromFile("Run/run" + to_string(i) + ".png");
+    }
+    for (int i = 0; i < 7; i++) {
+        VmoveUlt[i].loadFromFile("V move/Vmove" + to_string(i) + ".png");
+    }
+    for (int i = 0; i < 7; i++) {
+        XmoveUlt[i].loadFromFile("X move/Xmove" + to_string(i) + ".png");
+    }
+    for (int i = 0; i < 8; i++) {
+        CmoveUlt[i].loadFromFile("C move/CmoveUlt" + to_string(i) + ".png");
+    }
+}
 void setTextures() {
 
     // Menus   
@@ -433,18 +467,8 @@ void setTextures() {
     down_borders[24].setPosition(-850, 2100);
     down_borders[25].setPosition(730, 2100);
 
-    for (int i = 0; i < 8; i++) {
-        RunAnimation[i].loadFromFile("Run/run" + to_string(i) + ".png");
-    }
-    for (int i = 0; i < 7; i++) {
-        Vmove[i].loadFromFile("V move/Vmove" + to_string(i) + ".png");
-    }
-    for (int i = 0; i < 7; i++) {
-        Xmove[i].loadFromFile("X move/Xmove" + to_string(i) + ".png");
-    }
-    for (int i = 0; i < 8; i++) {
-        Cmove[i].loadFromFile("C move/Cmove" + to_string(i) + ".png");
-    }
+    setNormalMovesTexture();
+    setAblazeMovesTexture();
     for (int i = 0; i < 8; i++) {
         walkAnimation[i].loadFromFile("walk/Walk" + to_string(i) + ".png");
     }
@@ -727,16 +751,25 @@ void Switch_States() {
     // Animate 
 
     switch (curr_state) {
-        case run:maximagecounter = 8; Player.setTexture(RunAnimation[ImageCounter]); UpdateAnimationCounter(0.1*animation_multiplier); break;
+    case run:if (!Ablaze){maximagecounter = 8; Player.setTexture(RunAnimation[ImageCounter]); UpdateAnimationCounter(0.1 * animation_multiplier); break;}
+            else { maximagecounter = 8; Player.setTexture(RunAnimationUlt[ImageCounter]); UpdateAnimationCounter(0.1 * animation_multiplier); break; }
+                 
         case walk: maximagecounter = 8; Player.setTexture(walkAnimation[ImageCounter]); UpdateAnimationCounter(0.2); break;
         case idle: 
             if (Ablaze) Player.setTexture(Idle2);
             else Player.setTexture(Idle);
             UpdateAnimationCounter(0.1); break;
         case base: Player.setTexture(BaseAttack[ImageCounter]); UpdateAnimationCounter(0.08*animation_multiplier); break;//0.12
-        case vmove: Player.setTexture(Vmove[ImageCounter]); UpdateAnimationCounter(0.11* animation_multiplier); break;
-        case xmove: Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.1* animation_multiplier); break;
-        case cmove: Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.1* animation_multiplier); break;
+
+        case vmove: if (!Ablaze) { Player.setTexture(Vmove[ImageCounter]); UpdateAnimationCounter(0.11 * animation_multiplier); break; }
+                  else { Player.setTexture(VmoveUlt[ImageCounter]); UpdateAnimationCounter(0.11 * animation_multiplier); break; }
+
+        case xmove: if (!Ablaze) { Player.setTexture(Xmove[ImageCounter]); UpdateAnimationCounter(0.1 * animation_multiplier); break; }
+                  else { Player.setTexture(XmoveUlt[ImageCounter]); UpdateAnimationCounter(0.1 * animation_multiplier); break; }
+
+        case cmove: if (!Ablaze) { Player.setTexture(Cmove[ImageCounter]); UpdateAnimationCounter(0.1 * animation_multiplier); break; }
+                  else { Player.setTexture(CmoveUlt[ImageCounter]); UpdateAnimationCounter(0.1 * animation_multiplier); break; }
+
         case hit:Player.setTexture(HitAnimation[ImageCounter]); UpdateAnimationCounter(0.15); break;    
         case dead: Player.setTexture(DeathAnimation[ImageCounter]); UpdateAnimationCounter(0.1); break;
     }
@@ -1223,7 +1256,6 @@ void set_your_heart_ablaze() {
         run_speed = 400;
         animation_multiplier = 0.9;
         cooldown_divider = 2;
-
     }
     else {
         run_speed = 200;

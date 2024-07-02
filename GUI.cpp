@@ -130,9 +130,7 @@ void GUI::setShopTexture() {
 }
 void GUI::drawUpgradeMenu()
 {
-	Vector2f shopPosition = { Player.getPosition().x -800,
-								Player.getPosition().y -200};
-
+	Vector2f shopPosition = { Player.getPosition().x -800,Player.getPosition().y -200};
 	upgradeMenu.setPosition(shopPosition);
 	window.draw(upgradeMenu);
 	cout << " drawn  ";

@@ -568,10 +568,8 @@ void upgradeShop() {
         cout << "  near!  ";
         if (Keyboard::isKeyPressed(Keyboard::E))
             shopOpened = true;
-        if (shopOpened)
-        {
-            if ((Keyboard::isKeyPressed(Keyboard::Num1) || Keyboard::isKeyPressed(Keyboard::Numpad1)) and coinsCount >= damageUpCost)
-            {
+        if (shopOpened) {
+            if ((Keyboard::isKeyPressed(Keyboard::Num1) || Keyboard::isKeyPressed(Keyboard::Numpad1)) and coinsCount >= damageUpCost) {
                 if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
                     upgradetimer.restart();
                     damageUp++;
@@ -582,6 +580,7 @@ void upgradeShop() {
             if ((Keyboard::isKeyPressed(Keyboard::Num2) || Keyboard::isKeyPressed(Keyboard::Numpad2)) and coinsCount >= healthUpCost)
             {
                 if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
+                    upgradetimer.restart();
                     healthUp++;
                     coinsCount -= healthUpCost;
                     healthUpCost += 10;
@@ -590,6 +589,7 @@ void upgradeShop() {
             if ((Keyboard::isKeyPressed(Keyboard::Num3) || Keyboard::isKeyPressed(Keyboard::Numpad3)) and coinsCount >= cooldownUpCost)
             {
                 if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
+                    upgradetimer.restart();
                     cooldownUp++;
                     coinsCount -= cooldownUpCost;
                     cooldownUpCost += 10;

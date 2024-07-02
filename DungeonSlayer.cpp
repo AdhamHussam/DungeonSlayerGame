@@ -583,7 +583,7 @@ void upgradeShop() {
             {
                 if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
                     upgradetimer.restart();
-                    Max_Player_Health+=10;
+                    Max_Player_Health+=100;
                     Player_Health = Max_Player_Health;
                     coinsCount -= healthUpCost;
                     healthUpCost += 10;

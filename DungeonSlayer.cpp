@@ -621,7 +621,7 @@ void upgradeShop() {
             }
         }
         if (shopOpened) {
-            if ((Keyboard::isKeyPressed(Keyboard::Num1) || Keyboard::isKeyPressed(Keyboard::Numpad1)) and coinsCount >= damageUpCost and damageUp < 4) {
+            if ((Keyboard::isKeyPressed(Keyboard::Num1) || Keyboard::isKeyPressed(Keyboard::Numpad1)) and coinsCount >= damageUpCost and damageUp < 5) {
                 if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
                     upgradetimer.restart();
                     damageUp++;
@@ -633,13 +633,14 @@ void upgradeShop() {
             {
                 if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
                     upgradetimer.restart();
-                    Max_Player_Health+=25;
+                    Max_Player_Health+=20;
+                    healthUp++;
                     Player_Health = Max_Player_Health;
                     coinsCount -= healthUpCost;
                     healthUpCost += 10;
                 }
             }
-            if ((Keyboard::isKeyPressed(Keyboard::Num3) || Keyboard::isKeyPressed(Keyboard::Numpad3)) and coinsCount >= cooldownUpCost and cooldownUp < 4)
+            if ((Keyboard::isKeyPressed(Keyboard::Num3) || Keyboard::isKeyPressed(Keyboard::Numpad3)) and coinsCount >= cooldownUpCost and cooldownUp < 5)
             {
                 if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
                     upgradetimer.restart();
@@ -806,19 +807,19 @@ void Switch_States() {
             curr_state = xmove;
             PlayerAttack.setBuffer(player_attackX);
             PlayerAttack.play();
-            cooldown[1] = 3 / cooldown_divider;
+            cooldown[1] = (3 - cooldownUp*0.1) / cooldown_divider  ;
         }
         if (Keyboard::isKeyPressed(Keyboard::C) && cooldown[2] == 0 ) {
             curr_state = cmove;
             PlayerAttack.setBuffer(player_attackC);
             PlayerAttack.play();
-            cooldown[2] = 6 / cooldown_divider;
+            cooldown[2] = (6 - cooldownUp*0.3)/ cooldown_divider ;
         }
         if (Keyboard::isKeyPressed(Keyboard::V) && cooldown[3] == 0 ) {  
             curr_state = vmove;
             PlayerAttack.setBuffer(player_attackV);
             PlayerAttack.play();
-            cooldown[3] = 9/cooldown_divider;
+            cooldown[3] = (9 - cooldownUp*0.5)/cooldown_divider ;
         }
         if (Keyboard::isKeyPressed(Keyboard::Q) && cooldown[4] == 0 ) {
             cooldown[4] = 3;

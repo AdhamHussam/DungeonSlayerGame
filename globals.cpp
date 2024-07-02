@@ -20,7 +20,6 @@ RenderWindow window(VideoMode(1920, 1080), "Dungeon Slayer", Style::Fullscreen);
 int BODnumber;
 BringerOfDeath BODmonsters[30];
 NightBrone NBmonsters[30];
-FlameWizard FWmonsters[30];
 ShardSoul SSmonsters[30];
 Skeleton Smonsters[100];
 BringerOfDeath BODoriginal;

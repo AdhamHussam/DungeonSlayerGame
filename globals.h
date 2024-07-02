@@ -1,10 +1,8 @@
-#pragma once
 #include "GUI.h"
 #include "BrainMole.h"
 #include "NightBorne.h"
 #include "ShardSoul.h"
 #include "Skeleton.h"
-#include "FlameWizard.h"
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
@@ -16,7 +14,7 @@ extern View view;
 extern int level;
 extern int AblazeCharge;
 extern bool room_cleared;
-extern int ArcaneArcherNumber, NightBroneNumber, SkeletonNumber, ShardSoulNumber, BrainMoleNumber, RogueNumber, GoblinNumber, FlameWizardNumber;
+extern int ArcaneArcherNumber, NightBroneNumber, SkeletonNumber, ShardSoulNumber, BrainMoleNumber, RogueNumber, GoblinNumber;
 extern bool Ablaze;
 extern bool AblazeReady;
 extern RenderWindow window;
@@ -44,7 +42,6 @@ extern float cooldownUp;
 extern int coinsCount;
 extern BrainMole BMmonsters[30];
 extern NightBrone NBmonsters[30];
-extern FlameWizard FWmonsters[30];
 extern ShardSoul SSmonsters[30];
 extern Skeleton Smonsters[100];
 extern GUI gui;

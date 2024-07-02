@@ -107,8 +107,8 @@ void GUI::setPlayerInfoTexture() {
 	ultBarTexture.loadFromFile(R"(GUI\ult_bar.png)");
 	ultBar.setTexture(ultBarTexture);
 	ultBarReadyTexture.loadFromFile(R"(GUI\ult_bar_full.png)");
-	ultBar.setScale(3,13);
-	ultBarBack.setScale(3,15);
+	ultBar.setScale(4,13);
+	ultBarBack.setScale(4,15);
 
 	loadingEffectTexture.loadFromFile(R"(GUI\loading_effect.png)");
 	loadingEffect.setTexture(loadingEffectTexture);
@@ -130,7 +130,7 @@ void GUI::setShopTexture() {
 }
 void GUI::drawUpgradeMenu()
 {
-	Vector2f shopPosition = { Player.getPosition().x -800,Player.getPosition().y -200};
+	Vector2f shopPosition = { Player.getPosition().x -670,Player.getPosition().y -200};
 	upgradeMenu.setPosition(shopPosition);
 	window.draw(upgradeMenu);
 	cout << " drawn  ";
@@ -206,7 +206,7 @@ void GUI::drawBossHP(float health, int max_health) {
 void GUI::updatePlayerInfo(RenderWindow& window) {
 	Vector2f infoPosition = { Player.getPosition().x - window.getSize().x/2-20,
 								Player.getPosition().y - window.getSize().y / 2 -20};
-	Vector2f ultPosition = { Player.getPosition().x + 930 ,Player.getPosition().y + window.getSize().y / 3 - 250 };
+	Vector2f ultPosition = { Player.getPosition().x + 870 ,Player.getPosition().y -220 };
 	Vector2f coinsPosition = { Player.getPosition().x + window.getSize().x / 2 ,Player.getPosition().y - window.getSize().y / 2 };
 	int helath_start = healthBarTexture.getSize().x/3;
 	int health = (Player_Health > Max_Player_Health ? Max_Player_Health : Player_Health);

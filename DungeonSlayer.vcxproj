@@ -153,11 +153,13 @@
     <ClCompile Include="Rogue.cpp" />
     <ClCompile Include="ShardSoul.cpp" />
     <ClCompile Include="Skeleton.cpp" />
+    <ClCompile Include="FlameWizard.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArcanArcher.h" />
     <ClInclude Include="BOD.h" />
     <ClInclude Include="BrainMole.h" />
+    <ClInclude Include="FlameWizard.h" />
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="Goblin.h" />

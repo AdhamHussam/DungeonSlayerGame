@@ -5,6 +5,7 @@
 #include "ShardSoul.h"
 #include "BrainMole.h"
 #include "Rogue.h"
+#include "FlameWizard.h"
 #include "RandomizePlaces.h"
 
 void SetMonstersSprites() {
@@ -15,6 +16,7 @@ void SetMonstersSprites() {
     Screate();
     SScreate();
     BMcreate();
+    FWcreate();
     Rcreate();
 }
 
@@ -27,6 +29,7 @@ void SetMonstersWave() {
     Sset(SkeletonNumber);
     SSset(ShardSoulNumber);
     BMset(BrainMoleNumber);
+    FWset(5);
     Rset(RogueNumber);
 }
 
@@ -44,6 +47,7 @@ void MoveMonsters() {
 	MonstersMovment();
     Rmove(playerdeltatime, Player, attct, Player_Health);
     NBmove(playerdeltatime, Player, attct, Player_Health, ishit);
+    FWmove(playerdeltatime, Player, attct, Player_Health, ishit);
     AAMove(playerdeltatime,Player,attct,Player_Health,ishit);
     goblins_move(GoblinNumber, attct);
     Smove(playerdeltatime, Player, attct, Player_Health, ishit);
@@ -66,6 +70,7 @@ void ShowMonsters() {
     BMdraw(window);
     AADraw(window);
     NBdraw(window);
+    FWdraw(window);
     Rdraw(window);
 }
 

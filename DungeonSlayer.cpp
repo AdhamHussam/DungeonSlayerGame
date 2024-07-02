@@ -1131,18 +1131,21 @@ void PauseMenuHandler(RenderWindow& window) {
                 MenuSounds.play();
                 GameClock.restart();
                 level = 1;
+                cutScenePlaying = true;
                 Max_Player_Health = 100;
                 Map.setTexture(map1);
                 game_reset();
                 break;
             }
         }
+        //main menu
         if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 3) {
             if (GameClock.getElapsedTime().asSeconds() > button_lag) {
                 MenuSounds.play();
                 GameClock.restart();
                 pagenum = 10;
                 level = 1;
+                cutScenePlaying = true;
                 Max_Player_Health = 100;
                 Map.setTexture(map1);
                 game_reset();
@@ -1170,7 +1173,6 @@ void game_reset() {
     map_opener_trigger = false;
     death_trigger = false;
     room_cleared = true;
-    cutScenePlaying = true;
     ResetMonsters();
     current_room = 0;
     current_wave = 0;

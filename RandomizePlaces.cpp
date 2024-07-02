@@ -27,7 +27,7 @@ void RandPosition(int& x, int& y) {
 void MonsterNumber() {
 	ifstream file("NumberOfMonsters.csv");
 	string row;
-	for (int i = 0; i <= current_room + (level - 1) * 7; i++)
+	for (int i = 0; i <= current_room + (level - 1) * 6; i++)
 		getline(file, row);
 	stringstream ss(row);
 	string cell;

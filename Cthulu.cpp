@@ -71,7 +71,7 @@ void Churt(int i) {
 
 void Cdie(int i) {
     Cmonsters[i].Ct.setTextureRect(CgetRect( 90 + CmovementCounter[i]));
-    CupdateMonsterAnimationCounter(i, 0.5);
+    CupdateMonsterAnimationCounter(i, 0.2);
     if (CmovementCounter[i] == 11)
         Cmonsters[i].alive = false;
 }
@@ -80,7 +80,7 @@ void Cdie(int i) {
 void Ccreate() {
     Ctexture.loadFromFile("enemies2/cthulu.png");
     //Dtexture.loadFromFile("enemies/Rogue2.png");
-    Coriginal.health = 200;
+    Coriginal.health = 150;
     Coriginal.Ct.setTexture(Ctexture);
     Coriginal.Ct.setTextureRect(CgetRect(0));
     Coriginal.Ct.setOrigin(96, 56);
@@ -89,7 +89,7 @@ void Ccreate() {
 }
 
 void Cset(int Rn) {
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < CthuluNumber; i++) {
         Cmonsters[i] = Coriginal;
         CmonsterCounter[i] = 0;
         CmovementCounter[i] = 0;
@@ -104,7 +104,7 @@ void Cset(int Rn) {
 
 void Ctmove(float time, Sprite p, int attct, int& PlayerHealth) {
     Cdeltatime = time;
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < CthuluNumber; i++) {
 
         // check if alive
         if (!Cmonsters[i].alive)
@@ -160,7 +160,7 @@ void Ctmove(float time, Sprite p, int attct, int& PlayerHealth) {
 }
 
 void Cdraw(RenderWindow& window) {
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < CthuluNumber; i++) {
         if (Cmonsters[i].alive) {
             window.draw(Cmonsters[i].Ct);
             gui.drawBossHP(Cmonsters[i].health, 200);

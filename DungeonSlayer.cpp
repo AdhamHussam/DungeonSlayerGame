@@ -620,7 +620,7 @@ void upgradeShop() {
             }
         }
         if (shopOpened) {
-            if ((Keyboard::isKeyPressed(Keyboard::Num1) || Keyboard::isKeyPressed(Keyboard::Numpad1)) and coinsCount >= damageUpCost) {
+            if ((Keyboard::isKeyPressed(Keyboard::Num1) || Keyboard::isKeyPressed(Keyboard::Numpad1)) and coinsCount >= damageUpCost and damageUp < 4) {
                 if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
                     upgradetimer.restart();
                     damageUp++;
@@ -628,17 +628,17 @@ void upgradeShop() {
                     damageUpCost += 10;
                 }
             }
-            if ((Keyboard::isKeyPressed(Keyboard::Num2) || Keyboard::isKeyPressed(Keyboard::Numpad2)) and coinsCount >= healthUpCost)
+            if ((Keyboard::isKeyPressed(Keyboard::Num2) || Keyboard::isKeyPressed(Keyboard::Numpad2)) and coinsCount >= healthUpCost and Max_Player_Health < 200)
             {
                 if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
                     upgradetimer.restart();
-                    Max_Player_Health+=1000;
+                    Max_Player_Health+=25;
                     Player_Health = Max_Player_Health;
                     coinsCount -= healthUpCost;
                     healthUpCost += 10;
                 }
             }
-            if ((Keyboard::isKeyPressed(Keyboard::Num3) || Keyboard::isKeyPressed(Keyboard::Numpad3)) and coinsCount >= cooldownUpCost)
+            if ((Keyboard::isKeyPressed(Keyboard::Num3) || Keyboard::isKeyPressed(Keyboard::Numpad3)) and coinsCount >= cooldownUpCost and cooldownUp < 4)
             {
                 if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
                     upgradetimer.restart();

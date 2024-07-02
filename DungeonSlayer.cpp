@@ -565,9 +565,13 @@ void setTextures() {
 void upgradeShop() {
 
     if (abs(Player.getPosition().x - UpgradeNPC.getPosition().x) < 280 && abs(Player.getPosition().y - UpgradeNPC.getPosition().y) < 190) {
-        cout << "  near!  ";
-        if (Keyboard::isKeyPressed(Keyboard::E))
-            shopOpened = true;
+        //cout << "  near!  ";
+        if (Keyboard::isKeyPressed(Keyboard::E) and !shopOpened ) {
+            if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
+                upgradetimer.restart();
+                shopOpened = true;
+            }
+        }
         if (shopOpened) {
             if ((Keyboard::isKeyPressed(Keyboard::Num1) || Keyboard::isKeyPressed(Keyboard::Numpad1)) and coinsCount >= damageUpCost) {
                 if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
@@ -595,8 +599,12 @@ void upgradeShop() {
                     cooldownUpCost += 10;
                 }
             }
-            if(Keyboard::isKeyPressed(Keyboard::R))
-                shopOpened = false;
+            if (Keyboard::isKeyPressed(Keyboard::E)) {
+                if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
+                    shopOpened = false;
+                    upgradetimer.restart();
+                }
+            }
         }
     }
     else

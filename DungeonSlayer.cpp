@@ -38,6 +38,7 @@ int pagenum = 10;
 Text go_next_text;
 Text set_your_heart_text;
 Text upgrader_text;
+Text Skip_text;
 Font game_font;
 
 // player attributes
@@ -73,6 +74,7 @@ bool finishedanimationonce = false;
 bool power_up = false;
 bool shopOpened = false;
 bool shopNear = false;
+bool cutScenePlaying = true;
 
 
 Menu menu(1920, 1080);
@@ -581,9 +583,17 @@ void setTextures() {
     set_your_heart_text.setPosition(Player.getPosition().x-100, Player.getPosition().y + 100);
 
     //cutscene
+
     playerScene1.loadFromFile("cutscenePlayer.png");
-    monsterScene1.loadFromFile("Rogue.png");
+    monsterScene1.loadFromFile("enemies/Rogue.png");
     textbox.loadFromFile("textbox.png");
+    
+    Skip_text.setFont(game_font);
+    Skip_text.setFillColor(Color{ 255,215,0 });
+    Skip_text.setString("Press TAB to proceed");
+    Skip_text.setCharacterSize(30);
+    Skip_text.setPosition(750, 1000);
+
     textboxSP.setTexture(textbox);
     textboxSM.setTexture(textbox);
     textboxSP.setScale(0.7, 0.7); 
@@ -693,7 +703,6 @@ void Draw() {
 
     if (shopNear and !shopOpened)
     {
-
         upgrader_text.setPosition(Player.getPosition().x - 300, Player.getPosition().y - 400);
         window.draw(upgrader_text);
     }
@@ -766,7 +775,6 @@ void playerMovement() {
 void trackView() {
     view.setCenter(Player.getPosition()); //update
 }
-
 
 void Switch_States() {
     // cooldown timer
@@ -1040,8 +1048,10 @@ void Game_play(RenderWindow& window) {
             }
         }
         music_handler();
-        update();
-        Draw();
+        if(cutScenePlaying) cutScene();
+        if (!cutScenePlaying) {
+            update();Draw();
+        }
     }
 }
 
@@ -1160,6 +1170,7 @@ void game_reset() {
     map_opener_trigger = false;
     death_trigger = false;
     room_cleared = true;
+    cutScenePlaying = true;
     ResetMonsters();
     current_room = 0;
     current_wave = 0;
@@ -1403,10 +1414,13 @@ void cutScene() {
         monsterScene1S.setTextureRect(monsterScene1SA); 
         cutscene.restart();  
     }
+    if (Keyboard::isKeyPressed(Keyboard::Tab))
+        cutScenePlaying = false;
 
     window.clear(); 
     window.draw(textboxSP); 
     window.draw(textboxSM);
+    window.draw(Skip_text);
     window.draw(monsterScene1S); 
     window.draw(playerScene1S); 
     window.display(); 

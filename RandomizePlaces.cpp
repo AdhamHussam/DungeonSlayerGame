@@ -27,7 +27,7 @@ void RandPosition(int& x, int& y) {
 void MonsterNumber() {
 	ifstream file("NumberOfMonsters.csv");
 	string row;
-	for (int i = 0; i <= current_room + (level - 1)*6; i++)
+	for (int i = 0; i <= current_room + (level - 1) * 6; i++)
 		getline(file, row);
 	stringstream ss(row);
 	string cell;
@@ -47,6 +47,8 @@ void MonsterNumber() {
 	RogueNumber = stoi(cell);
 	getline(ss, cell, ',');
 	GoblinNumber = stoi(cell);
+	getline(ss, cell, ',');
+	CthuluNumber = stoi(cell);
 }
 
 void CheckMonsterCollisions(Sprite& Monster, float x, float y) {

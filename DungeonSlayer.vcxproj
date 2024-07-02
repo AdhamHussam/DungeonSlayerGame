@@ -140,6 +140,7 @@
     <ClCompile Include="ArcanArcher.cpp" />
     <ClCompile Include="BOD.cpp" />
     <ClCompile Include="BrainMole.cpp" />
+    <ClCompile Include="Cthulu.cpp" />
     <ClCompile Include="DungeonSlayer.cpp" />
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="Goblin.cpp" />
@@ -159,7 +160,11 @@
     <ClInclude Include="ArcanArcher.h" />
     <ClInclude Include="BOD.h" />
     <ClInclude Include="BrainMole.h" />
+<<<<<<< HEAD
     <ClInclude Include="FlameWizard.h" />
+=======
+    <ClInclude Include="cthulu.h" />
+>>>>>>> 968858543f440b7d1462f18ecf89b58c9a0918c7
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="Goblin.h" />

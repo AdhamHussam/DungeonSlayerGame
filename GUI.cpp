@@ -119,6 +119,17 @@ void GUI::setPlayerInfoTexture() {
 	coinsBackTexture.loadFromFile(R"(GUI\coins_back.png)");
 	coinsBack.setTexture(coinsBackTexture);
 	coinsCnt.setFont(font);
+	upHeT.setFont(font);
+	upAtT.setFont(font);
+	upCoT.setFont(font);
+	int size = 30;
+	upHeT.setCharacterSize(size);
+	upAtT.setCharacterSize(size);
+	upCoT.setCharacterSize(size);
+
+	upHeT.setString("Health              " + to_string(healthUpCost));
+	upAtT.setString("Attack              " + to_string(damageUpCost));
+	upCoT.setString("cooldown              " + to_string(cooldownUpCost));
 
 }
 
@@ -130,10 +141,44 @@ void GUI::setShopTexture() {
 }
 void GUI::drawUpgradeMenu()
 {
-	Vector2f shopPosition = { Player.getPosition().x -670,Player.getPosition().y -200};
+	Vector2f shopPosition = { Player.getPosition().x -670,Player.getPosition().y -300};
+	Vector2f firstPosition = { Player.getPosition().x+330 ,Player.getPosition().y-40};
 	upgradeMenu.setPosition(shopPosition);
 	window.draw(upgradeMenu);
-	cout << " drawn  ";
+
+	upHeTexture.loadFromFile(R"(GUI\up)" + to_string(int(healthUp)) + R"(.png)");
+	upAtTexture.loadFromFile(R"(GUI\up)" + to_string(int(damageUp)) + R"(.png)");
+	upCoTexture.loadFromFile(R"(GUI\up)" + to_string(int(cooldownUp)) + R"(.png)");
+
+	upHe.setTexture(upHeTexture);
+	upHe.setScale(6, 4);
+	upHe.setPosition(firstPosition);
+
+	upAt.setTexture(upAtTexture);
+	upAt.setScale(6, 4);
+	upAt.setPosition(firstPosition.x, firstPosition.y-140);
+
+	upCo.setTexture(upCoTexture);
+	upCo.setScale(6, 4);
+	upCo.setPosition(firstPosition.x, firstPosition.y + 140);
+	firstPosition.x -= 470;
+
+	upHeT.setPosition(firstPosition);
+	upAtT.setPosition(firstPosition.x, firstPosition.y - 140);
+	upCoT.setPosition(firstPosition.x, firstPosition.y + 140);
+
+	upHeT.setString("Health       " + to_string(healthUpCost) + "%    " + to_string((int)healthUp * 20) + "%");
+	upAtT.setString("Attack         " + to_string(damageUpCost) + "$   " + to_string((int)damageUp * 10) + "%");
+	upCoT.setString("cooldown  " + to_string(cooldownUpCost) + "$   " + to_string((int)cooldownUp * 5) + "% - " + to_string((int)cooldownUp * 3) + "%");
+
+	window.draw(upHe);
+	window.draw(upAt);
+	window.draw(upCo);
+	window.draw(upHeT);
+	window.draw(upAtT);
+	window.draw(upCoT);
+
+
 }
 
 
@@ -238,7 +283,7 @@ void GUI::updatePlayerInfo(RenderWindow& window) {
 	coins.setScale(2, 2);
 	coinsBack.setPosition(coinsPosition.x - coinsBackTexture.getSize().x * 7-20, coinsPosition.y + coinsBackTexture.getSize().y * 4);
 	coinsBack.setScale(7, 7);
-	coinsCnt.setString(to_string(coinsCount));
+	coinsCnt.setString(to_string((int)coinsCount));
 	coinsCnt.setPosition(coinsPosition.x - 250, coinsPosition.y + 80);
 	coinsCnt.setCharacterSize(30);
 

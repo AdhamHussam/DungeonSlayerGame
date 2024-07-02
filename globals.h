@@ -4,7 +4,12 @@
 #include "NightBorne.h"
 #include "ShardSoul.h"
 #include "Skeleton.h"
+<<<<<<< HEAD
 #include "FlameWizard.h"
+=======
+#include "cthulu.h"
+
+>>>>>>> 968858543f440b7d1462f18ecf89b58c9a0918c7
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
@@ -16,7 +21,11 @@ extern View view;
 extern int level;
 extern int AblazeCharge;
 extern bool room_cleared;
+<<<<<<< HEAD
 extern int ArcaneArcherNumber, NightBroneNumber, SkeletonNumber, ShardSoulNumber, BrainMoleNumber, RogueNumber, GoblinNumber, FlameWizardNumber;
+=======
+extern int ArcaneArcherNumber, NightBroneNumber, SkeletonNumber, ShardSoulNumber, BrainMoleNumber, RogueNumber, GoblinNumber, CthuluNumber;
+>>>>>>> 968858543f440b7d1462f18ecf89b58c9a0918c7
 extern bool Ablaze;
 extern bool AblazeReady;
 extern RenderWindow window;
@@ -41,12 +50,13 @@ extern float healthUp;
 extern int healthUpCost;
 extern int cooldownUpCost;
 extern float cooldownUp;
-extern int coinsCount;
+extern float coinsCount;
 extern BrainMole BMmonsters[30];
 extern NightBrone NBmonsters[30];
 extern FlameWizard FWmonsters[30];
 extern ShardSoul SSmonsters[30];
 extern Skeleton Smonsters[100];
+extern Cthulu Cmonsters[100];
 extern GUI gui;
 
 extern RectangleShape borderR1;

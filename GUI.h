@@ -40,6 +40,9 @@ struct GUI {
     Texture coinsTexture;
     Texture coinsBackTexture;
     Texture upgradeMenuTexture;
+    Texture upAtTexture;
+    Texture upHeTexture;
+    Texture upCoTexture;
 
     GUIskill skills[4];
     
@@ -57,6 +60,13 @@ struct GUI {
     Sprite coins;
     Sprite coinsBack;
     Sprite upgradeMenu;
+    Sprite upHe;
+    Sprite upCo;
+    Sprite upAt;
+    Text upHeT;
+    Text upCoT;
+    Text upAtT;
+
     Text coinsCnt;
     int framenum = 1;
 

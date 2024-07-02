@@ -38,6 +38,7 @@ int pagenum = 10;
 Text go_next_text;
 Text set_your_heart_text;
 Text upgrader_text;
+Text Skip_text;
 Font game_font;
 
 // player attributes
@@ -73,11 +74,13 @@ bool finishedanimationonce = false;
 bool power_up = false;
 bool shopOpened = false;
 bool shopNear = false;
+bool cutScenePlaying = true;
 
 
 Menu menu(1920, 1080);
 PauseMenu pause(1920, 1080);
 
+Clock cutscene;
 Clock pausetimer;
 Clock attacktimer;
 Clock dashtimer;
@@ -116,6 +119,12 @@ Texture upgrade_npc_talk[4];
 Texture trade_npc_idle[11];
 Texture trade_npc_talk[11];
 
+Texture Pscene1;
+Texture Mscene1[4];
+
+Sprite Pscene1s;
+Sprite Mscene1s;
+
 Sprite UpgradeNPC;
 Sprite TradeNPC;
 
@@ -133,7 +142,14 @@ Sprite Room;
 Texture pausebg;
 Sprite pausemenu;
 Sprite Map;
-
+IntRect monsterScene1SA(0, 0, 45, 40);
+Texture playerScene1;
+Texture monsterScene1;
+Texture textbox;
+Sprite textboxSP;
+Sprite textboxSM; 
+Sprite playerScene1S; 
+Sprite monsterScene1S(monsterScene1, monsterScene1SA); 
 // Room 0 Borders
 RectangleShape gate1(Vector2f({ 1, 1 }));
 RectangleShape gate2(Vector2f({ 1, 1 }));
@@ -196,7 +212,7 @@ void Go_Next();
 void check_ablaze();
 void set_your_heart_ablaze();
 void camera_shake();
-    
+void cutScene();
 
 // Main 
 int main()
@@ -559,12 +575,37 @@ void setTextures() {
     upgrader_text.setFillColor(Color{ 255,215,0 });
     upgrader_text.setString("Press E to meet 3m Mo7sen");
     upgrader_text.setCharacterSize(30);
+    upgrader_text.setPosition(60, 6500);
 
     set_your_heart_text.setFont(game_font);
     set_your_heart_text.setFillColor(Color{ 255,215,0 });
     set_your_heart_text.setString("Press G to Set Your Heart Ablaze");
     set_your_heart_text.setCharacterSize(40);
     set_your_heart_text.setPosition(Player.getPosition().x-100, Player.getPosition().y + 100);
+
+    //cutscene
+
+    playerScene1.loadFromFile("cutscenePlayer.png");
+    monsterScene1.loadFromFile("enemies/Rogue.png");
+    textbox.loadFromFile("textbox.png");
+    
+    Skip_text.setFont(game_font);
+    Skip_text.setFillColor(Color{ 255,215,0 });
+    Skip_text.setString("Press TAB to proceed");
+    Skip_text.setCharacterSize(30);
+    Skip_text.setPosition(750, 1000);
+
+    textboxSP.setTexture(textbox);
+    textboxSM.setTexture(textbox);
+    textboxSP.setScale(0.7, 0.7); 
+    textboxSM.setScale(0.7, 0.7);
+    textboxSP.setPosition(-100, 180);
+    textboxSM.setPosition(500, 380);
+    playerScene1S.setTexture(playerScene1);
+    monsterScene1S.setScale(-16, 16);
+    monsterScene1S.setPosition(2000, 495);
+    playerScene1S.setScale(0.5, 0.5);
+    playerScene1S.setPosition(10, 450);
 
 }
 
@@ -580,7 +621,7 @@ void upgradeShop() {
             }
         }
         if (shopOpened) {
-            if ((Keyboard::isKeyPressed(Keyboard::Num1) || Keyboard::isKeyPressed(Keyboard::Numpad1)) and coinsCount >= damageUpCost) {
+            if ((Keyboard::isKeyPressed(Keyboard::Num1) || Keyboard::isKeyPressed(Keyboard::Numpad1)) and coinsCount >= damageUpCost and damageUp < 5) {
                 if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
                     upgradetimer.restart();
                     damageUp++;
@@ -588,17 +629,18 @@ void upgradeShop() {
                     damageUpCost += 10;
                 }
             }
-            if ((Keyboard::isKeyPressed(Keyboard::Num2) || Keyboard::isKeyPressed(Keyboard::Numpad2)) and coinsCount >= healthUpCost)
+            if ((Keyboard::isKeyPressed(Keyboard::Num2) || Keyboard::isKeyPressed(Keyboard::Numpad2)) and coinsCount >= healthUpCost and Max_Player_Health < 200)
             {
                 if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
                     upgradetimer.restart();
-                    Max_Player_Health+=1000;
+                    Max_Player_Health+=20;
+                    healthUp++;
                     Player_Health = Max_Player_Health;
                     coinsCount -= healthUpCost;
                     healthUpCost += 10;
                 }
             }
-            if ((Keyboard::isKeyPressed(Keyboard::Num3) || Keyboard::isKeyPressed(Keyboard::Numpad3)) and coinsCount >= cooldownUpCost)
+            if ((Keyboard::isKeyPressed(Keyboard::Num3) || Keyboard::isKeyPressed(Keyboard::Numpad3)) and coinsCount >= cooldownUpCost and cooldownUp < 5)
             {
                 if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
                     upgradetimer.restart();
@@ -661,10 +703,7 @@ void Draw() {
 
     gui.drawGUI(window);    
 
-    if (shopNear and !shopOpened)
-    {
-
-        upgrader_text.setPosition(Player.getPosition().x - 300, Player.getPosition().y - 400);
+    if (shopNear and !shopOpened) {
         window.draw(upgrader_text);
     }
     else if (shopOpened) gui.drawUpgradeMenu();
@@ -737,7 +776,6 @@ void trackView() {
     view.setCenter(Player.getPosition()); //update
 }
 
-
 void Switch_States() {
     // cooldown timer
     for (int i = 0; i < 5; i++) {
@@ -769,19 +807,19 @@ void Switch_States() {
             curr_state = xmove;
             PlayerAttack.setBuffer(player_attackX);
             PlayerAttack.play();
-            cooldown[1] = 3 / cooldown_divider;
+            cooldown[1] = (3 - cooldownUp*0.1) / cooldown_divider  ;
         }
         if (Keyboard::isKeyPressed(Keyboard::C) && cooldown[2] == 0 ) {
             curr_state = cmove;
             PlayerAttack.setBuffer(player_attackC);
             PlayerAttack.play();
-            cooldown[2] = 6 / cooldown_divider;
+            cooldown[2] = (6 - cooldownUp*0.3)/ cooldown_divider ;
         }
         if (Keyboard::isKeyPressed(Keyboard::V) && cooldown[3] == 0 ) {  
             curr_state = vmove;
             PlayerAttack.setBuffer(player_attackV);
             PlayerAttack.play();
-            cooldown[3] = 9/cooldown_divider;
+            cooldown[3] = (9 - cooldownUp*0.5)/cooldown_divider ;
         }
         if (Keyboard::isKeyPressed(Keyboard::Q) && cooldown[4] == 0 ) {
             cooldown[4] = 3;
@@ -929,6 +967,7 @@ void menu_handler() {
     while (true) {
         if (pagenum == 10)
         {
+            cutScene();
             while (window.isOpen())
             {
                 Event event;
@@ -1009,8 +1048,10 @@ void Game_play(RenderWindow& window) {
             }
         }
         music_handler();
-        update();
-        Draw();
+        if(cutScenePlaying) cutScene();
+        if (!cutScenePlaying) {
+            update();Draw();
+        }
     }
 }
 
@@ -1084,22 +1125,28 @@ void PauseMenuHandler(RenderWindow& window) {
                 // options menu
             }
         }
+        //restart
         if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 2) {
             if (GameClock.getElapsedTime().asSeconds() > button_lag) {
                 MenuSounds.play();
                 GameClock.restart();
                 level = 1;
+                cutScenePlaying = true;
+                Max_Player_Health = 100;
                 Map.setTexture(map1);
                 game_reset();
                 break;
             }
         }
+        //main menu
         if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 3) {
             if (GameClock.getElapsedTime().asSeconds() > button_lag) {
                 MenuSounds.play();
                 GameClock.restart();
                 pagenum = 10;
                 level = 1;
+                cutScenePlaying = true;
+                Max_Player_Health = 100;
                 Map.setTexture(map1);
                 game_reset();
                 menu_handler();
@@ -1114,7 +1161,7 @@ void PauseMenuHandler(RenderWindow& window) {
 }
 
 void game_reset() {
-    Player_Health = 100;
+    Player_Health = Max_Player_Health;
     curr_state = idle;
     DeathSound.stop();
     isDead = false;
@@ -1257,7 +1304,7 @@ void check_room() {
 }
 
 
-void checkpause(){
+void checkpause() {
     if (Keyboard::isKeyPressed(Keyboard::Escape) && !isDead) {
         if (pausetimer.getElapsedTime().asSeconds() > button_lag) {
             PauseMenuHandler(window);
@@ -1357,4 +1404,27 @@ void camera_shake() {
         view.move(offsetX, offsetY);
         intensity *= 0.9f; // Damping effect  
     }
+}
+void cutScene() {
+    if (cutscene.getElapsedTime().asSeconds() > 0.2) { 
+        if (monsterScene1SA.left == 150) { 
+            monsterScene1SA.left = 0; 
+        }
+        else {
+            monsterScene1SA.left += 50; 
+        }
+        monsterScene1S.setTextureRect(monsterScene1SA); 
+        cutscene.restart();  
+    }
+    if (Keyboard::isKeyPressed(Keyboard::Tab))
+        cutScenePlaying = false;
+
+    window.clear(); 
+    window.draw(textboxSP); 
+    window.draw(textboxSM);
+    window.draw(Skip_text);
+    window.draw(monsterScene1S); 
+    window.draw(playerScene1S); 
+    window.display(); 
+
 }

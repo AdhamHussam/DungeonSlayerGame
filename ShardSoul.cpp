@@ -69,7 +69,7 @@ void SSdie(int i) {
     SSmonsters[i].SS.setTextureRect(SSgetRect(32 + SSmovmentCounter[i]));
     SSupdateMonSSterAnimationCounter(i);
     if (SSmovmentCounter[i] == 6)
-        SSmonsters[i].alive = false, AblazeCharge+=2;
+        SSmonsters[i].alive = false, AblazeCharge+=2, coinsCount+=0.5;
 }
 
 void SScreate() {

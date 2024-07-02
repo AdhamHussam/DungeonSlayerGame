@@ -37,7 +37,6 @@ void Cwalk(int i) {
     Vector2f norm_direction = Direction / magnitude;
     Cmonsters[i].Ct.move(Vector2f(Direction.x / (float)(abs(Direction.x) + abs(Direction.y)) * Cmonsters[i].speed * Cdeltatime,
                               Direction.y / (float)(abs(Direction.x) + abs(Direction.y)) * Cmonsters[i].speed * Cdeltatime));
-    CheckMonsterCollisions(Cmonsters[i].Ct, abs(norm_direction.x * Cmonsters[i].speed * Cdeltatime), abs(norm_direction.y * Cmonsters[i].speed * Cdeltatime));
     CupdateMonsterAnimationCounter(i);
     CmovementCounter[i] %= 12;
 }

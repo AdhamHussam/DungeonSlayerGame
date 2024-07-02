@@ -575,6 +575,7 @@ void setTextures() {
     upgrader_text.setFillColor(Color{ 255,215,0 });
     upgrader_text.setString("Press E to meet 3m Mo7sen");
     upgrader_text.setCharacterSize(30);
+    upgrader_text.setPosition(60, 6500);
 
     set_your_heart_text.setFont(game_font);
     set_your_heart_text.setFillColor(Color{ 255,215,0 });
@@ -701,9 +702,7 @@ void Draw() {
 
     gui.drawGUI(window);    
 
-    if (shopNear and !shopOpened)
-    {
-        upgrader_text.setPosition(Player.getPosition().x - 300, Player.getPosition().y - 400);
+    if (shopNear and !shopOpened) {
         window.draw(upgrader_text);
     }
     else if (shopOpened) gui.drawUpgradeMenu();

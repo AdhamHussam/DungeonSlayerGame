@@ -1066,11 +1066,13 @@ void PauseMenuHandler(RenderWindow& window) {
                 // options menu
             }
         }
+        //restart
         if (Keyboard::isKeyPressed(Keyboard::Enter) && pause.selectedp == 2) {
             if (GameClock.getElapsedTime().asSeconds() > button_lag) {
                 MenuSounds.play();
                 GameClock.restart();
                 level = 1;
+                Max_Player_Health = 100;
                 Map.setTexture(map1);
                 game_reset();
                 break;
@@ -1082,6 +1084,7 @@ void PauseMenuHandler(RenderWindow& window) {
                 GameClock.restart();
                 pagenum = 10;
                 level = 1;
+                Max_Player_Health = 100;
                 Map.setTexture(map1);
                 game_reset();
                 menu_handler();
@@ -1096,7 +1099,7 @@ void PauseMenuHandler(RenderWindow& window) {
 }
 
 void game_reset() {
-    Player_Health = 100;
+    Player_Health = Max_Player_Health;
     curr_state = idle;
     DeathSound.stop();
     isDead = false;
@@ -1239,7 +1242,7 @@ void check_room() {
 }
 
 
-void checkpause(){
+void checkpause() {
     if (Keyboard::isKeyPressed(Keyboard::Escape) && !isDead) {
         if (pausetimer.getElapsedTime().asSeconds() > button_lag) {
             PauseMenuHandler(window);

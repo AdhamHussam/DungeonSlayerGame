@@ -37,6 +37,7 @@ int pagenum = 10;
 
 Text go_next_text;
 Text set_your_heart_text;
+Text upgrader_text;
 Font game_font;
 
 // player attributes
@@ -71,6 +72,7 @@ bool isdashing = false;
 bool finishedanimationonce = false;
 bool power_up = false;
 bool shopOpened = false;
+bool shopNear = false;
 
 
 Menu menu(1920, 1080);
@@ -241,9 +243,9 @@ void update() {
 }
 
 void checkCollisions() {
+
     //upgrader
     upgradeShop();
-    
     //doors
     for (int i = 0; i < doors; i++) {
         if (Player.getGlobalBounds().intersects(gates[i].getGlobalBounds())) {
@@ -566,10 +568,15 @@ void setTextures() {
     go_next_text.setString("Press E to proceed to next level");
     go_next_text.setCharacterSize(30);
     go_next_text.setPosition(Player.getPosition().x-100, Player.getPosition().y + 100);
+    
+    upgrader_text.setFont(game_font);
+    upgrader_text.setFillColor(Color{ 255,215,0 });
+    upgrader_text.setString("Press E to meet 3m Mo7sen");
+    upgrader_text.setCharacterSize(30);
 
     set_your_heart_text.setFont(game_font);
     set_your_heart_text.setFillColor(Color{ 255,215,0 });
-    set_your_heart_text.setString("Set Your Heart Ablaze");
+    set_your_heart_text.setString("Press G to Set Your Heart Ablaze");
     set_your_heart_text.setCharacterSize(40);
     set_your_heart_text.setPosition(Player.getPosition().x-100, Player.getPosition().y + 100);
 
@@ -595,6 +602,7 @@ void upgradeShop() {
 
     if (abs(Player.getPosition().x - UpgradeNPC.getPosition().x) < 280 && abs(Player.getPosition().y - UpgradeNPC.getPosition().y) < 190) {
         //cout << "  near!  ";
+        shopNear = true;
         if (Keyboard::isKeyPressed(Keyboard::E) and !shopOpened ) {
             if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
                 upgradetimer.restart();
@@ -638,7 +646,10 @@ void upgradeShop() {
         }
     }
     else
+    {
         shopOpened = false;
+        shopNear = false;
+    }
 
 }
 void Draw() {
@@ -660,7 +671,7 @@ void Draw() {
         window.draw(go_next_text);
     } 
     if (AblazeReady) {
-        set_your_heart_text.setPosition(Player.getPosition().x- 300, Player.getPosition().y - 350);
+        set_your_heart_text.setPosition(Player.getPosition().x- 400, Player.getPosition().y - 300);
         window.draw(set_your_heart_text);
     }
    /* for (int i = 0; i < doors+1; i++) {
@@ -679,7 +690,14 @@ void Draw() {
         window.draw(down_borders[i]);*/
 
     gui.drawGUI(window);    
-    if (shopOpened) gui.drawUpgradeMenu();
+
+    if (shopNear and !shopOpened)
+    {
+
+        upgrader_text.setPosition(Player.getPosition().x - 300, Player.getPosition().y - 400);
+        window.draw(upgrader_text);
+    }
+    else if (shopOpened) gui.drawUpgradeMenu();
     window.display();
 }
 

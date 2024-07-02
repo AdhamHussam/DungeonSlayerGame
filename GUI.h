@@ -21,6 +21,7 @@ struct GUIskill {
 
 
 struct GUI {
+    Font font;
     Texture skillframe;
     Texture loadingframe;
     Texture PlayerInfoUltTexture;
@@ -36,7 +37,12 @@ struct GUI {
     Texture ultBarTexture;
     Texture ultBarReadyTexture;
     Texture ultBarBackTexture;
+    Texture coinsTexture;
+    Texture coinsBackTexture;
+    Texture upgradeMenuTexture;
+
     GUIskill skills[4];
+    
     Sprite PlayerInfo;
     Sprite healthBar;
     Sprite armorBar;
@@ -48,6 +54,10 @@ struct GUI {
     Sprite bossHP;
     Sprite ultBarBack;
     Sprite ultBar;
+    Sprite coins;
+    Sprite coinsBack;
+    Sprite upgradeMenu;
+    Text coinsCnt;
     int framenum = 1;
 
     RectangleShape skills_background;
@@ -57,9 +67,10 @@ struct GUI {
     void drawGUI(RenderWindow& window);
     void DrawloadingEffect(RenderWindow& window);
     void setPlayerInfoTexture();
+    void setShopTexture();
 
+    void drawUpgradeMenu();
     void setMonstersHPTexture();
-
     void DrawMonsterHP(Vector2f pos, float health, int origHealth, int xdif, int ydif);
     void drawBODHP(Vector2f pos, float health);
     void drawBossHP(float health, int max_health);

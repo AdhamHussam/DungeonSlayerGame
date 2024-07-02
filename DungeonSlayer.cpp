@@ -70,6 +70,7 @@ bool passed_door = false;
 bool isdashing = false;
 bool finishedanimationonce = false;
 bool power_up = false;
+bool shopOpened = false;
 
 
 Menu menu(1920, 1080);
@@ -88,6 +89,7 @@ Texture Idle2;
 Texture DeathAnimation[3];
 Texture HitAnimation[3];
 Texture BaseAttack[8];
+Texture BaseAttackUlt[8];
 Texture RunAnimation[8];
 Texture Vmove[7];
 Texture Xmove[7];
@@ -181,6 +183,7 @@ void setAblazeMovesTexture();
 void setTextures();
 void checkCollisions();
 void Draw();
+void upgradeShop();
 void UpdateAnimationCounter(float st = 0.1);
 void upgradeNpcAnimation(float st);
 void tradeNpcAnimation(float st);
@@ -224,7 +227,9 @@ void update() {
 }
 
 void checkCollisions() {
-
+    //upgrader
+    upgradeShop();
+    
     //doors
     for (int i = 0; i < doors; i++) {
         if (Player.getGlobalBounds().intersects(gates[i].getGlobalBounds())) {
@@ -282,6 +287,10 @@ void checkCollisions() {
 }
 
 void setNormalMovesTexture() {
+
+    for (int i = 0; i < 8; i++) {
+        BaseAttack[i].loadFromFile("base/Base" + to_string(i) + ".png");
+    }
     for (int i = 0; i < 8; i++) {
         RunAnimation[i].loadFromFile("Run/run" + to_string(i) + ".png");
     }
@@ -296,6 +305,10 @@ void setNormalMovesTexture() {
     }
 }
 void setAblazeMovesTexture() {
+    
+    for (int i = 0; i < 8; i++) {
+        BaseAttackUlt[i].loadFromFile("base/BaseUlt" + to_string(i) + ".png");
+    }
     for (int i = 0; i < 8; i++) {
         RunAnimationUlt[i].loadFromFile("Run/run" + to_string(i) + ".png");
     }
@@ -353,7 +366,7 @@ void setTextures() {
     gui.setSkillsTexture();
     gui.setPlayerInfoTexture();
     gui.setMonstersHPTexture();
-
+    gui.setShopTexture();
     // walls
 
     gates[0].setPosition(-60, 6500);
@@ -472,9 +485,6 @@ void setTextures() {
     for (int i = 0; i < 8; i++) {
         walkAnimation[i].loadFromFile("walk/Walk" + to_string(i) + ".png");
     }
-    for (int i = 0; i < 8; i++) {
-        BaseAttack[i].loadFromFile("base/Base" + to_string(i) + ".png");
-    }
     for (int i = 0; i < 3; i++) {
         HitAnimation[i].loadFromFile("hit/Hit" + to_string(i) + ".png");
     }
@@ -551,7 +561,40 @@ void setTextures() {
 
 }
 
+void upgradeShop() {
 
+    if (abs(Player.getPosition().x - UpgradeNPC.getPosition().x) < 280 && abs(Player.getPosition().y - UpgradeNPC.getPosition().y) < 190) {
+        cout << "  near!  ";
+        if (Keyboard::isKeyPressed(Keyboard::E))
+            shopOpened = true;
+        if (shopOpened)
+        {
+            if ((Keyboard::isKeyPressed(Keyboard::Num1) || Keyboard::isKeyPressed(Keyboard::Numpad1)) and coinsCount >= damageUpCost)
+            {
+                damageUp++;
+                coinsCount -= damageUpCost;
+                damageUpCost += 10;
+            }
+            if ((Keyboard::isKeyPressed(Keyboard::Num2) || Keyboard::isKeyPressed(Keyboard::Numpad2)) and coinsCount >= healthUpCost)
+            {
+                healthUp++;
+                coinsCount -= healthUpCost;
+                healthUpCost += 10;
+            }
+            if ((Keyboard::isKeyPressed(Keyboard::Num3) || Keyboard::isKeyPressed(Keyboard::Numpad3)) and coinsCount >= cooldownUpCost)
+            {
+                cooldownUp++;
+                coinsCount -= cooldownUpCost;
+                cooldownUpCost += 10;
+            }
+            if(Keyboard::isKeyPressed(Keyboard::R))
+                shopOpened=false;
+        }
+    }
+            else
+                shopOpened = false;
+
+}
 void Draw() {
     window.clear();
     window.draw(Map);
@@ -590,8 +633,11 @@ void Draw() {
         window.draw(down_borders[i]);*/
 
     gui.drawGUI(window);    
+    if (shopOpened)
+        gui.drawUpgradeMenu();
     window.display();
 }
+
 
 void playerMovement() { 
     if (Keyboard::isKeyPressed(Keyboard::W) && Keyboard::isKeyPressed(Keyboard::LShift))
@@ -759,7 +805,8 @@ void Switch_States() {
             if (Ablaze) Player.setTexture(Idle2);
             else Player.setTexture(Idle);
             UpdateAnimationCounter(0.1); break;
-        case base: Player.setTexture(BaseAttack[ImageCounter]); UpdateAnimationCounter(0.08*animation_multiplier); break;//0.12
+        case base: if (!Ablaze) { Player.setTexture(BaseAttack[ImageCounter]); UpdateAnimationCounter(0.08 * animation_multiplier); break; }//0.12
+                 else { Player.setTexture(BaseAttackUlt[ImageCounter]); UpdateAnimationCounter(0.08 * animation_multiplier); break; }
 
         case vmove: if (!Ablaze) { Player.setTexture(Vmove[ImageCounter]); UpdateAnimationCounter(0.11 * animation_multiplier); break; }
                   else { Player.setTexture(VmoveUlt[ImageCounter]); UpdateAnimationCounter(0.11 * animation_multiplier); break; }

@@ -130,22 +130,22 @@ void MonstersMovment() {
         // check if BOD is being attacked
         if (BODstate[i] != BOD::BODhurt && abs(x) < 100 && abs(y) < 100) {
             if (curr_state == player_base) {
-                BODmonsters[i].health--;
+                BODmonsters[i].health -= round((damageUp * attackUpCof +1) * 1); // damage up is the attack upgrade level
                 MovmentCounter[i] = 0;
                 BODstate[i] = BOD::BODhurt;
             }
             else if (curr_state == player_xmove) {
-                BODmonsters[i].health -= 3;
+                BODmonsters[i].health -= round((damageUp * attackUpCof + 1) * 3);
                 MovmentCounter[i] = 0;
                 BODstate[i] = BOD::BODhurt;
             }
             else if (curr_state == player_cmove) {
-                BODmonsters[i].health -= 5;
+                BODmonsters[i].health -= round((damageUp * attackUpCof + 1) * 5);
                 MovmentCounter[i] = 0;
                 BODstate[i] = BOD::BODhurt;
             }
             else if (curr_state == player_vmove) {
-                BODmonsters[i].health -= 10;
+                BODmonsters[i].health -= round((damageUp * attackUpCof + 1) * 10);
                 MovmentCounter[i] = 0;
                 BODstate[i] = BOD::BODhurt;
             }

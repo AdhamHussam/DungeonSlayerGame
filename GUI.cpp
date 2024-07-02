@@ -8,7 +8,7 @@ using namespace sf;
 Texture skillframe1;
 Clock frameClock;
 float frameDelay = 0.11f;
-void GUIskill::drawSkill(sf::RenderWindow& window, int id) {
+void GUIskill::drawSkill(RenderWindow& window, int id) {
 	font.loadFromFile("Ungai.ttf");
 	Sprite border;
 	border.setScale(Vector2f(3.5, 3.5));
@@ -91,6 +91,7 @@ void GUI::updateSkill() {
 }
 
 void GUI::setPlayerInfoTexture() {
+	font.loadFromFile("Ungai.ttf");
 	PlayerInfoTexture.loadFromFile(R"(GUI\playerInfo_1.png)");
 	PlayerInfoUltTexture.loadFromFile(R"(GUI\playerInfo.png)");
 	PlayerInfo.setTexture(PlayerInfoTexture);
@@ -113,9 +114,30 @@ void GUI::setPlayerInfoTexture() {
 	loadingEffect.setTexture(loadingEffectTexture);
 	loadingEffect.setScale(3.15,3.15);
 	
-
+	coinsTexture.loadFromFile(R"(Materials\minerals\Transperent\Icon34.png)");
+	coins.setTexture(coinsTexture);
+	coinsBackTexture.loadFromFile(R"(GUI\coins_back.png)");
+	coinsBack.setTexture(coinsBackTexture);
+	coinsCnt.setFont(font);
 
 }
+
+
+void GUI::setShopTexture() {
+	upgradeMenuTexture.loadFromFile(R"(GUI\UpgradeMenu.png)");
+	upgradeMenu.setTexture(upgradeMenuTexture);
+	upgradeMenu.setScale(1.5, 1.5);
+}
+void GUI::drawUpgradeMenu()
+{
+	Vector2f shopPosition = { Player.getPosition().x -800,
+								Player.getPosition().y -200};
+
+	upgradeMenu.setPosition(shopPosition);
+	window.draw(upgradeMenu);
+	cout << " drawn  ";
+}
+
 
 void GUI::setMonstersHPTexture() {
 	monsterHPBackTexture.loadFromFile(R"(GUI\monster_bar_back.png)");
@@ -131,7 +153,6 @@ void GUI::setMonstersHPTexture() {
 
 }
 
-// bm 30,35
 void GUI::DrawMonsterHP(Vector2f pos, float health, int origHealth, int xdif,int ydif)
 {
 	if (health <= 0)
@@ -203,7 +224,7 @@ void GUI::updatePlayerInfo(RenderWindow& window) {
 		(3-cooldown[4]) / 3.0 * staminaBarTexture.getSize().x / 2, PlayerInfoTexture.getSize().y));
 
 	healthBar.setTextureRect(IntRect(helath_start - 10, 0,
-		 (float)health * 1.5 * helath_start / 100, PlayerInfoTexture.getSize().y));
+		 (float)health * 1.5 * helath_start / Max_Player_Health, PlayerInfoTexture.getSize().y));
 
 
 	armorBar.setTextureRect(IntRect(helath_start - 10, 0,
@@ -215,6 +236,13 @@ void GUI::updatePlayerInfo(RenderWindow& window) {
 	ultBar.setPosition(ultPosition.x, ultPosition.y + 30);
 	ultBar.setTextureRect(IntRect(0, 0, ultBarTexture.getSize().x, ultBarTexture.getSize().y*AblazeCharge/100.0));
 
+	coins.setPosition(coinsPosition.x-coinsTexture.getSize().x*2-40, coinsPosition.y + coinsTexture.getSize().y*2);
+	coins.setScale(2, 2);
+	coinsBack.setPosition(coinsPosition.x - coinsBackTexture.getSize().x * 7-20, coinsPosition.y + coinsBackTexture.getSize().y * 4);
+	coinsBack.setScale(7, 7);
+	coinsCnt.setString(to_string(coinsCount));
+	coinsCnt.setPosition(coinsPosition.x - 250, coinsPosition.y + 80);
+	coinsCnt.setCharacterSize(30);
 
 }
 
@@ -246,6 +274,9 @@ void GUI::drawGUI(RenderWindow& window) {
 	window.draw(healthBar);
 	window.draw(armorBar);
 	window.draw(staminaBar);
+	window.draw(coinsBack);
+	window.draw(coins);
+	window.draw(coinsCnt);
 	for (int i = 0; i < 4; i++)
 	{
 		skills[i].drawSkill(window, i);
@@ -253,6 +284,8 @@ void GUI::drawGUI(RenderWindow& window) {
 	}
 	window.draw(ultBarBack);
 	window.draw(ultBar);
+	
+	
 	DrawloadingEffect(window);
 
 }

@@ -209,7 +209,7 @@ void GUI::updatePlayerInfo(RenderWindow& window) {
 	Vector2f infoPosition = { Player.getPosition().x - window.getSize().x/2-20,
 								Player.getPosition().y - window.getSize().y / 2 -20};
 	Vector2f ultPosition = { Player.getPosition().x + 930 ,Player.getPosition().y + window.getSize().y / 3 - 250 };
-
+	Vector2f coinsPosition = { Player.getPosition().x + window.getSize().x / 2 ,Player.getPosition().y - window.getSize().y / 2 };
 	int helath_start = healthBarTexture.getSize().x/3;
 	int health = (Player_Health > 100 ? 100 : Player_Health);
 	int armor = Player_Health - health;

@@ -79,6 +79,7 @@ PauseMenu pause(1920, 1080);
 Clock pausetimer;
 Clock attacktimer;
 Clock dashtimer;
+Clock upgradetimer;
 
 Vector2f initial_position(-500, 7000);
 
@@ -571,28 +572,35 @@ void upgradeShop() {
         {
             if ((Keyboard::isKeyPressed(Keyboard::Num1) || Keyboard::isKeyPressed(Keyboard::Numpad1)) and coinsCount >= damageUpCost)
             {
-                damageUp++;
-                coinsCount -= damageUpCost;
-                damageUpCost += 10;
+                if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
+                    upgradetimer.restart();
+                    damageUp++;
+                    coinsCount -= damageUpCost;
+                    damageUpCost += 10;
+                }
             }
             if ((Keyboard::isKeyPressed(Keyboard::Num2) || Keyboard::isKeyPressed(Keyboard::Numpad2)) and coinsCount >= healthUpCost)
             {
-                healthUp++;
-                coinsCount -= healthUpCost;
-                healthUpCost += 10;
+                if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
+                    healthUp++;
+                    coinsCount -= healthUpCost;
+                    healthUpCost += 10;
+                }
             }
             if ((Keyboard::isKeyPressed(Keyboard::Num3) || Keyboard::isKeyPressed(Keyboard::Numpad3)) and coinsCount >= cooldownUpCost)
             {
-                cooldownUp++;
-                coinsCount -= cooldownUpCost;
-                cooldownUpCost += 10;
+                if (upgradetimer.getElapsedTime().asSeconds() > button_lag) {
+                    cooldownUp++;
+                    coinsCount -= cooldownUpCost;
+                    cooldownUpCost += 10;
+                }
             }
             if(Keyboard::isKeyPressed(Keyboard::R))
-                shopOpened=false;
+                shopOpened = false;
         }
     }
-            else
-                shopOpened = false;
+    else
+        shopOpened = false;
 
 }
 void Draw() {

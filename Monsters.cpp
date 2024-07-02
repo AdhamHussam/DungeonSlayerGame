@@ -33,13 +33,13 @@ void SetMonstersWave() {
 void MoveMonsters() {
     int attct = 0;
     if (curr_state == player_base)
-        attct = 1;
+        attct = round((damageUp * attackUpCof + 1) * 1); // damageUp is the attack upgrade level 
     else if (curr_state == player_xmove)
-        attct = 3;
+        attct = round((damageUp * attackUpCof + 1) * 3);
     else if (curr_state == player_cmove)
-        attct = 5;
+        attct = round((damageUp * attackUpCof + 1) * 5);
     else if (curr_state == player_vmove)
-        attct = 10;
+        attct = round((damageUp * attackUpCof + 1) * 10);
     room_cleared = true;
 	MonstersMovment();
     Rmove(playerdeltatime, Player, attct, Player_Health);

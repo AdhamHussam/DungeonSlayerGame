@@ -29,8 +29,14 @@ extern state curr_state, player_idle, player_run, player_hit, player_base,  play
 enum BOD;
 extern BOD BODstate[], BODattacks;
 extern int Player_Health;
+extern int Max_Player_Health;
 extern bool ishit;
 extern float cooldown[5];
+extern float damageUp;
+extern float attackUpCof;
+extern float healthUp;
+extern float cooldownUp;
+extern int coinsCount;
 extern BrainMole BMmonsters[30];
 extern NightBrone NBmonsters[30];
 extern ShardSoul SSmonsters[30];

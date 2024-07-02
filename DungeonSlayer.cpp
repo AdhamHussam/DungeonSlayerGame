@@ -88,6 +88,7 @@ Texture Idle2;
 Texture DeathAnimation[3];
 Texture HitAnimation[3];
 Texture BaseAttack[8];
+Texture BaseAttackUlt[8];
 Texture RunAnimation[8];
 Texture Vmove[7];
 Texture Xmove[7];
@@ -282,6 +283,10 @@ void checkCollisions() {
 }
 
 void setNormalMovesTexture() {
+
+    for (int i = 0; i < 8; i++) {
+        BaseAttack[i].loadFromFile("base/Base" + to_string(i) + ".png");
+    }
     for (int i = 0; i < 8; i++) {
         RunAnimation[i].loadFromFile("Run/run" + to_string(i) + ".png");
     }
@@ -296,6 +301,10 @@ void setNormalMovesTexture() {
     }
 }
 void setAblazeMovesTexture() {
+    
+    for (int i = 0; i < 8; i++) {
+        BaseAttackUlt[i].loadFromFile("base/BaseUlt" + to_string(i) + ".png");
+    }
     for (int i = 0; i < 8; i++) {
         RunAnimationUlt[i].loadFromFile("Run/run" + to_string(i) + ".png");
     }
@@ -471,9 +480,6 @@ void setTextures() {
     setAblazeMovesTexture();
     for (int i = 0; i < 8; i++) {
         walkAnimation[i].loadFromFile("walk/Walk" + to_string(i) + ".png");
-    }
-    for (int i = 0; i < 8; i++) {
-        BaseAttack[i].loadFromFile("base/Base" + to_string(i) + ".png");
     }
     for (int i = 0; i < 3; i++) {
         HitAnimation[i].loadFromFile("hit/Hit" + to_string(i) + ".png");
@@ -759,7 +765,8 @@ void Switch_States() {
             if (Ablaze) Player.setTexture(Idle2);
             else Player.setTexture(Idle);
             UpdateAnimationCounter(0.1); break;
-        case base: Player.setTexture(BaseAttack[ImageCounter]); UpdateAnimationCounter(0.08*animation_multiplier); break;//0.12
+        case base: if (!Ablaze) { Player.setTexture(BaseAttack[ImageCounter]); UpdateAnimationCounter(0.08 * animation_multiplier); break; }//0.12
+                 else { Player.setTexture(BaseAttackUlt[ImageCounter]); UpdateAnimationCounter(0.08 * animation_multiplier); break; }
 
         case vmove: if (!Ablaze) { Player.setTexture(Vmove[ImageCounter]); UpdateAnimationCounter(0.11 * animation_multiplier); break; }
                   else { Player.setTexture(VmoveUlt[ImageCounter]); UpdateAnimationCounter(0.11 * animation_multiplier); break; }

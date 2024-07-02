@@ -91,6 +91,7 @@ void GUI::updateSkill() {
 }
 
 void GUI::setPlayerInfoTexture() {
+	font.loadFromFile("Ungai.ttf");
 	PlayerInfoTexture.loadFromFile(R"(GUI\playerInfo_1.png)");
 	PlayerInfoUltTexture.loadFromFile(R"(GUI\playerInfo.png)");
 	PlayerInfo.setTexture(PlayerInfoTexture);
@@ -113,8 +114,11 @@ void GUI::setPlayerInfoTexture() {
 	loadingEffect.setTexture(loadingEffectTexture);
 	loadingEffect.setScale(3.15,3.15);
 	
-
-
+	coinsTexture.loadFromFile(R"(Materials\minerals\Transperent\Icon34.png)");
+	coins.setTexture(coinsTexture);
+	coinsBackTexture.loadFromFile(R"(GUI\coins_back.png)");
+	coinsBack.setTexture(coinsBackTexture);
+	coinsCnt.setFont(font);
 }
 
 void GUI::setMonstersHPTexture() {
@@ -188,6 +192,7 @@ void GUI::updatePlayerInfo(RenderWindow& window) {
 	Vector2f infoPosition = { Player.getPosition().x - window.getSize().x/2-20,
 								Player.getPosition().y - window.getSize().y / 2 -20};
 	Vector2f ultPosition = { Player.getPosition().x - 280 ,Player.getPosition().y + window.getSize().y / 3 + 50 };
+	Vector2f coinsPosition = { Player.getPosition().x + window.getSize().x/2 ,Player.getPosition().y -window.getSize().y/2};
 
 	int helath_start = healthBarTexture.getSize().x/3;
 	int health = (Player_Health > 100 ? 100 : Player_Health);
@@ -203,7 +208,7 @@ void GUI::updatePlayerInfo(RenderWindow& window) {
 		(3-cooldown[4]) / 3.0 * staminaBarTexture.getSize().x / 2, PlayerInfoTexture.getSize().y));
 
 	healthBar.setTextureRect(IntRect(helath_start - 10, 0,
-		 (float)health * 1.5 * helath_start / 100, PlayerInfoTexture.getSize().y));
+		 (float)health * 1.5 * helath_start / Max_Player_Health, PlayerInfoTexture.getSize().y));
 
 
 	armorBar.setTextureRect(IntRect(helath_start - 10, 0,
@@ -215,6 +220,13 @@ void GUI::updatePlayerInfo(RenderWindow& window) {
 	ultBar.setPosition(ultPosition);
 	ultBar.setTextureRect(IntRect(0, 0, ultBarTexture.getSize().x, ultBarTexture.getSize().y*AblazeCharge/100.0));
 
+	coins.setPosition(coinsPosition.x-coinsTexture.getSize().x*2-40, coinsPosition.y + coinsTexture.getSize().y*2);
+	coins.setScale(2, 2);
+	coinsBack.setPosition(coinsPosition.x - coinsBackTexture.getSize().x * 7-20, coinsPosition.y + coinsBackTexture.getSize().y * 4);
+	coinsBack.setScale(7, 7);
+	coinsCnt.setString(to_string(coinsCount));
+	coinsCnt.setPosition(coinsPosition.x - 250, coinsPosition.y + 80);
+	coinsCnt.setCharacterSize(30);
 
 }
 
@@ -246,6 +258,9 @@ void GUI::drawGUI(RenderWindow& window) {
 	window.draw(healthBar);
 	window.draw(armorBar);
 	window.draw(staminaBar);
+	window.draw(coinsBack);
+	window.draw(coins);
+	window.draw(coinsCnt);
 	for (int i = 0; i < 4; i++)
 	{
 		skills[i].drawSkill(window, i);
@@ -253,6 +268,8 @@ void GUI::drawGUI(RenderWindow& window) {
 	}
 	window.draw(ultBarBack);
 	window.draw(ultBar);
+	
+	
 	DrawloadingEffect(window);
 
 }

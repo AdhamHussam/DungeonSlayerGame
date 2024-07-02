@@ -21,6 +21,7 @@ struct GUIskill {
 
 
 struct GUI {
+    Font font;
     Texture skillframe;
     Texture loadingframe;
     Texture PlayerInfoUltTexture;
@@ -36,7 +37,11 @@ struct GUI {
     Texture ultBarTexture;
     Texture ultBarReadyTexture;
     Texture ultBarBackTexture;
+    Texture coinsTexture;
+    Texture coinsBackTexture;
+
     GUIskill skills[4];
+    
     Sprite PlayerInfo;
     Sprite healthBar;
     Sprite armorBar;
@@ -48,6 +53,9 @@ struct GUI {
     Sprite bossHP;
     Sprite ultBarBack;
     Sprite ultBar;
+    Sprite coins;
+    Sprite coinsBack;
+    Text coinsCnt;
     int framenum = 1;
 
     RectangleShape skills_background;
